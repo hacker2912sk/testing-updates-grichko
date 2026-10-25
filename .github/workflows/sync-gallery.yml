@@ -1,0 +1,37 @@
+name: Sync gallery images list
+
+on:
+  push:
+    paths:
+      - 'img/gallery/**'
+  workflow_dispatch: {}   # позволяет запускать вручную кнопкой "Run workflow"
+
+permissions:
+  contents: write   # нужно, чтобы Action мог закоммитить обновлённый файл
+
+jobs:
+  sync-gallery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Run sync script
+        run: python sync_gallery.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- json/galleryImages; then
+            git add json/galleryImages
+            git commit -m "Auto-update gallery images list"
+            git push
+          else
+            echo "Список галереи не изменился, коммит не нужен."
+          fi
