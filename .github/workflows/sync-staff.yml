@@ -1,0 +1,43 @@
+name: Sync staff & sponsors from Discord
+
+on:
+  schedule:
+    # Каждый час, в начале часа (UTC)
+    - cron: '0 * * * *'
+  workflow_dispatch: {}   # позволяет запускать вручную кнопкой "Run workflow"
+
+permissions:
+  contents: write   # нужно, чтобы Action мог закоммитить обновлённые файлы
+
+jobs:
+  sync-staff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run sync script
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_GUILD_ID: ${{ secrets.DISCORD_GUILD_ID }}
+        run: python sync_staff.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- json/staffUPD json/supportUPD; then
+            git add json/staffUPD json/supportUPD
+            git commit -m "Auto-update staff & sponsors list from Discord"
+            git push
+          else
+            echo "Списки не изменились, коммит не нужен."
+          fi
