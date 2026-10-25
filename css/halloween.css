@@ -1,0 +1,168 @@
+/* ============================================================
+   ИСР — ивентовая тема «Хэллоуин» 🎃
+   Подключается в <head> страницы отдельным файлом. Все правила
+   действуют только при <html data-theme="halloween">, поэтому
+   на остальные темы этот файл никак не влияет.
+
+   Этот же файл даёт декор «Хэллоуин» для своих тем: если тема создана/сохранена/
+   отправлена кодом при включённом Хэллоуине, у неё остаётся data-theme="halloween", а цвета
+   приходят из её собственных переменных (они перебивают значения ниже).
+
+   Цвета темы — переменные ниже (их же подхватывает редактор тем
+   в настройках). Декор (паутина, летучие мыши, кладбище, туман)
+   — чистый CSS/SVG, без JS.
+   Чтобы отключить декор — удалите блок «ДЕКОР» ниже.
+============================================================ */
+
+html[data-theme="halloween"] {
+  --paper: #140A1E;
+  --paper-2: #1E1030;
+  --ink: #F4E9D8;
+  --ink-soft: #B9A3C9;
+  --yellow: #FF7A00;          /* акцент — тыквенный оранжевый */
+  --yellow-deep: #FF9A2E;
+  --steel: #0B0614;
+  --steel-2: #1A0F2B;
+  --line: #3A2455;
+  --line-strong: #5B3A85;
+  --steel-text: #F4E9D8;
+  --steel-text-dim: #B9A3C9;
+  --accent: #FF7A00;
+  --accent-deep: #FF9A2E;
+
+  --hw-green: #8CFF4F;
+  --hw-glow: color-mix(in srgb, var(--yellow) 55%, transparent);
+  --hw-purple: rgba(138, 62, 200, .28);
+  scrollbar-color: var(--yellow) var(--paper-2);
+}
+
+/* ===== ФОН: туман и свечение ===== */
+html[data-theme="halloween"] body {
+  background:
+    radial-gradient(ellipse 80% 45% at 50% -5%, var(--hw-purple), transparent 70%),
+    radial-gradient(ellipse 90% 40% at 50% 108%, color-mix(in srgb, var(--yellow) 20%, transparent), transparent 70%),
+    var(--paper);
+  background-attachment: fixed;
+}
+html[data-theme="halloween"] body::after { mix-blend-mode: screen; }
+
+/* ===== ШАПКА / ПОЛОСКА ===== */
+html[data-theme="halloween"] .stripe {
+  background: repeating-linear-gradient(135deg, var(--yellow) 0 18px, var(--steel) 18px 36px);
+}
+html[data-theme="halloween"] header.top {
+  border-bottom-color: var(--yellow);
+  box-shadow: 0 4px 22px -6px var(--hw-glow);
+}
+html[data-theme="halloween"] .plate { box-shadow: 0 0 14px var(--hw-glow); }
+/* Тыква после подзаголовка в шапке — SVG вместо эмодзи (одинаково на всех устройствах) */
+html[data-theme="halloween"] .brand-text .sub::after {
+  content: ""; display: inline-block;
+  width: 1.5em; height: 1.5em; margin-left: .5em; vertical-align: -.35em;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%22-24%20-30%2048%2054%22%3E%3Cellipse%20rx=%2222%22%20ry=%2218%22%20fill=%22%23FF7A00%22/%3E%3Cpath%20d=%22M-8%20-17Q-14%200%20-8%2017M8%20-17Q14%200%208%2017M0%20-18L0%2018%22%20stroke=%22%23C54F00%22%20stroke-width=%221.6%22%20fill=%22none%22/%3E%3Cpath%20d=%22M-2%20-18Q0%20-26%206%20-27%22%20stroke=%22%233E7A1F%22%20stroke-width=%224%22%20fill=%22none%22%20stroke-linecap=%22round%22/%3E%3Cpath%20d=%22M-12%20-4L-6%20-10L-2%20-3ZM12%20-4L6%20-10L2%20-3Z%22%20fill=%22%23FFE24A%22/%3E%3Cpath%20d=%22M-11%205L-6%209L-2%205L2%209L6%205L11%209L8%2012L0%2010L-8%2012Z%22%20fill=%22%23FFE24A%22/%3E%3C/svg%3E") no-repeat center / contain;
+}
+html[data-theme="halloween"] ::selection { background: var(--yellow); color: var(--paper); }
+
+/* ===== КНОПКИ, ЗАГОЛОВКИ ===== */
+html[data-theme="halloween"] .btn-join-top,
+html[data-theme="halloween"] .btn-primary {
+  color: var(--paper);
+  box-shadow: 0 0 18px -2px var(--hw-glow);
+}
+html[data-theme="halloween"] .btn-join-top:hover,
+html[data-theme="halloween"] .btn-primary:hover {
+  color: var(--yellow);
+  box-shadow: 0 0 26px 0 var(--hw-glow);
+}
+html[data-theme="halloween"] .hero h1 span {
+  color: var(--yellow);
+  text-shadow: 0 0 26px var(--hw-glow);
+  animation: hw-flicker 5s infinite;
+}
+html[data-theme="halloween"] .hero::before { opacity: .18; }
+html[data-theme="halloween"] .hero::after { opacity: .05; }
+html[data-theme="halloween"] .eyebrow { border-color: var(--line-strong); }
+
+@keyframes hw-flicker {
+  0%, 18%, 22%, 62%, 66%, 100% { opacity: 1; text-shadow: 0 0 26px var(--hw-glow); }
+  20%, 64% { opacity: .78; text-shadow: 0 0 6px var(--hw-glow); }
+}
+
+/* ============================================================
+   ДЕКОР (можно удалить целиком — тема останется цветовой)
+============================================================ */
+
+/* Паутина в углах под шапкой */
+html[data-theme="halloween"] header.top::before,
+html[data-theme="halloween"] header.top::after {
+  content: "";
+  position: absolute; top: 100%;
+  width: clamp(70px, 9vw, 130px); aspect-ratio: 1;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20130%20130%22%20fill=%22none%22%20stroke=%22%23EADFF5%22%20stroke-opacity=%22.5%22%20stroke-width=%221.1%22%20stroke-linecap=%22round%22%3E%20%3Cpath%20d=%22M0%200L130%200M0%200L125%2040M0%200L105%2080M0%200L75%20108M0%200L40%20125M0%200L0%20130%22/%3E%20%3Cpath%20d=%22M30%200Q26%2014%200%2030M58%200Q50%2028%200%2058M88%200Q74%2046%200%2088M118%200Q98%2062%200%20118%22/%3E%20%3Cpath%20d=%22M95%200Q96%206%20104%208%22%20/%3E%3Ccircle%20cx=%22110%22%20cy=%2266%22%20r=%220%22/%3E%20%3C/svg%3E") no-repeat top left / 100% 100%;
+  pointer-events: none;
+}
+html[data-theme="halloween"] header.top::before { left: 0; }
+html[data-theme="halloween"] header.top::after  { right: 0; transform: scaleX(-1); }
+
+/* Кладбище с тыквами по нижнему краю */
+html[data-theme="halloween"] body::before {
+  content: "";
+  position: fixed; left: 0; right: 0; bottom: 0; height: 84px;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20520%2090%22%20preserveAspectRatio=%22xMinYMax%20slice%22%3E%20%3Cpath%20d=%22M0%2090V70Q60%2056%20130%2066T270%2062T410%2068T520%2060V90Z%22%20fill=%22%230a0410%22/%3E%20%3Cg%20fill=%22%23150a22%22%20stroke=%22%233A2455%22%20stroke-width=%221.2%22%3E%20%3Cpath%20d=%22M40%2074V50Q40%2040%2050%2040T60%2050V74Z%22/%3E%20%3Cpath%20d=%22M300%2072V54Q300%2044%20310%2044T320%2054V72Z%22/%3E%20%3Cpath%20d=%22M455%2072V52H475V72Z%22/%3E%20%3C/g%3E%20%3Cpath%20d=%22M46%2052H54M50%2047V60M381%2063V40M381%2050L395%2044M381%2046L371%2038M381%2056L367%2052%22%20stroke=%22%233A2455%22%20stroke-width=%222%22%20fill=%22none%22%20stroke-linecap=%22round%22/%3E%20%3Cg%20transform=%22translate(120%2062)%20scale(0.75)%22%3E%20%3Cellipse%20cx=%220%22%20cy=%220%22%20rx=%2222%22%20ry=%2218%22%20fill=%22%23FF7A00%22/%3E%20%3Cpath%20d=%22M-8%20-17Q-14%200%20-8%2017M8%20-17Q14%200%208%2017M0%20-18L0%2018%22%20stroke=%22%23C54F00%22%20stroke-width=%221.6%22%20fill=%22none%22/%3E%20%3Cpath%20d=%22M-2%20-18Q0%20-26%206%20-27%22%20stroke=%22%233E7A1F%22%20stroke-width=%224%22%20fill=%22none%22%20stroke-linecap=%22round%22/%3E%20%3Cpath%20d=%22M-12%20-4L-6%20-10L-2%20-3ZM12%20-4L6%20-10L2%20-3Z%22%20fill=%22%23FFE24A%22/%3E%20%3Cpath%20d=%22M-11%205L-6%209L-2%205L2%209L6%205L11%209L8%2012L0%2010L-8%2012Z%22%20fill=%22%23FFE24A%22/%3E%20%3C/g%3E%20%3Cg%20transform=%22translate(215%2066)%20scale(0.5)%22%3E%20%3Cellipse%20cx=%220%22%20cy=%220%22%20rx=%2222%22%20ry=%2218%22%20fill=%22%23FF7A00%22/%3E%20%3Cpath%20d=%22M-8%20-17Q-14%200%20-8%2017M8%20-17Q14%200%208%2017M0%20-18L0%2018%22%20stroke=%22%23C54F00%22%20stroke-width=%221.6%22%20fill=%22none%22/%3E%20%3Cpath%20d=%22M-2%20-18Q0%20-26%206%20-27%22%20stroke=%22%233E7A1F%22%20stroke-width=%224%22%20fill=%22none%22%20stroke-linecap=%22round%22/%3E%20%3Cpath%20d=%22M-12%20-4L-6%20-10L-2%20-3ZM12%20-4L6%20-10L2%20-3Z%22%20fill=%22%23FFE24A%22/%3E%20%3Cpath%20d=%22M-11%205L-6%209L-2%205L2%209L6%205L11%209L8%2012L0%2010L-8%2012Z%22%20fill=%22%23FFE24A%22/%3E%20%3C/g%3E%20%3Cg%20transform=%22translate(420%2066)%20scale(0.9)%22%3E%20%3Cellipse%20cx=%220%22%20cy=%220%22%20rx=%2222%22%20ry=%2218%22%20fill=%22%23FF7A00%22/%3E%20%3Cpath%20d=%22M-8%20-17Q-14%200%20-8%2017M8%20-17Q14%200%208%2017M0%20-18L0%2018%22%20stroke=%22%23C54F00%22%20stroke-width=%221.6%22%20fill=%22none%22/%3E%20%3Cpath%20d=%22M-2%20-18Q0%20-26%206%20-27%22%20stroke=%22%233E7A1F%22%20stroke-width=%224%22%20fill=%22none%22%20stroke-linecap=%22round%22/%3E%20%3Cpath%20d=%22M-12%20-4L-6%20-10L-2%20-3ZM12%20-4L6%20-10L2%20-3Z%22%20fill=%22%23FFE24A%22/%3E%20%3Cpath%20d=%22M-11%205L-6%209L-2%205L2%209L6%205L11%209L8%2012L0%2010L-8%2012Z%22%20fill=%22%23FFE24A%22/%3E%20%3C/g%3E%20%3C/svg%3E") repeat-x left bottom / auto 100%;
+  pointer-events: none; z-index: 400;
+  opacity: .95;
+}
+
+/* Настройка «Интерфейс → кладбище и тыквы»: Скрыть */
+html[data-theme="halloween"][data-hw-graveyard="off"] body::before { display: none; }
+
+/* Стаи летучих мышей (два слоя с разной скоростью) */
+html[data-theme="halloween"]::before,
+html[data-theme="halloween"]::after {
+  content: "";
+  position: fixed; left: 0; pointer-events: none; z-index: 400;
+  background: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20400%20120%22%3E%20%3Cg%20fill=%22%230a0410%22%20stroke=%22%23FF7A00%22%20stroke-opacity=%22.35%22%20stroke-width=%22.8%22%3E%20%3Cg%20transform=%22translate(10%2040)%20scale(1.1)%22%3E%3Cpath%20d=%22M30%209c-2%200-3-2-4-5l-1%205c-4-3-11-4-18%201%203%201%204%203%204%206%202-2%205-2%207%200%202-2%205-1%206%202%202-1%204-1%206%202%202-3%204-3%206-2%201-3%204-4%206-2%202-2%205-2%207%200%200-3%201-5%204-6-7-5-14-4-18-1l-1-5c-1%203-2%205-4%205z%22/%3E%3C/g%3E%20%3Cg%20transform=%22translate(140%208)%20scale(.8)%22%3E%3Cpath%20d=%22M30%209c-2%200-3-2-4-5l-1%205c-4-3-11-4-18%201%203%201%204%203%204%206%202-2%205-2%207%200%202-2%205-1%206%202%202-1%204-1%206%202%202-3%204-3%206-2%201-3%204-4%206-2%202-2%205-2%207%200%200-3%201-5%204-6-7-5-14-4-18-1l-1-5c-1%203-2%205-4%205z%22/%3E%3C/g%3E%20%3Cg%20transform=%22translate(230%2070)%20scale(1.3)%22%3E%3Cpath%20d=%22M30%209c-2%200-3-2-4-5l-1%205c-4-3-11-4-18%201%203%201%204%203%204%206%202-2%205-2%207%200%202-2%205-1%206%202%202-1%204-1%206%202%202-3%204-3%206-2%201-3%204-4%206-2%202-2%205-2%207%200%200-3%201-5%204-6-7-5-14-4-18-1l-1-5c-1%203-2%205-4%205z%22/%3E%3C/g%3E%20%3Cg%20transform=%22translate(330%2030)%20scale(.7)%22%3E%3Cpath%20d=%22M30%209c-2%200-3-2-4-5l-1%205c-4-3-11-4-18%201%203%201%204%203%204%206%202-2%205-2%207%200%202-2%205-1%206%202%202-1%204-1%206%202%202-3%204-3%206-2%201-3%204-4%206-2%202-2%205-2%207%200%200-3%201-5%204-6-7-5-14-4-18-1l-1-5c-1%203-2%205-4%205z%22/%3E%3C/g%3E%20%3C/g%3E%3C/svg%3E") no-repeat center / contain;
+  will-change: transform;
+}
+html[data-theme="halloween"]::before {
+  top: 14vh; width: 300px; height: 90px;
+  animation: hw-fly-a 38s linear infinite;
+}
+html[data-theme="halloween"]::after {
+  top: 42vh; width: 220px; height: 66px; opacity: .85;
+  animation: hw-fly-b 56s linear infinite 12s;
+}
+@keyframes hw-fly-a {
+  0%   { transform: translate(-340px, 0) scaleX(1); }
+  25%  { transform: translate(25vw, -40px) scaleX(1); }
+  50%  { transform: translate(55vw, 30px) scaleX(1); }
+  75%  { transform: translate(85vw, -30px) scaleX(1); }
+  100% { transform: translate(calc(100vw + 340px), 10px) scaleX(1); }
+}
+@keyframes hw-fly-b {
+  0%   { transform: translate(calc(100vw + 260px), 0) scaleX(-1); }
+  30%  { transform: translate(70vw, 36px) scaleX(-1); }
+  65%  { transform: translate(30vw, -28px) scaleX(-1); }
+  100% { transform: translate(-260px, 18px) scaleX(-1); }
+}
+
+/* Мобильные: нижняя навигация занимает низ экрана — кладбище прячем,
+   мышей уменьшаем */
+@media (max-width: 900px) {
+  html[data-theme="halloween"] body::before { display: none; }
+  html[data-theme="halloween"]::before { width: 190px; height: 57px; }
+  html[data-theme="halloween"]::after { width: 140px; height: 42px; }
+}
+
+/* Уважаем настройку «уменьшить анимацию» и печать */
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="halloween"]::before,
+  html[data-theme="halloween"]::after { display: none; }
+}
+@media print {
+  html[data-theme="halloween"]::before,
+  html[data-theme="halloween"]::after,
+  html[data-theme="halloween"] body::before,
+  html[data-theme="halloween"] header.top::before,
+  html[data-theme="halloween"] header.top::after { display: none !important; }
+}

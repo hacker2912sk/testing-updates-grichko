@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ИСР — вход</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1E1D18">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F3F0E6;
+  --paper-2: #EAE6D8;
+  --ink: #171614;
+  --ink-soft: #5A5750;
+  --yellow: #F5C400;
+  --yellow-deep: #B8790A;
+  --steel: #1E1D18;
+  --steel-2: #2B2A23;
+  --line: #DBD6C6;
+  --steel-text: #EAE6D8;
+  --danger: #B3261E;
+  --ok: #2E7D32;
+}
+* { box-sizing: border-box; }
+html { scrollbar-width: thin; scrollbar-color: var(--yellow) var(--paper-2); }
+body {
+  margin: 0; min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
+  background: var(--paper); color: var(--ink);
+  font-family: 'IBM Plex Sans', sans-serif; line-height: 1.5;
+  position: relative; overflow-x: hidden;
+}
+
+/* ===== ПОЛОСА + ШАПКА (как на основной странице) ===== */
+.stripe { height: 9px; background: repeating-linear-gradient(135deg, var(--yellow) 0 18px, var(--ink) 18px 36px); flex: none; }
+header.top {
+  background: var(--steel); color: var(--steel-text);
+  height: 64px; padding: 0 24px; flex: none;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  border-bottom: 4px solid var(--yellow);
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.plate { width: 40px; height: 40px; border: 2px solid var(--yellow); overflow: hidden; flex: none; background: var(--ink); }
+.plate img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.brand-text .name { font-size: 18px; font-weight: 600; line-height: 1; }
+.brand-text .sub { font-size: 9.5px; color: var(--yellow); letter-spacing: .12em; margin-top: 3px; }
+.top-tag {
+  font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .05em;
+  font-size: 12px; font-weight: 500; color: var(--steel-text);
+  border: 1px solid #55534a; padding: 6px 12px; white-space: nowrap;
+}
+
+/* ===== ГЛАВНЫЙ БЛОК ===== */
+main { flex: 1 0 auto; position: relative; display: flex; align-items: center; }
+main::before {                       /* диагональные полосы справа, как в hero */
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0;
+  width: 46vw; max-width: 520px;
+  background: repeating-linear-gradient(115deg, var(--yellow) 0 3px, transparent 3px 26px);
+  opacity: .25; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to left, black, transparent);
+  mask-image: linear-gradient(to left, black, transparent);
+}
+main::after {                        /* водяной знак */
+  content: "ИСР"; position: absolute; right: -10px; bottom: -34px;
+  font-family: 'Unbounded', sans-serif; font-weight: 900;
+  font-size: min(22vw, 260px); line-height: 1; letter-spacing: -.03em;
+  color: var(--ink); opacity: .03; pointer-events: none;
+}
+.wrap { position: relative; z-index: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: clamp(32px, 7vw, 72px) 24px; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--yellow-deep); background: var(--paper-2);
+  border: 1px solid var(--line); padding: 5px 10px; margin-bottom: 16px;
+}
+.eyebrow .dot { width: 7px; height: 7px; background: var(--yellow); border-radius: 50%; animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+
+h1 {
+  font-family: 'Unbounded', sans-serif; font-weight: 800; letter-spacing: -.01em; text-transform: uppercase;
+  font-size: clamp(26px, 6vw, 52px); line-height: 1.04; margin: 0;
+  overflow-wrap: break-word; word-break: break-word; hyphens: auto; max-width: 14em;
+}
+h1 span { color: var(--yellow-deep); }
+body.err h1 span { color: var(--danger); }
+p.lead { font-size: 15px; color: var(--ink-soft); max-width: 520px; margin: 16px 0 24px; line-height: 1.65; }
+
+/* ===== КНОПКИ (как .btn на основной странице) ===== */
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn {
+  position: relative; font-family: 'Oswald', sans-serif; text-transform: uppercase;
+  letter-spacing: .05em; font-weight: 600; font-size: 13px; padding: 13px 24px;
+  border: 2px solid var(--ink); cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px; overflow: hidden; isolation: isolate;
+  transition: color .18s, background .18s;
+}
+.btn:active { transform: scale(.98); }
+.btn-primary { background: var(--ink); color: var(--yellow); }
+.btn-primary::before {
+  content: ""; position: absolute; inset: 0; background: var(--yellow);
+  transform: translateY(105%); transition: transform .22s ease; z-index: -1;
+}
+.btn-primary:hover { color: var(--ink); }
+.btn-primary:hover::before { transform: translateY(0); }
+.btn.off { opacity: .4; pointer-events: none; }
+.btn svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+
+/* ===== ЧТО НУЖНО ДЛЯ ВХОДА ===== */
+.need {
+  position: relative; margin-top: 36px; max-width: 520px;
+  background: var(--paper-2); border: 1px solid var(--line); padding: 18px 20px;
+}
+.need::before {                      /* уголки как .corner-marks */
+  content: ""; position: absolute; inset: -1px; pointer-events: none;
+  background:
+    linear-gradient(var(--yellow-deep), var(--yellow-deep)) top left/11px 2px no-repeat,
+    linear-gradient(var(--yellow-deep), var(--yellow-deep)) top left/2px 11px no-repeat,
+    linear-gradient(var(--yellow-deep), var(--yellow-deep)) top right/11px 2px no-repeat,
+    linear-gradient(var(--yellow-deep), var(--yellow-deep)) top right/2px 11px no-repeat,
+    linear-gradient(var(--yellow-deep), var(--yellow-deep)) bottom left/11px 2px no-repeat,
+    linear-gradient(var(--yellow-deep), var(--yellow-deep)) bottom left/2px 11px no-repeat,
+    linear-gradient(var(--yellow-deep), var(--yellow-deep)) bottom right/11px 2px no-repeat,
+    linear-gradient(var(--yellow-deep), var(--yellow-deep)) bottom right/2px 11px no-repeat;
+}
+.need h2 {
+  font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .08em;
+  font-size: 12px; font-weight: 600; color: var(--ink-soft); margin: 0 0 12px;
+}
+.need ol { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 10px; }
+.need li { counter-increment: s; display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.need li::before {
+  content: counter(s); flex: none; width: 24px; height: 24px; display: grid; place-items: center;
+  font-family: 'Space Mono', monospace; font-weight: 700; font-size: 12px;
+  background: var(--ink); color: var(--yellow);
+}
+.need li.ok::before  { content: "✓"; background: var(--ok); color: #fff; }
+.need li.bad::before { content: "✕"; background: var(--danger); color: #fff; }
+.need li.bad { color: var(--danger); font-weight: 600; }
+
+/* ===== ПОДВАЛ ===== */
+footer {
+  flex: none; background: var(--steel); color: #B0AC9E;
+  padding: 16px 24px; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: .06em;
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  border-top: 4px solid var(--yellow);
+}
+
+@media (max-width: 640px) {
+  header.top { padding: 0 16px; }
+  .top-tag { display: none; }
+  .wrap { padding: 32px 16px 48px; }
+  .btn { width: 100%; justify-content: center; }
+  footer { padding: 14px 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .eyebrow .dot { animation: none; } .btn, .btn::before { transition: none; } }
+</style>
+<script src="isr-gate.js" data-page="gate"></script>
+</head>
+<body>
+<div class="stripe"></div>
+<header class="top">
+  <div class="brand">
+    <div class="plate"><img src="icon.png" alt="Логотип ИСР"></div>
+    <div class="brand-text">
+      <div class="name">ИСР</div>
+      <div class="sub">Индустриальный Сервер Работяг</div>
+    </div>
+  </div>
+  <div class="top-tag">Закрытый доступ</div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span><span id="eyebrow">Проходная · нужен вход</span></div>
+    <h1 id="title">Доступ <span>ограничен</span></h1>
+    <p class="lead" id="text">Чтобы открыть сайт, войдите через Discord. Нужно быть участником сервера ИСР с нужной ролью.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" id="login" href="#">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.32 4.37A19.8 19.8 0 0 0 15.4 2.85a.07.07 0 0 0-.08.04c-.21.38-.45.87-.61 1.26a18.3 18.3 0 0 0-5.42 0 12.6 12.6 0 0 0-.62-1.26.08.08 0 0 0-.08-.04A19.7 19.7 0 0 0 3.68 4.37a.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-2a.08.08 0 0 0-.04-.1 13.1 13.1 0 0 1-1.87-.9.08.08 0 0 1 0-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.8 8.18 1.8 12.07 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.65-1.87.9a.08.08 0 0 0-.04.1c.36.7.77 1.37 1.23 2a.08.08 0 0 0 .08.03 19.8 19.8 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03ZM8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42s.96-2.42 2.16-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.34-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.16-1.08-2.16-2.42s.96-2.42 2.16-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.34-.95 2.42-2.16 2.42Z"/></svg>
+        <span id="loginText">Войти через Discord</span>
+      </a>
+    </div>
+
+    <div class="need" id="need">
+      <h2>Что нужно для входа</h2>
+      <ol>
+        <li id="s1">Войти через аккаунт Discord</li>
+        <li id="s2">Состоять на сервере ИСР</li>
+        <li id="s3">Иметь роль, дающую доступ на сайт</li>
+      </ol>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>ИСР · Индустриальный Сервер Работяг</span>
+  <span>Вход через Discord</span>
+</footer>
+
+<script>
+(function () {
+  // [заголовок, текст, кнопка активна, подпись над заголовком, состояние шагов s1/s2/s3, ошибка?]
+  var MSG = {
+    not_member:     ['Вас нет на сервере', 'Вы вошли в Discord, но не состоите на сервере ИСР. Вступите на сервер и попробуйте снова.', 1, 'Проходная · отказано', ['ok', 'bad', ''], 1],
+    no_role:        ['Нет нужной роли', 'Вы есть на сервере, но у вас нет роли, дающей доступ к сайту. Если считаете, что это ошибка, обратитесь к администрации.', 1, 'Проходная · отказано', ['ok', 'ok', 'bad'], 1],
+    cancelled:      ['Вход отменён', 'Вы отказались от авторизации через Discord. Чтобы открыть сайт, войдите ещё раз.', 1, 'Проходная · вход отменён', ['', '', ''], 0],
+    error:          ['Не удалось войти', 'Что-то пошло не так при обращении к Discord. Попробуйте ещё раз немного позже.', 1, 'Проходная · ошибка', ['', '', ''], 1],
+    unavailable:    ['Сервер входа недоступен', 'Не удалось связаться с сервером проверки доступа. Попробуйте позже.', 1, 'Проходная · нет связи', ['', '', ''], 1],
+    not_configured: ['Сайт не настроен', 'В файле isr-gate.js не указан адрес Cloudflare Worker (WORKER_URL).', 0, 'Проходная · не настроено', ['', '', ''], 1],
+  };
+
+  var h1 = document.getElementById('title'), p = document.getElementById('text'), b = document.getElementById('login'),
+      bt = document.getElementById('loginText'), eb = document.getElementById('eyebrow');
+
+  // Заголовок: последнее слово выделяется цветом, как в hero основной страницы
+  function setTitle(t) {
+    var w = t.split(' '), last = w.pop(), s = document.createElement('span');
+    s.textContent = last; h1.textContent = '';
+    if (w.length) h1.appendChild(document.createTextNode(w.join(' ') + ' '));
+    h1.appendChild(s);
+  }
+  function setSteps(st) {
+    ['s1', 's2', 's3'].forEach(function (id, i) { document.getElementById(id).className = st[i] || ''; });
+  }
+
+  var reason = new URLSearchParams(location.search).get('reason');
+  var m = MSG[reason];
+  if (m) {
+    setTitle(m[0]); p.textContent = m[1]; eb.textContent = m[3]; setSteps(m[4]);
+    if (m[5]) document.body.classList.add('err');
+    if (!m[2]) b.className += ' off';
+  }
+  if (reason === 'no_role' || reason === 'not_member') bt.textContent = 'Войти другим аккаунтом';
+  if (reason === 'cancelled' || reason === 'error') bt.textContent = 'Попробовать снова';
+
+  var G = window.ISRGate;
+  // если вход отключён в json/accessFILE, пускаем на сайт сразу
+  G.loadAccess().then(function (open) { if (open) location.replace('/'); });
+
+  if (!G.configured) {
+    var n = MSG.not_configured;
+    setTitle(n[0]); p.textContent = n[1]; eb.textContent = n[3]; document.body.classList.add('err'); b.className += ' off';
+    return;
+  }
+  b.href = G.loginUrl();
+  if (reason === 'unavailable') { bt.textContent = 'Обновить страницу'; b.href = '/'; }
+
+  // уже вошли и всё действует — отправляем на сайт (кроме случая показа отказа)
+  if (!reason) G.check().then(function (r) { if (r.user) location.replace('/'); }).catch(function () {});
+})();
+</script>
+</body>
+</html>

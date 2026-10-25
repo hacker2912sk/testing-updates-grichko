@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Технические работы · ИСР</title>
+<link id="favicon" rel="icon" type="image/png">
+<link rel="icon" type="image/png" href="icon.png">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800;900&family=Oswald:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F0E6;
+    --paper-2:#EAE6D8;
+    --ink:#171614;
+    --ink-soft:#5A5750;
+    --yellow:#F5C400;
+    --yellow-deep:#B8790A;
+    --steel:#1E1D18;
+    --line:#DBD6C6;
+    --line-strong:#171614;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    display:flex;
+    flex-direction:column;
+    transition:background-color .25s, color .25s;
+  }
+  .stripe{
+    height:9px;
+    background:repeating-linear-gradient(135deg, var(--yellow) 0 18px, var(--ink) 18px 36px);
+  }
+  .wrap{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 6vw;
+  }
+  .card{
+    max-width:560px;
+    text-align:left;
+    position:relative;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--yellow-deep);
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    padding:5px 10px;
+    margin-bottom:26px;
+    transition:background-color .25s, border-color .25s, color .25s;
+  }
+  .eyebrow .dot{
+    width:7px;height:7px;background:var(--yellow);border-radius:50%;
+    animation:blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+  .wrench{
+    font-size:clamp(56px,10vw,84px);
+    line-height:1;
+    margin-bottom:8px;
+    display:inline-block;
+    animation:wiggle 2.4s ease-in-out infinite;
+    transform-origin:70% 70%;
+  }
+  @keyframes wiggle{
+    0%,100%{ transform:rotate(0deg); }
+    10%{ transform:rotate(-14deg); }
+    20%{ transform:rotate(10deg); }
+    30%{ transform:rotate(-6deg); }
+    40%{ transform:rotate(0deg); }
+  }
+  h1{
+    font-family:'Unbounded',sans-serif;
+    font-weight:800;
+    font-size:clamp(24px,4vw,34px);
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    margin:10px 0 14px;
+  }
+  p{
+    font-size:15.5px;
+    color:var(--ink-soft);
+    line-height:1.65;
+    max-width:460px;
+    margin:0 0 30px;
+  }
+  .log{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    border:1px solid var(--line-strong);
+    background:var(--paper-2);
+    padding:14px 16px;
+    margin-bottom:30px;
+    line-height:1.9;
+    transition:background-color .25s, border-color .25s;
+  }
+  .log b{color:var(--yellow-deep);}
+  .actions{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Oswald',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    font-weight:600;
+    font-size:14px;
+    padding:15px 28px;
+    border:2px solid var(--ink);
+    background:var(--ink);
+    color:var(--yellow);
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    transition:background .15s, color .15s, border-color .25s;
+  }
+  .btn:hover{background:var(--yellow);color:var(--ink);}
+  .retry-note{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+  }
+  footer{
+    background:var(--steel);
+    color:#8b897e;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    text-align:center;
+    padding:16px;
+    transition:background-color .25s;
+  }
+</style>
+<script>
+/* ============================================================
+   ТЕМА: подхватываем ту же тему, что выбрана на основном сайте.
+   Тот же подход, что и на 404.html — никакого редактора темы тут нет,
+   только применение (цвета встроенных/официальных/сохранённых тем).
+============================================================ */
+(function applySiteTheme(){
+  function get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function getJSON(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } }
+
+  var BUILT_IN_THEMES = {
+    light:    { '--paper':'#F3F0E6','--paper-2':'#EAE6D8','--ink':'#171614','--ink-soft':'#5A5750','--yellow':'#F5C400','--yellow-deep':'#B8790A','--steel':'#1E1D18','--line':'#DBD6C6','--line-strong':'#171614' },
+    dark:     { '--paper':'#18170F','--paper-2':'#211F16','--ink':'#EDEAE0','--ink-soft':'#A19C8F','--yellow':'#F5C400','--yellow-deep':'#B8790A','--steel':'#0D0D07','--line':'#33312A','--line-strong':'#3D3A30' },
+    midnight: { '--paper':'#0D1117','--paper-2':'#161B22','--ink':'#E6EDF3','--ink-soft':'#8B949E','--yellow':'#58A6FF','--yellow-deep':'#1F6FEB','--steel':'#010409','--line':'#21262D','--line-strong':'#30363D' },
+    forest:   { '--paper':'#F0F4EE','--paper-2':'#E3EBE0','--ink':'#1C2B1A','--ink-soft':'#4A6741','--yellow':'#6BAE4F','--yellow-deep':'#3D7A2E','--steel':'#1C2B1A','--line':'#C5D9BF','--line-strong':'#1C2B1A' },
+    rose:     { '--paper':'#FFF5F7','--paper-2':'#FFE8ED','--ink':'#2D1A1E','--ink-soft':'#7A4A53','--yellow':'#E8547A','--yellow-deep':'#C0395A','--steel':'#2D1A1E','--line':'#F5C5CF','--line-strong':'#2D1A1E' },
+    slate:    { '--paper':'#F8F9FA','--paper-2':'#E9ECEF','--ink':'#212529','--ink-soft':'#6C757D','--yellow':'#6C63FF','--yellow-deep':'#4B42D6','--steel':'#212529','--line':'#DEE2E6','--line-strong':'#212529' },
+    tree:    { '--paper':'#242518','--paper-2':'#221e16','--ink':'#ffd885','--ink-soft':'#bf9c73','--yellow':'#736b35','--yellow-deep':'#927116','--steel':'#1f1f04','--line':'#473400','--line-strong':'#473d0b' },
+    bloody:    { '--paper':'#220707','--paper-2':'#610000','--ink':'#8f0000','--ink-soft':'#ff5757','--yellow':'#ff2e2e','--yellow-deep':'#ff0000','--steel':'#570000','--line':'#970c0c','--line-strong':'#a80000' },
+  };
+
+  var COLOR_FIELDS = ['--paper','--paper-2','--ink','--ink-soft','--yellow','--yellow-deep','--steel','--steel-2','--line','--line-strong','--steel-text','--steel-text-dim'];
+
+  function base64UrlToBytes(str){
+    var b64 = str.replace(/-/g,'+').replace(/_/g,'/');
+    while(b64.length % 4) b64 += '=';
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for(var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+    return bytes;
+  }
+  function rgbToHex(r,g,b){ return '#'+[r,g,b].map(function(x){ return x.toString(16).padStart(2,'0'); }).join(''); }
+  function decodeThemeCodeColors(code){
+    try{
+      var tr = (code||'').trim();
+      if(tr.indexOf('ISR2-') !== 0 && tr.indexOf('ISR3-') !== 0) return null;
+      var buf = base64UrlToBytes(tr.slice(5));
+      var vars = {};
+      var i = 0;
+      COLOR_FIELDS.forEach(function(f){ vars[f] = rgbToHex(buf[i],buf[i+1],buf[i+2]); i+=3; });
+      return vars;
+    } catch(e){ return null; }
+  }
+
+  function applyVars(vars){
+    var root = document.documentElement;
+    Object.keys(vars).forEach(function(k){ root.style.setProperty(k, vars[k]); });
+  }
+
+  var activeThemeId = get('isr-theme-id') || (Date.now() < new Date(2026, 10, 3).getTime() ? 'halloween' : 'light');
+
+  function applyByActiveId(themesMap){
+    /* Ивентовая тема «Хэллоуин» целиком живёт в css/halloween.css */
+    if (activeThemeId === 'halloween') { document.documentElement.setAttribute('data-theme', 'halloween'); return true; }
+    if (activeThemeId.indexOf('saved:') === 0) {
+      var name = activeThemeId.replace('saved:', '');
+      var saved = getJSON('isr-saved-themes', []);
+      var found = saved.filter(function(t){ return t.name === name; })[0];
+      if (found) { applyVars(found.vars); return true; }
+    }
+    if (activeThemeId === 'custom') {
+      var customVars = getJSON('isr-custom-vars', null);
+      if (customVars) { applyVars(customVars); return true; }
+    }
+    if (themesMap[activeThemeId]) {
+      applyVars(themesMap[activeThemeId]);
+      return true;
+    }
+    return false;
+  }
+
+  var appliedImmediately = applyByActiveId(BUILT_IN_THEMES);
+
+  fetch('json/themesFILE', {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+    .then(function(text){
+      var tr = (text||'').trim();
+      if(!tr) return;
+      var raw = JSON.parse(tr);
+      if(!Array.isArray(raw)) return;
+      var extraMap = {};
+      raw.forEach(function(entry){
+        if(!entry || !entry.id) return;
+        if(BUILT_IN_THEMES[entry.id]) return;
+        if(entry.code){
+          var vars = decodeThemeCodeColors(entry.code);
+          if(vars) extraMap[entry.id] = vars;
+        } else if(entry.vars){
+          extraMap[entry.id] = entry.vars;
+        }
+      });
+      if(!appliedImmediately) applyByActiveId(extraMap);
+    })
+    .catch(function(){});
+})();
+</script>
+<link rel="stylesheet" href="/css/halloween.css">
+</head>
+<body>
+<div class="stripe"></div>
+<div class="wrap">
+  <div class="card">
+    <div class="eyebrow"><span class="dot"></span> СТАТУС СЕРВЕРА</div>
+    <div class="wrench">🛠</div>
+    <h1>Ведутся технические работы</h1>
+    <p>Цех временно закрыт на обслуживание — мы что-то чиним, обновляем или настраиваем. Скоро всё снова заработает, загляните чуть позже.</p>
+    <div class="log">
+      &gt; запрос обработан<br>
+      &gt; статус: <b>503 — временно недоступно</b><br>
+      &gt; рекомендация: подождать и обновить страницу
+    </div>
+    <div class="actions">
+      <a class="btn" href="javascript:location.reload()">Обновить страницу</a>
+      <span class="retry-note" id="retryNote"></span>
+    </div>
+  </div>
+</div>
+<footer>ИСР — ИНДУСТРИАЛЬНЫЙ СЕРВЕР РАБОТЯГ</footer>
+<script>
+  /* Небольшой счётчик до автообновления, чтобы не заставлять людей жать F5 вручную */
+  (function(){
+    var seconds = 60;
+    var note = document.getElementById('retryNote');
+    function tick(){
+      note.textContent = 'Автообновление через ' + seconds + ' сек.';
+      if(seconds<=0){ location.reload(); return; }
+      seconds--;
+      setTimeout(tick, 1000);
+    }
+    tick();
+  })();
+</script>
+</body>
+</html>
