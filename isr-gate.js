@@ -1,3 +1,13 @@
+/* ИСР — проверка доступа на стороне сайта (работает вместе с Cloudflare Worker).
+ *
+ * Подключается ПЕРВЫМ скриптом в <head> страницы:  <script src="/isr-gate.js"></script>
+ * Эта строка должна быть в index.html. Остальное в index.html можно менять как угодно.
+ *
+ * Включение/выключение входа — файл json/accessFILE:
+ *   {"enabled": true}   вход через Discord обязателен (по умолчанию)
+ *   {"enabled": false}  сайт открыт всем, без входа
+ * Если файл не читается или в нём ошибка — вход считается ОБЯЗАТЕЛЬНЫМ (так безопаснее).
+ */
 (function () {
   var WORKER_URL = 'https://isr-auth.isr-auth.workers.dev';   // без слеша в конце
   var GATE_PAGE = '/gate.html';
@@ -16,10 +26,14 @@
   var m = location.hash.match(/isr_token=([^&]+)/);
   if (m) {
     store.set(decodeURIComponent(m[1]));
-    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    var back = '';
+    try { back = sessionStorage.getItem('isr-after') || ''; sessionStorage.removeItem('isr-after'); } catch (e) {}
+    try { history.replaceState(null, '', location.pathname + location.search + (/^#u\/[\w-]+$/.test(back) ? back : '')); } catch (e) {}
   }
 
   function goGate(reason) {
+    // запоминаем ссылку на профиль (#u/ID), чтобы после входа открыть именно её
+    try { if (/^#u\/[\w-]+$/.test(location.hash)) sessionStorage.setItem('isr-after', location.hash); } catch (e) {}
     location.replace(GATE_PAGE + (reason ? '?reason=' + reason : ''));
   }
   /* Возвращает { user } если пускаем, иначе { reason } (reason может быть пустым: просто нужен вход). */
@@ -84,6 +98,7 @@
         '#isr-badge .b-dot{width:9px;height:9px;border-radius:50%;background:var(--ink-soft,#B9A3C9);flex:none}' +
         '#isr-badge .b-out{width:100%;padding:8px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);background:transparent;color:inherit;font:inherit}' +
         '#isr-badge .b-out:hover{border-color:var(--yellow,#FF7A00);color:var(--yellow,#FF7A00)}' +
+        '#isr-badge .b-prof{display:block;text-align:center;text-decoration:none;margin-bottom:6px}' +
         '@media (max-width:900px){#isr-badge{bottom:76px}}' +
         '@media print{#isr-badge{display:none}}';
       document.head.appendChild(st);
@@ -122,6 +137,11 @@
     });
     if (!(user.roles || []).length) roles.appendChild(mk('span', 'b-lbl', 'нет данных'));
     panel.appendChild(roles);
+    if (/^\d+$/.test(user.id)) {
+      var prof = mk('a', 'b-out b-prof', 'Мой профиль'); prof.href = '/#u/' + user.id;
+      prof.addEventListener('click', function () { el.classList.remove('open'); });
+      panel.appendChild(prof);
+    }
     var out = mk('button', 'b-out', 'Выйти'); out.type = 'button';
     out.onclick = function () { window.ISRGate.logout(); };
     panel.appendChild(out);
@@ -144,6 +164,7 @@
 
   window.ISRGate = {
     workerUrl: WORKER_URL,
+    token: function () { return store.get(); },
     configured: WORKER_URL.indexOf('ВАШ-') === -1,
     loginUrl: function () { return WORKER_URL + '/auth/login?return=' + encodeURIComponent(location.origin); },
     logout: function () { store.del(); goGate(); },

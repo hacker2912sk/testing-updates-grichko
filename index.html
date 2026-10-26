@@ -949,6 +949,42 @@ footer { background:var(--steel);color:var(--steel-text-dim);padding:40px 24px 0
 /* Print */
 @media print { .mobile-bottom-nav,.scroll-top,.toast-stack,.progress-track,.stripe,footer,.console-overlay,.settings-overlay { display:none!important; } }
 @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important} }
+/* ===== ПРОФИЛЬ ИГРОКА (/#u/ID) ===== */
+.pf-bg { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+.pf-bg svg { position:absolute; inset:0; width:100%; height:100%; }
+.pf-wrap { position:relative; padding:40px 0 20px; max-width:860px; margin:0 auto; }
+.pf-state { background:var(--paper); border:1px solid var(--line-strong); padding:22px; text-align:center; color:var(--ink-soft); }
+.pf-card, .pf-editor { background:var(--paper); border:1px solid var(--line-strong); box-shadow:0 10px 34px rgba(0,0,0,.18); }
+.pf-card[hidden], .pf-editor[hidden], .pf-state[hidden] { display:none !important; }
+.pf-banner { position:relative; height:220px; overflow:hidden; border-bottom:4px solid var(--yellow); background:var(--paper-2); }
+.pf-banner img, .pf-banner svg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+.pf-banner.pf-default { background:repeating-linear-gradient(135deg,var(--yellow) 0 18px,var(--ink) 18px 36px); }
+.pf-head { display:flex; align-items:flex-end; gap:18px; flex-wrap:wrap; padding:0 24px 22px; }
+.pf-ava { width:116px; height:116px; margin-top:-58px; border-radius:50%; border:5px solid var(--paper); background:var(--yellow); color:var(--ink);
+  display:grid; place-items:center; font:800 44px 'Unbounded',sans-serif; overflow:hidden; flex:none; position:relative; z-index:1; }
+.pf-ava img { width:100%; height:100%; object-fit:cover; display:block; }
+.pf-ident { flex:1; min-width:180px; padding-top:14px; }
+.pf-ident h2 { font-size:clamp(22px,4.5vw,34px); line-height:1.1; word-break:break-word; text-transform:none; }
+.pf-sub { margin-top:6px; font-size:11px; color:var(--ink-soft); letter-spacing:.05em; }
+.pf-actions { display:flex; gap:8px; flex-wrap:wrap; padding-top:14px; }
+.pf-editor { margin-top:18px; padding:20px 24px 24px; }
+.pf-editor h3 { font-size:14px; margin:0 0 6px; }
+.pf-editor .pf-hint { font-size:12px; color:var(--ink-soft); line-height:1.55; margin:0 0 14px; }
+.pf-field { margin-bottom:18px; }
+.pf-field .pf-lbl { display:block; font:700 11px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:6px; }
+.pf-field textarea { width:100%; min-height:66px; resize:vertical; font:11px/1.4 'Space Mono',monospace; }
+.pf-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.pf-radio { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:10px; font-size:13px; }
+.pf-radio label { display:flex; align-items:center; gap:6px; cursor:pointer; }
+.pf-status { font-size:12px; margin-left:4px; align-self:center; }
+.pf-status.err { color:#e06b5a; }
+@media (max-width:640px){
+  .pf-banner { height:150px; }
+  .pf-head { padding:0 16px 18px; }
+  .pf-ava { width:92px; height:92px; margin-top:-46px; font-size:34px; }
+  .pf-editor { padding:16px; }
+}
+
 </style>
 </head>
 <body>
@@ -1353,6 +1389,68 @@ footer { background:var(--steel);color:var(--steel-text-dim);padding:40px 24px 0
     </div>
     <div id="announceList"><div class="update-state">Загрузка объявлений...</div></div>
   </section>
+
+  <!-- PROFILE (#u/ID) -->
+  <section class="page" id="profile">
+    <div class="pf-bg" id="pfBg"><svg id="pfBgSvg" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice"></svg></div>
+    <div class="pf-wrap">
+      <div class="pf-state" id="pfState">Загрузка профиля…</div>
+      <article class="pf-card" id="pfCard" hidden>
+        <div class="pf-banner" id="pfBanner"></div>
+        <div class="pf-head">
+          <div class="pf-ava" id="pfAva"></div>
+          <div class="pf-ident">
+            <h2 class="display-font" id="pfName"></h2>
+            <div class="pf-sub mono" id="pfId"></div>
+          </div>
+          <div class="pf-actions">
+            <button class="btn-outline" id="pfCopy" type="button">Скопировать ссылку</button>
+            <button class="btn-outline" id="pfEdit" type="button" hidden>Редактировать</button>
+          </div>
+        </div>
+      </article>
+
+      <div class="pf-editor" id="pfEditor" hidden>
+        <h3>Оформление профиля</h3>
+        <p class="pf-hint">Баннер и фон делаются в «Настройки → Фон» (фигуры и цвета темы). Нажмите «Взять из текущей темы» или вставьте код темы (ISR3-…), в том числе из «Мои темы». Баннер показывает центральную полосу картинки, фон занимает всю страницу профиля.</p>
+
+        <div class="pf-field">
+          <span class="pf-lbl">Баннер</span>
+          <div class="pf-radio">
+            <label><input type="radio" name="pfMode" value="discord"> Баннер Discord (Nitro)</label>
+            <label><input type="radio" name="pfMode" value="custom"> Свой баннер из кода</label>
+          </div>
+          <textarea class="input-text" id="pfBannerCode" placeholder="ISR3-… (код баннера)" spellcheck="false"></textarea>
+          <div class="pf-row">
+            <button class="btn-outline" type="button" data-pf-take="pfBannerCode">Взять из текущей темы</button>
+            <button class="btn-outline" type="button" data-pf-clear="pfBannerCode">Очистить</button>
+          </div>
+        </div>
+
+        <div class="pf-field">
+          <span class="pf-lbl">Фон страницы профиля</span>
+          <textarea class="input-text" id="pfBgCode" placeholder="ISR3-… (код фона)" spellcheck="false"></textarea>
+          <div class="pf-row">
+            <button class="btn-outline" type="button" data-pf-take="pfBgCode">Взять из текущей темы</button>
+            <button class="btn-outline" type="button" data-pf-clear="pfBgCode">Очистить</button>
+          </div>
+        </div>
+
+        <div class="pf-field">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+            <input type="checkbox" id="pfHidden"> Скрыть мой профиль от других игроков
+          </label>
+        </div>
+
+        <div class="pf-row">
+          <button class="btn-outline" id="pfSave" type="button" style="background:var(--ink);color:var(--yellow);">Сохранить</button>
+          <button class="btn-outline" id="pfCancel" type="button">Отмена</button>
+          <span class="pf-status" id="pfStatus"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <canvas id="sparkCanvas"></canvas>
@@ -1708,6 +1806,7 @@ function showPage(id){
   document.querySelectorAll('#'+id+' .reveal, #'+id+' .stagger').forEach(el=>io.observe(el));
   setTimeout(forceRevealVisible, 60);
   if(id==='updates' || id==='announcements') markPageSeen(id);
+  if(id!=='profile' && /^#u\//.test(location.hash)) history.replaceState(null,'',location.pathname+location.search);
 }
 allTabs.forEach(t=>{ if(t.dataset.page) t.addEventListener('click',()=>showPage(t.dataset.page)); });
 
@@ -3678,6 +3777,165 @@ document.addEventListener('touchend',()=>{
   const fade=setInterval(()=>{ op-=.15; gc.style.opacity=String(Math.max(op,0)); if(op<=0){ clearInterval(fade); gc.style.display='none'; gctx.clearRect(0,0,gc.width,gc.height); } },30);
   tPts=[];
 });
+
+/* ============================================================
+   ПРОФИЛИ ИГРОКОВ  (#u/ID, #u/me)
+   Данные приходят от Cloudflare Worker (/api/profile). Показываются только ник, аватар
+   и баннер Discord; баннер и фон можно заменить своими, нарисованными в настройках тем
+   (код темы ISR3-…). Нужен вход через Discord и KV-хранилище PROFILES в Worker.
+============================================================ */
+const PF = { data:null, editing:false };
+const PF_HASH_RE = /^[a-zA-Z0-9_]{1,64}$/;
+const PF_CODE_RE = /^ISR3-[A-Za-z0-9_-]{10,3000}$/;
+const pfEl = id => document.getElementById(id);
+
+function pfToken(){ return (window.ISRGate && ISRGate.token) ? ISRGate.token() : null; }
+function pfApi(path, opts){
+  const t = pfToken();
+  if(!t) return Promise.reject(new Error('no_auth'));
+  opts = opts || {};
+  opts.headers = Object.assign({ Authorization:'Bearer '+t }, opts.headers || {});
+  return fetch(ISRGate.workerUrl + path, opts);
+}
+function pfState(msg){
+  pfEl('pfCard').hidden = true; pfEl('pfEditor').hidden = true;
+  const st = pfEl('pfState'); st.hidden = false; st.textContent = msg;
+  pfRenderBg(null);
+}
+
+/* Фигуры и цвета из кода темы. Возвращает { paper, svg } или null. */
+function pfFromCode(code){
+  if(!code || !PF_CODE_RE.test(code)) return null;
+  const dec = decodeThemeCode(code);
+  if(!dec || !dec.vars) return null;
+  const shapes = (dec.bg && dec.bg.enabled!=='off' && Array.isArray(dec.bg.shapes)) ? dec.bg.shapes : [];
+  return { paper: dec.vars['--paper'] || '#888888', svg: shapes.map(sh=>bgfxShapeSvg(sh,false)).join('') };
+}
+function pfRenderBg(code){
+  const bg = pfEl('pfBg'), svg = pfEl('pfBgSvg');
+  const g = pfFromCode(code);
+  bg.style.background = g ? g.paper : '';
+  svg.innerHTML = g ? g.svg : '';
+  bg.style.display = g ? '' : 'none';
+}
+function pfRenderBanner(d){
+  const el = pfEl('pfBanner');
+  el.innerHTML = ''; el.style.background = ''; el.className = 'pf-banner';
+  const discordUrl = (d.banner && PF_HASH_RE.test(d.banner) && /^\d+$/.test(d.id))
+    ? 'https://cdn.discordapp.com/banners/'+d.id+'/'+d.banner+'.'+(d.banner.startsWith('a_')?'gif':'png')+'?size=600' : null;
+  const custom = pfFromCode(d.bannerCode);
+  // свой баннер: если выбран режим «custom» или у человека нет баннера Discord
+  if(custom && (d.bannerMode==='custom' || !discordUrl)){
+    el.style.background = custom.paper;
+    // центральная полоса холста 640×360 (y 112…248) — пропорции баннера 4.7:1
+    el.innerHTML = '<svg viewBox="0 112 640 136" preserveAspectRatio="xMidYMid slice">'+custom.svg+'</svg>';
+    return;
+  }
+  if(discordUrl){ const im = new Image(); im.alt=''; im.src = discordUrl; el.appendChild(im); return; }
+  if(Number.isInteger(d.accent)){ el.style.background = '#'+d.accent.toString(16).padStart(6,'0'); return; }
+  el.classList.add('pf-default');
+}
+function pfRenderAvatar(d){
+  const el = pfEl('pfAva'); el.textContent = '';
+  const letter = () => { el.textContent = (d.name||'?').charAt(0).toUpperCase(); };
+  if(d.avatar && PF_HASH_RE.test(d.avatar) && /^\d+$/.test(d.id)){
+    const im = new Image(); im.alt='';
+    im.src = 'https://cdn.discordapp.com/avatars/'+d.id+'/'+d.avatar+'.'+(d.avatar.startsWith('a_')?'gif':'png')+'?size=256';
+    im.onerror = () => { el.textContent=''; letter(); };
+    el.appendChild(im);
+  } else letter();
+}
+function pfRender(d){
+  pfEl('pfState').hidden = true;
+  pfEl('pfCard').hidden = false;
+  pfEl('pfName').textContent = d.name || 'Игрок';
+  pfEl('pfId').textContent = 'Discord ID: ' + d.id;
+  pfRenderAvatar(d); pfRenderBanner(d); pfRenderBg(d.bgCode);
+  pfEl('pfEdit').hidden = !d.own;
+  if(!d.own || !PF.editing) pfEl('pfEditor').hidden = true;
+}
+
+async function pfOpen(id){
+  PF.editing = false;
+  showPage('profile');
+  pfState('Загрузка профиля…');
+  if(!pfToken()) return pfState('Профили доступны только после входа через Discord.');
+  try {
+    const r = await pfApi('/api/profile/'+encodeURIComponent(id));
+    if(r.status===404) return pfState('Профиль не найден: человек ещё не заходил на сайт или скрыл профиль.');
+    if(r.status===503) return pfState('Хранилище профилей не подключено (в Worker нужна KV-привязка PROFILES).');
+    if(r.status===401 || r.status===403) return pfState('Нет доступа. Войдите на сайт заново.');
+    if(!r.ok) return pfState('Не удалось загрузить профиль ('+r.status+').');
+    PF.data = await r.json();
+    pfRender(PF.data);
+  } catch(e){ pfState('Нет связи с сервером профилей.'); }
+}
+function pfRoute(){
+  const m = location.hash.match(/^#u\/([\w-]+)$/);
+  if(m){ pfOpen(m[1]); return true; }
+  return false;
+}
+window.addEventListener('hashchange', pfRoute);
+
+/* ----- редактор (только свой профиль) ----- */
+function pfDraft(){
+  const d = Object.assign({}, PF.data);
+  const mode = document.querySelector('input[name="pfMode"]:checked');
+  d.bannerMode = mode ? mode.value : 'discord';
+  d.bannerCode = pfEl('pfBannerCode').value.trim();
+  d.bgCode = pfEl('pfBgCode').value.trim();
+  return d;
+}
+function pfPreview(){
+  if(!PF.data) return;
+  const d = pfDraft();
+  pfRenderBanner(d); pfRenderBg(d.bgCode);
+  const bad = (d.bannerCode && !pfFromCode(d.bannerCode)) || (d.bgCode && !pfFromCode(d.bgCode));
+  const st = pfEl('pfStatus'); st.className = 'pf-status' + (bad?' err':''); st.textContent = bad ? 'Код не распознан (нужен код темы ISR3-…)' : '';
+}
+function pfOpenEditor(){
+  if(!PF.data || !PF.data.own) return;
+  PF.editing = true;
+  pfEl('pfEditor').hidden = false;
+  pfEl('pfBannerCode').value = PF.data.bannerCode || '';
+  pfEl('pfBgCode').value = PF.data.bgCode || '';
+  pfEl('pfHidden').checked = !!PF.data.hidden;
+  document.querySelectorAll('input[name="pfMode"]').forEach(r => { r.checked = r.value === (PF.data.bannerMode || 'discord'); });
+  pfEl('pfStatus').textContent = '';
+}
+function pfCloseEditor(){ PF.editing = false; pfEl('pfEditor').hidden = true; if(PF.data) pfRender(PF.data); }
+
+pfEl('pfEdit').addEventListener('click', pfOpenEditor);
+pfEl('pfCancel').addEventListener('click', pfCloseEditor);
+pfEl('pfBannerCode').addEventListener('input', pfPreview);
+pfEl('pfBgCode').addEventListener('input', pfPreview);
+document.querySelectorAll('input[name="pfMode"]').forEach(r => r.addEventListener('change', pfPreview));
+document.querySelectorAll('[data-pf-take]').forEach(b => b.addEventListener('click', () => {
+  // код из того, что сейчас выбрано в настройках тем: цвета + фигуры фона
+  pfEl(b.dataset.pfTake).value = encodeThemeCode(readLiveThemeVars());
+  if(b.dataset.pfTake==='pfBannerCode'){ const c = document.querySelector('input[name="pfMode"][value="custom"]'); if(c) c.checked = true; }
+  pfPreview();
+}));
+document.querySelectorAll('[data-pf-clear]').forEach(b => b.addEventListener('click', () => { pfEl(b.dataset.pfClear).value = ''; pfPreview(); }));
+pfEl('pfCopy').addEventListener('click', () => {
+  if(!PF.data) return;
+  const link = location.origin + '/#u/' + PF.data.id;
+  (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(() => showToast('Ссылка на профиль скопирована'), () => prompt('Ссылка на профиль:', link));
+});
+pfEl('pfSave').addEventListener('click', async () => {
+  const d = pfDraft(), st = pfEl('pfStatus');
+  if((d.bannerCode && !pfFromCode(d.bannerCode)) || (d.bgCode && !pfFromCode(d.bgCode))){ st.className='pf-status err'; st.textContent='Код не распознан (нужен код темы ISR3-…)'; return; }
+  st.className = 'pf-status'; st.textContent = 'Сохраняю…';
+  try {
+    const r = await pfApi('/api/profile', { method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ bannerMode:d.bannerMode, bannerCode:d.bannerCode, bgCode:d.bgCode, hidden:pfEl('pfHidden').checked }) });
+    if(!r.ok) throw new Error(r.status);
+    PF.data = await r.json(); PF.editing = false;
+    pfEl('pfEditor').hidden = true; pfRender(PF.data); showToast('Профиль сохранён');
+  } catch(e){ st.className='pf-status err'; st.textContent='Не удалось сохранить'; }
+});
+
+pfRoute();
 </script>
 </body>
 </html>
