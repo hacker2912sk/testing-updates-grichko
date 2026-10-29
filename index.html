@@ -951,38 +951,91 @@ footer { background:var(--steel);color:var(--steel-text-dim);padding:40px 24px 0
 @media (prefers-reduced-motion: reduce) { *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important} }
 /* ===== ПРОФИЛЬ ИГРОКА (/#u/ID) ===== */
 .pf-bg { position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
-.pf-bg svg { position:absolute; inset:0; width:100%; height:100%; }
-.pf-wrap { position:relative; padding:40px 0 20px; max-width:860px; margin:0 auto; }
+.pf-bg i { position:absolute; inset:-60px; display:block; }
+.pf-wrap { position:relative; padding:40px 0 20px; max-width:900px; margin:0 auto; }
 .pf-state { background:var(--paper); border:1px solid var(--line-strong); padding:22px; text-align:center; color:var(--ink-soft); }
-.pf-card, .pf-editor { background:var(--paper); border:1px solid var(--line-strong); box-shadow:0 10px 34px rgba(0,0,0,.18); }
-.pf-card[hidden], .pf-editor[hidden], .pf-state[hidden] { display:none !important; }
+.pf-card { background:var(--paper); border:2px solid var(--line-strong); box-shadow:0 10px 34px rgba(0,0,0,.18); }
+.pf-card[hidden], .pf-state[hidden], .pf-shop[hidden], .pf-editor[hidden], .pf-cols[hidden] { display:none !important; }
 .pf-banner { position:relative; height:220px; overflow:hidden; border-bottom:4px solid var(--yellow); background:var(--paper-2); }
-.pf-banner img, .pf-banner svg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+.pf-banner img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
 .pf-banner.pf-default { background:repeating-linear-gradient(135deg,var(--yellow) 0 18px,var(--ink) 18px 36px); }
-.pf-head { display:flex; align-items:flex-end; gap:18px; flex-wrap:wrap; padding:0 24px 22px; }
-.pf-ava { width:116px; height:116px; margin-top:-58px; border-radius:50%; border:5px solid var(--paper); background:var(--yellow); color:var(--ink);
-  display:grid; place-items:center; font:800 44px 'Unbounded',sans-serif; overflow:hidden; flex:none; position:relative; z-index:1; }
+.pf-head { display:flex; align-items:flex-end; gap:18px; flex-wrap:wrap; padding:0 24px 18px; border-bottom:2px solid var(--line-strong); }
+.pf-avawrap { position:relative; margin-top:-58px; flex:none; }
+.pf-ava { width:116px; height:116px; border-radius:50%; border:5px solid var(--paper); background:var(--yellow); color:var(--ink);
+  display:grid; place-items:center; font:700 44px 'Unbounded',sans-serif; overflow:hidden; }
 .pf-ava img { width:100%; height:100%; object-fit:cover; display:block; }
+.pf-badge { position:absolute; right:-10px; bottom:-4px; width:38px; height:38px; border-radius:50%; border:2px dashed var(--ink-soft);
+  background:var(--paper); display:grid; place-items:center; font-size:20px; color:var(--ink-soft); }
+.pf-badge.on { border:2px solid var(--yellow); color:var(--ink); }
 .pf-ident { flex:1; min-width:180px; padding-top:14px; }
 .pf-ident h2 { font-size:clamp(22px,4.5vw,34px); line-height:1.1; word-break:break-word; text-transform:none; }
-.pf-sub { margin-top:6px; font-size:11px; color:var(--ink-soft); letter-spacing:.05em; }
+.pf-sub { margin-top:6px; font-size:11px; color:var(--ink-soft); letter-spacing:.05em; word-break:break-all; }
+.pf-balrow { margin-top:8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+#pfShopBtn { font-size:11px; padding:5px 10px; }
+.pf-actions { margin-left:auto; }
+.pf-bal { display:inline-flex; gap:8px; align-items:baseline; flex-wrap:wrap; font:700 13px 'Space Mono',monospace; background:var(--yellow); color:var(--steel); padding:4px 10px; border:1px solid var(--line-strong); }
+.pf-bal small { font-weight:400; font-size:11px; opacity:.8; }
+.pf-bal.off { background:transparent; color:var(--ink-soft); border-style:dashed; font-weight:400; }
+.pf-note { margin-top:8px; font-size:12px; color:#e06b5a; }
 .pf-actions { display:flex; gap:8px; flex-wrap:wrap; padding-top:14px; }
-.pf-editor { margin-top:18px; padding:20px 24px 24px; }
-.pf-editor h3 { font-size:14px; margin:0 0 6px; }
-.pf-editor .pf-hint { font-size:12px; color:var(--ink-soft); line-height:1.55; margin:0 0 14px; }
-.pf-field { margin-bottom:18px; }
+.pf-cols { display:grid; grid-template-columns:1fr 1.5fr 1fr; }
+.pf-col { padding:16px 20px 22px; min-height:170px; min-width:0; }
+.pf-col + .pf-col { border-left:2px solid var(--line-strong); }
+.pf-col h3 { font:700 12px 'Space Mono',monospace; letter-spacing:.12em; text-transform:uppercase; color:var(--yellow-deep); margin:0 0 12px; }
+.pf-roles { display:flex; flex-wrap:wrap; gap:6px; }
+.pf-role { display:inline-flex; align-items:center; gap:6px; padding:2px 9px; border:1px solid var(--line-strong); font-size:12px; border-radius:999px; }
+.pf-role i { width:9px; height:9px; border-radius:50%; background:var(--ink-soft); flex:none; }
+.pf-desc { font-size:14px; line-height:1.55; white-space:pre-wrap; word-break:break-word; margin:0; }
+.pf-empty { color:var(--ink-soft); font-style:italic; }
+.pf-links { list-style:none; margin:0; padding:0; display:grid; gap:9px; font-size:13px; }
+.pf-links li { display:flex; gap:8px; align-items:baseline; min-width:0; }
+.pf-links b { font:700 10px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); width:34px; flex:none; }
+.pf-links a, .pf-links span { word-break:break-all; }
+.pf-links a { color:var(--ink); text-decoration:underline; text-decoration-color:var(--yellow); text-underline-offset:3px; }
+.pf-links a:hover { background:var(--yellow); color:var(--steel); }
+/* редактор: заменяет три блока */
+.pf-editor { padding:18px 22px 22px; }
+.pf-editor h3 { font-size:14px; margin:0 0 4px; }
+.pf-hint { font-size:12px; color:var(--ink-soft); line-height:1.5; margin:0 0 14px; }
+.pf-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px 22px; }
+.pf-field { margin-bottom:6px; min-width:0; }
 .pf-field .pf-lbl { display:block; font:700 11px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:6px; }
-.pf-field textarea { width:100%; min-height:66px; resize:vertical; font:11px/1.4 'Space Mono',monospace; }
-.pf-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-.pf-radio { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:10px; font-size:13px; }
-.pf-radio label { display:flex; align-items:center; gap:6px; cursor:pointer; }
+.pf-field textarea { width:100%; min-height:84px; resize:vertical; font:13px/1.4 'IBM Plex Sans',sans-serif; }
+.pf-field input.input-text { width:100%; margin-bottom:6px; font:12px 'Space Mono',monospace; }
+.pf-count { font:11px 'Space Mono',monospace; color:var(--ink-soft); text-align:right; }
+.pf-radio { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:8px; font-size:13px; }
+.pf-radio label, .pf-check { display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; }
+.pf-grad { display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:12px; margin-bottom:6px; }
+.pf-grad input[type=color] { width:38px; height:28px; padding:0; border:1px solid var(--line-strong); background:none; cursor:pointer; }
+.pf-grad input[type=range] { flex:1; min-width:90px; accent-color:var(--yellow); }
+.pf-grad output { font:11px 'Space Mono',monospace; min-width:36px; }
+.pf-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+.pf-row .btn-outline[disabled] { opacity:.5; cursor:not-allowed; }
 .pf-status { font-size:12px; margin-left:4px; align-self:center; }
 .pf-status.err { color:#e06b5a; }
+/* магазин бейджей (демо) */
+.pf-shop { margin-top:18px; background:var(--paper); border:2px solid var(--line-strong); padding:18px 22px 22px; box-shadow:0 10px 34px rgba(0,0,0,.18); }
+.pf-shop h3 { font-size:14px; margin:0 0 4px; }
+.pf-shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:12px; margin-top:12px; }
+.pf-item { border:1px solid var(--line-strong); padding:12px; display:flex; flex-direction:column; gap:6px; background:var(--paper-2); }
+.pf-item .ic { font-size:30px; line-height:1.25; }
+.pf-item .nm { font-weight:700; font-size:14px; }
+.pf-item .ds { font-size:12px; color:var(--ink-soft); flex:1; }
+.pf-item .pr { font:700 12px 'Space Mono',monospace; }
+.pf-item .pr.low { color:#e06b5a; }
+.pf-item .row { display:flex; gap:6px; flex-wrap:wrap; }
+.pf-item .btn-outline { font-size:11px; padding:6px 9px; }
+@media (max-width:760px){
+  .pf-cols { grid-template-columns:1fr; }
+  .pf-col + .pf-col { border-left:0; border-top:2px solid var(--line-strong); }
+  .pf-col { min-height:0; }
+}
 @media (max-width:640px){
   .pf-banner { height:150px; }
-  .pf-head { padding:0 16px 18px; }
-  .pf-ava { width:92px; height:92px; margin-top:-46px; font-size:34px; }
-  .pf-editor { padding:16px; }
+  .pf-head { padding:0 16px 16px; }
+  .pf-ava { width:92px; height:92px; font-size:34px; }
+  .pf-avawrap { margin-top:-46px; }
+  .pf-editor, .pf-shop { padding:16px; }
 }
 
 </style>
@@ -1392,62 +1445,95 @@ footer { background:var(--steel);color:var(--steel-text-dim);padding:40px 24px 0
 
   <!-- PROFILE (#u/ID) -->
   <section class="page" id="profile">
-    <div class="pf-bg" id="pfBg"><svg id="pfBgSvg" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice"></svg></div>
+    <div class="pf-bg" id="pfBg"><i id="pfBgFill"></i></div>
     <div class="pf-wrap">
       <div class="pf-state" id="pfState">Загрузка профиля…</div>
       <article class="pf-card" id="pfCard" hidden>
         <div class="pf-banner" id="pfBanner"></div>
         <div class="pf-head">
-          <div class="pf-ava" id="pfAva"></div>
+          <div class="pf-avawrap">
+            <div class="pf-ava" id="pfAva"></div>
+            <div class="pf-badge" id="pfBadge" title="Место под бейдж">+</div>
+          </div>
           <div class="pf-ident">
             <h2 class="display-font" id="pfName"></h2>
             <div class="pf-sub mono" id="pfId"></div>
+            <div class="pf-balrow"><div class="pf-bal" id="pfBal"></div><button class="btn-outline" id="pfShopBtn" type="button" hidden>Магазин бейджей</button></div>
+            <div class="pf-note" id="pfNote" hidden></div>
           </div>
           <div class="pf-actions">
             <button class="btn-outline" id="pfCopy" type="button">Скопировать ссылку</button>
             <button class="btn-outline" id="pfEdit" type="button" hidden>Редактировать</button>
+            <button class="btn-outline" id="pfMod" type="button" hidden></button>
+          </div>
+        </div>
+
+        <div class="pf-cols" id="pfCols">
+          <div class="pf-col"><h3>Роли</h3><div class="pf-roles" id="pfRoles"></div></div>
+          <div class="pf-col"><h3>Описание</h3><p class="pf-desc" id="pfDesc"></p></div>
+          <div class="pf-col"><h3>Ссылки</h3><ul class="pf-links" id="pfLinks"></ul></div>
+        </div>
+
+        <div class="pf-editor" id="pfEditor" hidden>
+          <h3>Настройки профиля</h3>
+          <p class="pf-hint">Изменения видны сразу, но сохраняются только после кнопки «Сохранить».</p>
+          <div class="pf-grid">
+            <div class="pf-field">
+              <span class="pf-lbl">Баннер</span>
+              <div class="pf-radio">
+                <label><input type="radio" name="pfBn" value="discord"> Баннер Discord</label>
+                <label><input type="radio" name="pfBn" value="gradient"> Градиент</label>
+              </div>
+              <div class="pf-grad">
+                <input type="color" id="pfBnC1" aria-label="Цвет 1"><input type="color" id="pfBnC2" aria-label="Цвет 2">
+                <input type="range" id="pfBnA" min="0" max="360" step="5" aria-label="Угол"><output id="pfBnAo"></output>
+              </div>
+              <div class="pf-row"><button class="btn-outline" type="button" disabled title="Будет в следующем обновлении">Поставить баннер (скоро)</button></div>
+            </div>
+            <div class="pf-field">
+              <span class="pf-lbl">Фон страницы</span>
+              <div class="pf-radio">
+                <label><input type="radio" name="pfBgM" value="none"> Без фона</label>
+                <label><input type="radio" name="pfBgM" value="gradient"> Градиент</label>
+              </div>
+              <div class="pf-grad">
+                <input type="color" id="pfBgC1" aria-label="Цвет 1"><input type="color" id="pfBgC2" aria-label="Цвет 2">
+                <input type="range" id="pfBgA" min="0" max="360" step="5" aria-label="Угол"><output id="pfBgAo"></output>
+              </div>
+              <div class="pf-grad"><span>Размытие</span><input type="range" id="pfBlur" min="0" max="30" step="1" aria-label="Размытие фона"><output id="pfBlurO"></output></div>
+              <div class="pf-row"><button class="btn-outline" type="button" disabled title="Будет в следующем обновлении">Поставить фон (скоро)</button></div>
+            </div>
+            <div class="pf-field">
+              <span class="pf-lbl">Описание</span>
+              <textarea class="input-text" id="pfDescIn" maxlength="300" placeholder="Расскажите о себе (до 300 символов)"></textarea>
+              <div class="pf-count" id="pfDescCnt"></div>
+            </div>
+            <div class="pf-field">
+              <span class="pf-lbl">Ссылки (только ник)</span>
+              <input class="input-text" id="pfLkDiscord" placeholder="Discord: ник" maxlength="32" spellcheck="false" autocomplete="off">
+              <input class="input-text" id="pfLkYoutube" placeholder="YouTube: @канал" maxlength="31" spellcheck="false" autocomplete="off">
+              <input class="input-text" id="pfLkTelegram" placeholder="Telegram: ник" maxlength="33" spellcheck="false" autocomplete="off">
+              <input class="input-text" id="pfLkTiktok" placeholder="TikTok: ник" maxlength="25" spellcheck="false" autocomplete="off">
+            </div>
+            <div class="pf-field">
+              <span class="pf-lbl">Приватность</span>
+              <label class="pf-check"><input type="checkbox" id="pfHidden"> Скрыть профиль от других игроков</label>
+              <label class="pf-check" style="margin-top:8px;"><input type="checkbox" id="pfHideBal"> Не показывать мой баланс другим</label>
+            </div>
+          </div>
+          <div class="pf-row">
+            <button class="btn-outline" id="pfSave" type="button" style="background:var(--ink);color:var(--yellow);">Сохранить</button>
+            <button class="btn-outline" id="pfCancel" type="button">Отмена</button>
+            <span class="pf-status" id="pfStatus"></span>
           </div>
         </div>
       </article>
 
-      <div class="pf-editor" id="pfEditor" hidden>
-        <h3>Оформление профиля</h3>
-        <p class="pf-hint">Баннер и фон делаются в «Настройки → Фон» (фигуры и цвета темы). Нажмите «Взять из текущей темы» или вставьте код темы (ISR3-…), в том числе из «Мои темы». Баннер показывает центральную полосу картинки, фон занимает всю страницу профиля.</p>
-
-        <div class="pf-field">
-          <span class="pf-lbl">Баннер</span>
-          <div class="pf-radio">
-            <label><input type="radio" name="pfMode" value="discord"> Баннер Discord (Nitro)</label>
-            <label><input type="radio" name="pfMode" value="custom"> Свой баннер из кода</label>
-          </div>
-          <textarea class="input-text" id="pfBannerCode" placeholder="ISR3-… (код баннера)" spellcheck="false"></textarea>
-          <div class="pf-row">
-            <button class="btn-outline" type="button" data-pf-take="pfBannerCode">Взять из текущей темы</button>
-            <button class="btn-outline" type="button" data-pf-clear="pfBannerCode">Очистить</button>
-          </div>
-        </div>
-
-        <div class="pf-field">
-          <span class="pf-lbl">Фон страницы профиля</span>
-          <textarea class="input-text" id="pfBgCode" placeholder="ISR3-… (код фона)" spellcheck="false"></textarea>
-          <div class="pf-row">
-            <button class="btn-outline" type="button" data-pf-take="pfBgCode">Взять из текущей темы</button>
-            <button class="btn-outline" type="button" data-pf-clear="pfBgCode">Очистить</button>
-          </div>
-        </div>
-
-        <div class="pf-field">
-          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
-            <input type="checkbox" id="pfHidden"> Скрыть мой профиль от других игроков
-          </label>
-        </div>
-
-        <div class="pf-row">
-          <button class="btn-outline" id="pfSave" type="button" style="background:var(--ink);color:var(--yellow);">Сохранить</button>
-          <button class="btn-outline" id="pfCancel" type="button">Отмена</button>
-          <span class="pf-status" id="pfStatus"></span>
-        </div>
-      </div>
+      <section class="pf-shop" id="pfShop" hidden>
+        <h3>Магазин бейджей <span class="mono" style="font-size:11px;color:var(--ink-soft);">(демо)</span></h3>
+        <p class="pf-hint">Пока это витрина: покупки не работают и баланс не списывается. «Примерить» показывает бейдж у аватара только у вас на экране.</p>
+        <div class="pf-shop-grid" id="pfShopGrid"></div>
+      </section>
     </div>
   </section>
 
@@ -3780,14 +3866,31 @@ document.addEventListener('touchend',()=>{
 
 /* ============================================================
    ПРОФИЛИ ИГРОКОВ  (#u/ID, #u/me)
-   Данные приходят от Cloudflare Worker (/api/profile). Показываются только ник, аватар
-   и баннер Discord; баннер и фон можно заменить своими, нарисованными в настройках тем
-   (код темы ISR3-…). Нужен вход через Discord и KV-хранилище PROFILES в Worker.
+   Данные приходят от Cloudflare Worker (/api/profile). Раскладка: баннер, аватар + бейдж,
+   ник/ID/баланс, три блока (роли | описание | ссылки). «Редактировать» заменяет три блока
+   панелью настроек. Всё, что пришло с сервера, перепроверяется регулярками и выводится
+   только через textContent. Ссылки собираются здесь из ников по шаблонам.
 ============================================================ */
-const PF = { data:null, editing:false };
+const PF = { data:null, editing:false, shop:false, tryOn:null };
 const PF_HASH_RE = /^[a-zA-Z0-9_]{1,64}$/;
-const PF_CODE_RE = /^ISR3-[A-Za-z0-9_-]{10,3000}$/;
+const PF_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
+const PF_LINKS = {   // шаблоны: ник проверяется регуляркой, адрес собирается тут
+  discord:  { lbl:'DS', re:/^[a-zA-Z0-9_.]{2,32}$/,  url:null },
+  youtube:  { lbl:'YT', re:/^[a-zA-Z0-9_.-]{3,30}$/, url:n => 'https://www.youtube.com/@'+encodeURIComponent(n) },
+  telegram: { lbl:'TG', re:/^[a-zA-Z0-9_]{5,32}$/,   url:n => 'https://t.me/'+encodeURIComponent(n) },
+  tiktok:   { lbl:'TT', re:/^[a-zA-Z0-9_.]{2,24}$/,  url:n => 'https://www.tiktok.com/@'+encodeURIComponent(n) },
+};
+const PF_SHOP = [   // демо-витрина: настоящих покупок нет
+  { id:'gear',  icon:'⚙️', name:'Шестерёнка',     price:100,  desc:'Для тех, кто только пришёл на смену.' },
+  { id:'hat',   icon:'⛑️', name:'Каска',          price:250,  desc:'Безопасность прежде всего.' },
+  { id:'wrench',icon:'🔧', name:'Гаечный ключ',   price:500,  desc:'Починит что угодно. Почти.' },
+  { id:'pick',  icon:'⛏️', name:'Кирка',          price:800,  desc:'Для настоящих добытчиков.' },
+  { id:'plant', icon:'🏭', name:'Завод',          price:1500, desc:'Свой цех — свои правила.' },
+  { id:'bolt',  icon:'🔩', name:'Золотой болт',   price:5000, desc:'Редкость для легенд ИСР.' },
+];
 const pfEl = id => document.getElementById(id);
+const pfMk = (tag, cls, text) => { const n = document.createElement(tag); if(cls) n.className = cls; if(text!=null) n.textContent = text; return n; };
+const pfNum = n => Number(n).toLocaleString('ru-RU');
 
 function pfToken(){ return (window.ISRGate && ISRGate.token) ? ISRGate.token() : null; }
 function pfApi(path, opts){
@@ -3798,39 +3901,32 @@ function pfApi(path, opts){
   return fetch(ISRGate.workerUrl + path, opts);
 }
 function pfState(msg){
-  pfEl('pfCard').hidden = true; pfEl('pfEditor').hidden = true;
+  pfEl('pfCard').hidden = true; pfEl('pfShop').hidden = true;
   const st = pfEl('pfState'); st.hidden = false; st.textContent = msg;
   pfRenderBg(null);
 }
 
-/* Фигуры и цвета из кода темы. Возвращает { paper, svg } или null. */
-function pfFromCode(code){
-  if(!code || !PF_CODE_RE.test(code)) return null;
-  const dec = decodeThemeCode(code);
-  if(!dec || !dec.vars) return null;
-  const shapes = (dec.bg && dec.bg.enabled!=='off' && Array.isArray(dec.bg.shapes)) ? dec.bg.shapes : [];
-  return { paper: dec.vars['--paper'] || '#888888', svg: shapes.map(sh=>bgfxShapeSvg(sh,false)).join('') };
+/* Градиент из двух цветов и угла; всё проверяется, иначе null */
+function pfGradCss(g){
+  if(!g || !PF_COLOR_RE.test(g.c1) || !PF_COLOR_RE.test(g.c2)) return null;
+  const a = Number(g.angle); if(!Number.isFinite(a)) return null;
+  return 'linear-gradient('+Math.min(360,Math.max(0,Math.round(a)))+'deg,'+g.c1+','+g.c2+')';
 }
-function pfRenderBg(code){
-  const bg = pfEl('pfBg'), svg = pfEl('pfBgSvg');
-  const g = pfFromCode(code);
-  bg.style.background = g ? g.paper : '';
-  svg.innerHTML = g ? g.svg : '';
-  bg.style.display = g ? '' : 'none';
+function pfRenderBg(d){
+  const bg = pfEl('pfBg'), fill = pfEl('pfBgFill');
+  const css = d && d.bgMode==='gradient' ? pfGradCss(d.bgGrad) : null;
+  fill.style.background = css || '';
+  const blur = d ? Math.min(30, Math.max(0, parseInt(d.bgBlur,10) || 0)) : 0;
+  fill.style.filter = blur ? 'blur('+blur+'px)' : '';
+  bg.style.display = css ? '' : 'none';
 }
 function pfRenderBanner(d){
   const el = pfEl('pfBanner');
   el.innerHTML = ''; el.style.background = ''; el.className = 'pf-banner';
+  const grad = d.bannerMode==='gradient' ? pfGradCss(d.bannerGrad) : null;
+  if(grad){ el.style.background = grad; return; }
   const discordUrl = (d.banner && PF_HASH_RE.test(d.banner) && /^\d+$/.test(d.id))
     ? 'https://cdn.discordapp.com/banners/'+d.id+'/'+d.banner+'.'+(d.banner.startsWith('a_')?'gif':'png')+'?size=600' : null;
-  const custom = pfFromCode(d.bannerCode);
-  // свой баннер: если выбран режим «custom» или у человека нет баннера Discord
-  if(custom && (d.bannerMode==='custom' || !discordUrl)){
-    el.style.background = custom.paper;
-    // центральная полоса холста 640×360 (y 112…248) — пропорции баннера 4.7:1
-    el.innerHTML = '<svg viewBox="0 112 640 136" preserveAspectRatio="xMidYMid slice">'+custom.svg+'</svg>';
-    return;
-  }
   if(discordUrl){ const im = new Image(); im.alt=''; im.src = discordUrl; el.appendChild(im); return; }
   if(Number.isInteger(d.accent)){ el.style.background = '#'+d.accent.toString(16).padStart(6,'0'); return; }
   el.classList.add('pf-default');
@@ -3845,18 +3941,69 @@ function pfRenderAvatar(d){
     el.appendChild(im);
   } else letter();
 }
+function pfRenderBadge(){
+  const b = pfEl('pfBadge'), it = PF_SHOP.find(x => x.id===PF.tryOn);
+  b.textContent = it ? it.icon : '+'; b.classList.toggle('on', !!it);
+  b.title = it ? 'Примерка: '+it.name+' (видно только вам)' : 'Место под бейдж';
+}
+function pfRenderBalance(d){
+  const el = pfEl('pfBal'); el.textContent = ''; el.classList.remove('off');
+  const b = d.balance;
+  if(b && Number.isFinite(b.total)){
+    const cur = String(b.currency || 'монет').slice(0,20);
+    el.appendChild(pfMk('span', null, 'Баланс: '+pfNum(b.total)+' '+cur));
+    el.appendChild(pfMk('small', null, 'на руках '+pfNum(b.cash)+' · в банке '+pfNum(b.bank)));
+  } else {
+    el.classList.add('off');
+    el.textContent = d.balanceHidden ? 'Баланс скрыт игроком' : 'Баланс недоступен';
+  }
+}
+function pfRenderRoles(d){
+  const box = pfEl('pfRoles'); box.textContent = '';
+  const roles = Array.isArray(d.roles) ? d.roles : [];
+  if(!roles.length){ box.appendChild(pfMk('span','pf-empty','нету')); return; }
+  roles.forEach(r => {
+    const chip = pfMk('span','pf-role'); const dot = pfMk('i');
+    if(r.color && PF_COLOR_RE.test(r.color)) dot.style.background = r.color;
+    chip.appendChild(dot); chip.appendChild(document.createTextNode(r.name || ('роль …'+String(r.id).slice(-4))));
+    box.appendChild(chip);
+  });
+}
+function pfRenderLinks(d){
+  const ul = pfEl('pfLinks'); ul.textContent = '';
+  Object.keys(PF_LINKS).forEach(k => {
+    const cfg = PF_LINKS[k], v = String((d.links||{})[k] || '');
+    const li = pfMk('li'); li.appendChild(pfMk('b', null, cfg.lbl));
+    if(v && cfg.re.test(v)){
+      if(cfg.url){ const a = pfMk('a', null, k==='youtube'||k==='tiktok' ? '@'+v : v); a.href = cfg.url(v); a.target='_blank'; a.rel='noopener noreferrer nofollow'; li.appendChild(a); }
+      else li.appendChild(pfMk('span', null, v));
+    } else li.appendChild(pfMk('span','pf-empty','нету'));
+    ul.appendChild(li);
+  });
+}
 function pfRender(d){
   pfEl('pfState').hidden = true;
   pfEl('pfCard').hidden = false;
   pfEl('pfName').textContent = d.name || 'Игрок';
   pfEl('pfId').textContent = 'Discord ID: ' + d.id;
-  pfRenderAvatar(d); pfRenderBanner(d); pfRenderBg(d.bgCode);
+  pfRenderAvatar(d); pfRenderBanner(d); pfRenderBg(d); pfRenderBalance(d); pfRenderBadge();
+  pfRenderRoles(d); pfRenderLinks(d);
+  const ds = pfEl('pfDesc'); ds.textContent = d.desc || ''; ds.classList.toggle('pf-empty', !d.desc); if(!d.desc) ds.textContent = 'нету';
   pfEl('pfEdit').hidden = !d.own;
-  if(!d.own || !PF.editing) pfEl('pfEditor').hidden = true;
+  pfEl('pfShopBtn').hidden = !d.own;
+  const note = pfEl('pfNote'), notes = [];
+  if(d.own && d.hidden) notes.push('Ваш профиль скрыт от других игроков.');
+  if(d.modHidden) notes.push(d.own ? 'Профиль скрыт модератором.' : 'Профиль скрыт модератором (вы видите его как модератор).');
+  note.hidden = !notes.length; note.textContent = notes.join(' ');
+  const mod = pfEl('pfMod'); mod.hidden = !(d.canModerate && !d.own);
+  mod.textContent = d.modHidden ? 'Вернуть профиль' : 'Скрыть профиль (мод.)';
+  pfEl('pfCols').hidden = PF.editing; pfEl('pfEditor').hidden = !PF.editing;
+  pfEl('pfShop').hidden = !(PF.shop && d.own);
+  if(PF.shop && d.own) pfRenderShop();
 }
 
 async function pfOpen(id){
-  PF.editing = false;
+  PF.editing = false; PF.shop = false; PF.tryOn = null;
   showPage('profile');
   pfState('Загрузка профиля…');
   if(!pfToken()) return pfState('Профили доступны только после входа через Discord.');
@@ -3877,61 +4024,109 @@ function pfRoute(){
 }
 window.addEventListener('hashchange', pfRoute);
 
+/* ----- магазин бейджей (демо) ----- */
+function pfRenderShop(){
+  const grid = pfEl('pfShopGrid'); grid.textContent = '';
+  const total = PF.data && PF.data.balance ? PF.data.balance.total : null;
+  PF_SHOP.forEach(it => {
+    const card = pfMk('div','pf-item');
+    card.appendChild(pfMk('div','ic',it.icon)); card.appendChild(pfMk('div','nm',it.name)); card.appendChild(pfMk('div','ds',it.desc));
+    const low = total!=null && total < it.price;
+    card.appendChild(pfMk('div','pr'+(low?' low':''), pfNum(it.price)+(low?' · не хватает '+pfNum(it.price-total):'')));
+    const row = pfMk('div','row');
+    const tr = pfMk('button','btn-outline', PF.tryOn===it.id ? 'Снять' : 'Примерить'); tr.type='button';
+    tr.addEventListener('click', () => { PF.tryOn = PF.tryOn===it.id ? null : it.id; pfRenderBadge(); pfRenderShop(); });
+    const buy = pfMk('button','btn-outline','Купить'); buy.type='button';
+    buy.addEventListener('click', () => showToast('Демо: покупки пока не работают, баланс не списан'));
+    row.appendChild(tr); row.appendChild(buy); card.appendChild(row); grid.appendChild(card);
+  });
+}
+pfEl('pfShopBtn').addEventListener('click', () => { PF.shop = !PF.shop; if(!PF.shop){ PF.tryOn = null; pfRenderBadge(); } pfEl('pfShop').hidden = !PF.shop; if(PF.shop) pfRenderShop(); });
+
 /* ----- редактор (только свой профиль) ----- */
+const pfRadio = (name, val) => document.querySelectorAll('input[name="'+name+'"]').forEach(r => { r.checked = r.value===val; });
+const pfRadioVal = (name, def) => { const r = document.querySelector('input[name="'+name+'"]:checked'); return r ? r.value : def; };
 function pfDraft(){
   const d = Object.assign({}, PF.data);
-  const mode = document.querySelector('input[name="pfMode"]:checked');
-  d.bannerMode = mode ? mode.value : 'discord';
-  d.bannerCode = pfEl('pfBannerCode').value.trim();
-  d.bgCode = pfEl('pfBgCode').value.trim();
+  d.bannerMode = pfRadioVal('pfBn','discord');
+  d.bannerGrad = { c1:pfEl('pfBnC1').value, c2:pfEl('pfBnC2').value, angle:+pfEl('pfBnA').value };
+  d.bgMode = pfRadioVal('pfBgM','none');
+  d.bgGrad = { c1:pfEl('pfBgC1').value, c2:pfEl('pfBgC2').value, angle:+pfEl('pfBgA').value };
+  d.bgBlur = +pfEl('pfBlur').value;
+  d.desc = pfEl('pfDescIn').value.trim();
+  d.links = {
+    discord:pfEl('pfLkDiscord').value.trim().replace(/^@/,''), youtube:pfEl('pfLkYoutube').value.trim().replace(/^@/,''),
+    telegram:pfEl('pfLkTelegram').value.trim().replace(/^@/,''), tiktok:pfEl('pfLkTiktok').value.trim().replace(/^@/,''),
+  };
   return d;
 }
+function pfBadLink(d){
+  const names = { discord:'Discord', youtube:'YouTube', telegram:'Telegram', tiktok:'TikTok' };
+  for(const k of Object.keys(PF_LINKS)){ const v = d.links[k]; if(v && !PF_LINKS[k].re.test(v)) return names[k]; }
+  return null;
+}
+function pfSyncOutputs(){
+  pfEl('pfBnAo').textContent = pfEl('pfBnA').value+'°'; pfEl('pfBgAo').textContent = pfEl('pfBgA').value+'°';
+  pfEl('pfBlurO').textContent = pfEl('pfBlur').value+' px';
+  pfEl('pfDescCnt').textContent = [...pfEl('pfDescIn').value].length+' / 300';
+}
 function pfPreview(){
-  if(!PF.data) return;
+  if(!PF.data || !PF.editing) return;
+  pfSyncOutputs();
   const d = pfDraft();
-  pfRenderBanner(d); pfRenderBg(d.bgCode);
-  const bad = (d.bannerCode && !pfFromCode(d.bannerCode)) || (d.bgCode && !pfFromCode(d.bgCode));
-  const st = pfEl('pfStatus'); st.className = 'pf-status' + (bad?' err':''); st.textContent = bad ? 'Код не распознан (нужен код темы ISR3-…)' : '';
+  pfRenderBanner(d); pfRenderBg(d);
+  const bad = pfBadLink(d), st = pfEl('pfStatus');
+  st.className = 'pf-status'+(bad?' err':''); st.textContent = bad ? 'Ник '+bad+' записан неверно (только буквы, цифры, _ . -)' : '';
 }
 function pfOpenEditor(){
   if(!PF.data || !PF.data.own) return;
-  PF.editing = true;
-  pfEl('pfEditor').hidden = false;
-  pfEl('pfBannerCode').value = PF.data.bannerCode || '';
-  pfEl('pfBgCode').value = PF.data.bgCode || '';
-  pfEl('pfHidden').checked = !!PF.data.hidden;
-  document.querySelectorAll('input[name="pfMode"]').forEach(r => { r.checked = r.value === (PF.data.bannerMode || 'discord'); });
-  pfEl('pfStatus').textContent = '';
+  const d = PF.data;
+  PF.editing = true; PF.shop = false; PF.tryOn = null; pfRenderBadge();
+  pfEl('pfCols').hidden = true; pfEl('pfEditor').hidden = false; pfEl('pfShop').hidden = true;
+  pfRadio('pfBn', d.bannerMode || 'discord'); pfRadio('pfBgM', d.bgMode || 'none');
+  const bg = d.bannerGrad || {c1:'#f5c400',c2:'#1e1d18',angle:135}, fg = d.bgGrad || bg;
+  pfEl('pfBnC1').value = bg.c1; pfEl('pfBnC2').value = bg.c2; pfEl('pfBnA').value = bg.angle;
+  pfEl('pfBgC1').value = fg.c1; pfEl('pfBgC2').value = fg.c2; pfEl('pfBgA').value = fg.angle;
+  pfEl('pfBlur').value = d.bgBlur || 0;
+  pfEl('pfDescIn').value = d.desc || '';
+  const l = d.links || {};
+  pfEl('pfLkDiscord').value = l.discord||''; pfEl('pfLkYoutube').value = l.youtube||'';
+  pfEl('pfLkTelegram').value = l.telegram||''; pfEl('pfLkTiktok').value = l.tiktok||'';
+  pfEl('pfHidden').checked = !!d.hidden; pfEl('pfHideBal').checked = !!d.hideBalance;
+  pfEl('pfStatus').textContent = ''; pfSyncOutputs();
 }
-function pfCloseEditor(){ PF.editing = false; pfEl('pfEditor').hidden = true; if(PF.data) pfRender(PF.data); }
+function pfCloseEditor(){ PF.editing = false; if(PF.data) pfRender(PF.data); }
 
 pfEl('pfEdit').addEventListener('click', pfOpenEditor);
 pfEl('pfCancel').addEventListener('click', pfCloseEditor);
-pfEl('pfBannerCode').addEventListener('input', pfPreview);
-pfEl('pfBgCode').addEventListener('input', pfPreview);
-document.querySelectorAll('input[name="pfMode"]').forEach(r => r.addEventListener('change', pfPreview));
-document.querySelectorAll('[data-pf-take]').forEach(b => b.addEventListener('click', () => {
-  // код из того, что сейчас выбрано в настройках тем: цвета + фигуры фона
-  pfEl(b.dataset.pfTake).value = encodeThemeCode(readLiveThemeVars());
-  if(b.dataset.pfTake==='pfBannerCode'){ const c = document.querySelector('input[name="pfMode"][value="custom"]'); if(c) c.checked = true; }
-  pfPreview();
-}));
-document.querySelectorAll('[data-pf-clear]').forEach(b => b.addEventListener('click', () => { pfEl(b.dataset.pfClear).value = ''; pfPreview(); }));
+pfEl('pfEditor').addEventListener('input', pfPreview);
+pfEl('pfEditor').addEventListener('change', pfPreview);
 pfEl('pfCopy').addEventListener('click', () => {
   if(!PF.data) return;
   const link = location.origin + '/#u/' + PF.data.id;
   (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(() => showToast('Ссылка на профиль скопирована'), () => prompt('Ссылка на профиль:', link));
 });
+pfEl('pfMod').addEventListener('click', async () => {
+  if(!PF.data || PF.data.own || !PF.data.canModerate) return;
+  const want = !PF.data.modHidden;
+  if(want && !confirm('Скрыть профиль «'+(PF.data.name||'')+'» от обычных игроков?')) return;
+  try {
+    const r = await pfApi('/api/profile/'+encodeURIComponent(PF.data.id), { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ modHidden:want }) });
+    if(!r.ok) throw new Error(r.status);
+    PF.data.modHidden = want; pfRender(PF.data); showToast(want ? 'Профиль скрыт' : 'Профиль возвращён');
+  } catch(e){ showToast('Не удалось изменить видимость профиля'); }
+});
 pfEl('pfSave').addEventListener('click', async () => {
-  const d = pfDraft(), st = pfEl('pfStatus');
-  if((d.bannerCode && !pfFromCode(d.bannerCode)) || (d.bgCode && !pfFromCode(d.bgCode))){ st.className='pf-status err'; st.textContent='Код не распознан (нужен код темы ISR3-…)'; return; }
+  const d = pfDraft(), st = pfEl('pfStatus'), bad = pfBadLink(d);
+  if(bad){ st.className='pf-status err'; st.textContent='Ник '+bad+' записан неверно'; return; }
   st.className = 'pf-status'; st.textContent = 'Сохраняю…';
   try {
     const r = await pfApi('/api/profile', { method:'PUT', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ bannerMode:d.bannerMode, bannerCode:d.bannerCode, bgCode:d.bgCode, hidden:pfEl('pfHidden').checked }) });
+      body: JSON.stringify({ bannerMode:d.bannerMode, bannerGrad:d.bannerGrad, bgMode:d.bgMode, bgGrad:d.bgGrad, bgBlur:d.bgBlur,
+        desc:d.desc, links:d.links, hidden:pfEl('pfHidden').checked, hideBalance:pfEl('pfHideBal').checked }) });
     if(!r.ok) throw new Error(r.status);
     PF.data = await r.json(); PF.editing = false;
-    pfEl('pfEditor').hidden = true; pfRender(PF.data); showToast('Профиль сохранён');
+    pfRender(PF.data); showToast('Профиль сохранён');
   } catch(e){ st.className='pf-status err'; st.textContent='Не удалось сохранить'; }
 });
 
