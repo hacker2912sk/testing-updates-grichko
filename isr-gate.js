@@ -3,10 +3,11 @@
  * Подключается ПЕРВЫМ скриптом в <head> страницы:  <script src="/isr-gate.js"></script>
  * Эта строка должна быть в index.html. Остальное в index.html можно менять как угодно.
  *
- * Включение/выключение входа — файл json/accessFILE:
- *   {"enabled": true}   вход через Discord обязателен (по умолчанию)
- *   {"enabled": false}  сайт открыт всем, без входа
- * Если файл не читается или в нём ошибка — вход считается ОБЯЗАТЕЛЬНЫМ (так безопаснее).
+ * Войти в аккаунт (профиль, бейджи) может участник с ролью MEMBER_ROLE_ID («Высокопоставленный») и выше.
+ * json/accessFILE решает только, закрыт ли САЙТ для обычных участников:
+ *   {"enabled": true}   сайт закрыт: пускаем только модераторов сайта (роли из ROLE_ID на Worker)
+ *   {"enabled": false}  сайт открыт всем; вход нужен лишь для профиля, бейджей и админ-панели
+ * Если файл не читается или в нём ошибка — сайт считается ЗАКРЫТЫМ (так безопаснее).
  */
 (function () {
   var WORKER_URL = 'https://isr-auth.isr-auth.workers.dev';   // без слеша в конце
@@ -28,12 +29,12 @@
     store.set(decodeURIComponent(m[1]));
     var back = '';
     try { back = sessionStorage.getItem('isr-after') || ''; sessionStorage.removeItem('isr-after'); } catch (e) {}
-    try { history.replaceState(null, '', location.pathname + location.search + (/^#u\/[\w-]+$/.test(back) ? back : '')); } catch (e) {}
+    try { history.replaceState(null, '', location.pathname + location.search + (/^#(u\/[\w-]+|admin)$/.test(back) ? back : '')); } catch (e) {}
   }
 
   function goGate(reason) {
     // запоминаем ссылку на профиль (#u/ID), чтобы после входа открыть именно её
-    try { if (/^#u\/[\w-]+$/.test(location.hash)) sessionStorage.setItem('isr-after', location.hash); } catch (e) {}
+    try { if (/^#(u\/[\w-]+|admin)$/.test(location.hash)) sessionStorage.setItem('isr-after', location.hash); } catch (e) {}
     location.replace(GATE_PAGE + (reason ? '?reason=' + reason : ''));
   }
   /* Возвращает { user } если пускаем, иначе { reason } (reason может быть пустым: просто нужен вход). */
@@ -45,7 +46,7 @@
       if (r.status === 401) { store.del(); return { reason: null }; }
       if (r.status === 403) {
         return r.json().catch(function () { return {}; }).then(function (d) {
-          store.del(); return { reason: d.error || 'no_role' };
+          store.del(); return { reason: d.error || 'no_role', detail: d.reason || '' };
         });
       }
       throw new Error('worker ' + r.status);
@@ -59,33 +60,60 @@
       .then(function (c) { return !!c && c.enabled === false; })
       .catch(function () { return false; });
   }
-  /* { open:true } — вход выключен; { user } — вошёл; { reason } — не пускать */
+  /* Результат: { open, user, reason }.
+     open  — сайт открыт всем (accessFILE enabled:false); user — вошедший (может быть и при open);
+     reason — почему не пускаем. Пускаем, если open или (user и user.staff). */
   function evaluate() {
     return loadAccess().then(function (open) {
-      if (open) return { open: true };
-      if (!window.ISRGate.configured) return { reason: 'not_configured' };
-      return check();
+      if (!window.ISRGate.configured) return open ? { open: true, user: null } : { reason: 'not_configured' };
+      if (open) {
+        if (!store.get()) return { open: true, user: null };
+        return check().then(function (r) { return { open: true, user: r.user || null }; }, function () { return { open: true, user: null }; });
+      }
+      return check().then(function (r) {
+        if (!r.user) return r;
+        return r.user.staff ? { user: r.user } : { reason: 'no_role', user: r.user };
+      });
     });
+  }
+  function denied(res) { return !res.open && !(res.user && !res.reason); }
+
+  /* Значок модератора (встроенный SVG, без внешних шрифтов): щит со звездой */
+  function staffIcon(px) {
+    var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('width', px || 16); svg.setAttribute('height', px || 16);
+    svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', 'Модератор');
+    svg.style.flex = 'none'; svg.style.verticalAlign = '-3px';
+    var t = document.createElementNS(NS, 'title'); t.textContent = 'Модератор ИСР'; svg.appendChild(t);
+    var p = document.createElementNS(NS, 'path'); p.setAttribute('d', 'M12 1.8 3.6 5v6.2c0 5.2 3.6 9.6 8.4 11 4.8-1.4 8.4-5.8 8.4-11V5L12 1.8Z');
+    p.setAttribute('fill', '#F5C400'); p.setAttribute('stroke', '#1E1D18'); p.setAttribute('stroke-width', '1.6'); p.setAttribute('stroke-linejoin', 'round');
+    var st = document.createElementNS(NS, 'path'); st.setAttribute('d', 'm12 6.6 1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5L12 6.6Z');
+    st.setAttribute('fill', '#1E1D18');
+    svg.appendChild(p); svg.appendChild(st); return svg;
   }
 
   /* ---------- Плашка «Вы вошли как…» (только когда вход включён и человек вошёл) ---------- */
-  function renderBadge(user) {
+  function renderBadge(user, open) {
     var old = document.getElementById('isr-badge');
-    if (!user) { if (old) old.remove(); return; }
-    if (!document.body) { document.addEventListener('DOMContentLoaded', function () { renderBadge(user); }); return; }
+    var showLogin = !user && open && window.ISRGate.configured;     // сайт открыт, человек не вошёл: кнопка «Войти»
+    if (!user && !showLogin) { if (old) old.remove(); return; }
+    if (!document.body) { document.addEventListener('DOMContentLoaded', function () { renderBadge(user, open); }); return; }
 
     if (!document.getElementById('isr-badge-style')) {
       var st = document.createElement('style');
       st.id = 'isr-badge-style';
       st.textContent =
-        '#isr-badge{position:fixed;left:12px;bottom:12px;z-index:9000;font:13px/1.35 var(--font-body,system-ui,sans-serif);color:var(--ink,#F4E9D8)}' +
-        '#isr-badge .b-main{display:flex;align-items:center;gap:8px;max-width:240px;padding:5px 12px 5px 5px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);' +
+        '#isr-badge{position:fixed;right:12px;top:12px;z-index:9000;font:13px/1.35 var(--font-body,system-ui,sans-serif);color:var(--ink,#F4E9D8)}' +
+        '#isr-badge.in-header{position:relative;right:auto;top:auto;z-index:50;margin-left:6px;flex:none}' +
+        '#isr-badge .b-login{display:inline-flex;align-items:center;padding:8px 14px;border:1px solid var(--line-strong,#5B3A85);background:var(--paper-2,#1E1030);color:inherit;text-decoration:none;font:600 12px var(--font-body,system-ui,sans-serif);letter-spacing:.06em;text-transform:uppercase;border-radius:var(--radius,0)}' +
+        '#isr-badge .b-login:hover{border-color:var(--yellow,#FF7A00);color:var(--yellow,#FF7A00)}' +
+        '#isr-badge .b-main{display:flex;align-items:center;gap:8px;max-width:200px;padding:4px 10px 4px 4px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);' +
         'background:var(--paper-2,#1E1030);color:inherit;box-shadow:0 4px 18px rgba(0,0,0,.35);font:inherit;border-radius:var(--radius,0)}' +
         '#isr-badge .b-main:hover{border-color:var(--yellow,#FF7A00)}' +
         '#isr-badge .b-ava{width:26px;height:26px;border-radius:50%;object-fit:cover;background:var(--yellow,#FF7A00);color:var(--paper,#140A1E);' +
         'display:grid;place-items:center;font-weight:700;font-size:13px;flex:none;overflow:hidden}' +
         '#isr-badge .b-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-        '#isr-badge .b-panel{display:none;position:absolute;left:0;bottom:calc(100% + 8px);width:280px;max-width:calc(100vw - 24px);padding:14px;' +
+        '#isr-badge .b-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:280px;max-width:calc(100vw - 24px);padding:14px;' +
         'background:var(--paper-2,#1E1030);border:1px solid var(--line-strong,#5B3A85);border-top:3px solid var(--yellow,#FF7A00);' +
         'box-shadow:0 10px 30px rgba(0,0,0,.45);border-radius:var(--radius,0)}' +
         '#isr-badge.open .b-panel{display:block}' +
@@ -99,7 +127,8 @@
         '#isr-badge .b-out{width:100%;padding:8px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);background:transparent;color:inherit;font:inherit}' +
         '#isr-badge .b-out:hover{border-color:var(--yellow,#FF7A00);color:var(--yellow,#FF7A00)}' +
         '#isr-badge .b-prof{display:block;text-align:center;text-decoration:none;margin-bottom:6px}' +
-        '@media (max-width:900px){#isr-badge{bottom:76px}}' +
+        '#isr-badge .b-staff{display:inline-flex;align-items:center;gap:5px;margin-left:6px;font-size:11px;color:var(--yellow,#FF7A00);font-weight:700}' +
+        '@media (max-width:1500px){#isr-badge.in-header .b-name{display:none}#isr-badge.in-header .b-main{padding:3px}}' +
         '@media print{#isr-badge{display:none}}';
       document.head.appendChild(st);
     }
@@ -107,6 +136,18 @@
     var el = document.createElement('div');
     el.id = 'isr-badge';
     function mk(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+    function place() {
+      var burger = document.getElementById('burgerBtn'), host = burger && burger.parentNode;
+      var wasOpen = old && old.classList.contains('open');
+      if (old) old.remove();
+      if (host) { el.classList.add('in-header'); host.insertBefore(el, burger); } else document.body.appendChild(el);
+      if (wasOpen) el.classList.add('open');
+    }
+    if (showLogin) {
+      var lg = mk('a', 'b-login', 'Войти'); lg.href = window.ISRGate.loginUrl();
+      lg.addEventListener('click', function () { try { if (/^#(u\/[\w-]+|admin)$/.test(location.hash)) sessionStorage.setItem('isr-after', location.hash); } catch (e) {} });
+      el.appendChild(lg); place(); return;
+    }
 
     // кнопка-плашка: аватар + ник
     var main = mk('button', 'b-main'); main.type = 'button'; main.title = 'Профиль Discord';
@@ -117,22 +158,22 @@
       ava.src = 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png?size=64';
       ava.onerror = function () { var f = mk('span', 'b-ava', name.charAt(0).toUpperCase()); ava.replaceWith(f); };
     } else { ava = mk('span', 'b-ava', name.charAt(0).toUpperCase()); }
-    main.appendChild(ava); main.appendChild(mk('span', 'b-name', name));
+    main.appendChild(ava); main.appendChild(mk('span', 'b-name', name)); if (user.staff) { var sb = mk('span', 'b-staff'); sb.appendChild(staffIcon(14)); main.appendChild(sb); }
 
     // выпадающая панель: кто вошёл, роли, выход
     var panel = mk('div', 'b-panel');
     panel.appendChild(mk('div', 'b-lbl', 'Вы вошли как'));
-    panel.appendChild(mk('div', 'b-who', name));
+    var who = mk('div', 'b-who', name); if (user.staff) { who.appendChild(document.createTextNode(' ')); who.appendChild(staffIcon(16)); } panel.appendChild(who);
     panel.appendChild(mk('div', 'b-id', 'Discord ID: ' + user.id));
     panel.appendChild(mk('div', 'b-lbl', 'Ваши роли'));
     var roles = mk('div', 'b-roles');
     (user.roles || []).forEach(function (r) {
-      var chip = mk('span', 'b-role' + (r.access ? ' acc' : ''));
+      var chip = mk('span', 'b-role' + (r.staff ? ' acc' : ''));
       var dot = mk('span', 'b-dot');
       if (r.color && /^#[0-9a-fA-F]{6}$/.test(r.color)) dot.style.background = r.color;
       chip.appendChild(dot);
       chip.appendChild(document.createTextNode(r.name || ('роль …' + String(r.id).slice(-4))));
-      if (r.access) chip.title = 'Эта роль даёт доступ на сайт';
+      if (r.staff) chip.title = 'Роль стаффа: даёт доступ к админ-панели';
       roles.appendChild(chip);
     });
     if (!(user.roles || []).length) roles.appendChild(mk('span', 'b-lbl', 'нет данных'));
@@ -141,6 +182,11 @@
       var prof = mk('a', 'b-out b-prof', 'Мой профиль'); prof.href = '/#u/' + user.id;
       prof.addEventListener('click', function () { el.classList.remove('open'); });
       panel.appendChild(prof);
+    }
+    if (user.staff) {
+      var adm = mk('a', 'b-out b-prof', 'Админ-панель'); adm.href = '/#admin';
+      adm.addEventListener('click', function () { el.classList.remove('open'); });
+      panel.appendChild(adm);
     }
     var out = mk('button', 'b-out', 'Выйти'); out.type = 'button';
     out.onclick = function () { window.ISRGate.logout(); };
@@ -156,10 +202,7 @@
     }
 
     el.appendChild(panel); el.appendChild(main);
-    var wasOpen = old && old.classList.contains('open');
-    if (old) old.remove();
-    if (wasOpen) el.classList.add('open');
-    document.body.appendChild(el);
+    place();
   }
 
   window.ISRGate = {
@@ -171,6 +214,7 @@
     check: check,
     loadAccess: loadAccess,
     evaluate: evaluate,
+    staffIcon: staffIcon,
   };
 
   if (isGate) return;   // gate.html сама решает, что показывать
@@ -182,18 +226,18 @@
   document.documentElement.appendChild(hide);
 
   evaluate().then(function (res) {
-    if (!res.open && !res.user) return goGate(res.reason);
+    if (denied(res)) return goGate(res.reason);
     window.ISR_USER = res.user || null;
     hide.remove();
-    renderBadge(res.user || null);      // при enabled:false user нет — плашки не будет
+    renderBadge(res.user || null, !!res.open);
     document.dispatchEvent(new CustomEvent('isr-auth', { detail: res.user || null }));
 
-    // Пока страница открыта, периодически перепроверяем доступ (сняли роль или включили вход — выкидывает на gate.html)
+    // Пока страница открыта, периодически перепроверяем доступ (сняли роль, забанили, включили закрытый режим — выкидывает на gate.html)
     var recheck = function () {
       evaluate().then(function (r) {
-        if (!r.open && !r.user) return goGate(r.reason);
+        if (denied(r)) return goGate(r.reason);
         window.ISR_USER = r.user || null;
-        renderBadge(r.user || null);
+        renderBadge(r.user || null, !!r.open);
       }).catch(function () {});
     };
     setInterval(recheck, RECHECK_MS);
