@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Золотая корона"><defs><linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE48F"/><stop offset="1" stop-color="#CE9420"/></linearGradient></defs>
+<rect width="128" height="128" rx="26" fill="#26231E"/>
+<path d="M22 90 L16 46 L43 68 L64 34 L85 68 L112 46 L106 90 Z" fill="url(#c)" stroke="#8A5E0B" stroke-width="3.5" stroke-linejoin="round"/>
+<rect x="22" y="90" width="84" height="14" rx="4" fill="#E2A92C" stroke="#8A5E0B" stroke-width="3.5"/>
+<circle cx="16" cy="44" r="6" fill="#FFF3C4" stroke="#8A5E0B" stroke-width="2"/><circle cx="64" cy="32" r="6.5" fill="#FFF3C4" stroke="#8A5E0B" stroke-width="2"/><circle cx="112" cy="44" r="6" fill="#FFF3C4" stroke="#8A5E0B" stroke-width="2"/>
+<circle cx="44" cy="97" r="3" fill="#E5484D"/><circle cx="64" cy="97" r="3.4" fill="#4FA3FF"/><circle cx="84" cy="97" r="3" fill="#E5484D"/></svg>

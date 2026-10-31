@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Опасный тип"><defs><pattern id="z" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="11" height="22" fill="#F5C400"/><rect x="11" width="11" height="22" fill="#111"/></pattern></defs>
+<rect width="128" height="128" rx="26" fill="url(#z)"/>
+<rect x="18" y="18" width="92" height="92" rx="14" fill="#111" stroke="#F5C400" stroke-width="3"/>
+<rect x="34" y="34" width="60" height="60" rx="12" fill="#F5C400"/>
+<path d="M71 36 L47 69 H62 L57 93 L82 58 H67 Z" fill="#111" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg>

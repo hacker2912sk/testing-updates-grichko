@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Серебряный"><defs><linearGradient id="s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#97A5B3"/></linearGradient>
+<linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5AA0F0"/><stop offset="1" stop-color="#1D4AA3"/></linearGradient></defs>
+<rect width="128" height="128" rx="26" fill="#FFFFFF"/>
+<polygon points="112.0,83.9 83.9,112.0 44.1,112.0 16.0,83.9 16.0,44.1 44.1,16.0 83.9,16.0 112.0,44.1" fill="url(#s)" stroke="#6C7A88" stroke-width="3" stroke-linejoin="round"/>
+<polygon points="102.8,80.1 80.1,102.8 47.9,102.8 25.2,80.1 25.2,47.9 47.9,25.2 80.1,25.2 102.8,47.9" fill="#DCE4EB" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+<path d="M64 28 L90 38 V62 C90 80 78 92 64 98 C50 92 38 80 38 62 V38 Z" fill="url(#b)" stroke="#163A7A" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="64" cy="58" r="11" fill="#F7CF55" stroke="#9A6E08" stroke-width="2.5"/><rect x="61" y="66" width="6" height="16" rx="2" fill="#F7CF55" stroke="#9A6E08" stroke-width="2"/></svg>

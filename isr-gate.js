@@ -3,9 +3,9 @@
  * Подключается ПЕРВЫМ скриптом в <head> страницы:  <script src="/isr-gate.js"></script>
  * Эта строка должна быть в index.html. Остальное в index.html можно менять как угодно.
  *
- * Войти в аккаунт (профиль, бейджи) может участник с ролью MEMBER_ROLE_ID («Высокопоставленный») и выше.
+ * Войти в аккаунт (профиль, бейджи) может участник с одной из ролей из списка MEMBER_ROLE_ID (на Worker).
  * json/accessFILE решает только, закрыт ли САЙТ для обычных участников:
- *   {"enabled": true}   сайт закрыт: пускаем только модераторов сайта (роли из ROLE_ID на Worker)
+ *   {"enabled": true}   сайт закрыт: пускаем только роли из ROLE_ID на Worker
  *   {"enabled": false}  сайт открыт всем; вход нужен лишь для профиля, бейджей и админ-панели
  * Если файл не читается или в нём ошибка — сайт считается ЗАКРЫТЫМ (так безопаснее).
  */
@@ -62,7 +62,7 @@
   }
   /* Результат: { open, user, reason }.
      open  — сайт открыт всем (accessFILE enabled:false); user — вошедший (может быть и при open);
-     reason — почему не пускаем. Пускаем, если open или (user и user.staff). */
+     reason — почему не пускаем. Пускаем, если open или (user и user.access: роль из ROLE_ID). */
   function evaluate() {
     return loadAccess().then(function (open) {
       if (!window.ISRGate.configured) return open ? { open: true, user: null } : { reason: 'not_configured' };
@@ -72,7 +72,7 @@
       }
       return check().then(function (r) {
         if (!r.user) return r;
-        return r.user.staff ? { user: r.user } : { reason: 'no_role', user: r.user };
+        return r.user.access ? { user: r.user } : { reason: 'no_role', user: r.user };
       });
     });
   }
@@ -107,12 +107,14 @@
         '#isr-badge.in-header{position:relative;right:auto;top:auto;z-index:50;margin-left:6px;flex:none}' +
         '#isr-badge .b-login{display:inline-flex;align-items:center;padding:8px 14px;border:1px solid var(--line-strong,#5B3A85);background:var(--paper-2,#1E1030);color:inherit;text-decoration:none;font:600 12px var(--font-body,system-ui,sans-serif);letter-spacing:.06em;text-transform:uppercase;border-radius:var(--radius,0)}' +
         '#isr-badge .b-login:hover{border-color:var(--yellow,#FF7A00);color:var(--yellow,#FF7A00)}' +
-        '#isr-badge .b-main{display:flex;align-items:center;gap:8px;max-width:200px;padding:4px 10px 4px 4px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);' +
+        '#isr-badge .b-main{display:flex;align-items:center;gap:8px;max-width:210px;padding:4px 10px 4px 4px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);' +
         'background:var(--paper-2,#1E1030);color:inherit;box-shadow:0 4px 18px rgba(0,0,0,.35);font:inherit;border-radius:var(--radius,0)}' +
         '#isr-badge .b-main:hover{border-color:var(--yellow,#FF7A00)}' +
         '#isr-badge .b-ava{width:26px;height:26px;border-radius:50%;object-fit:cover;background:var(--yellow,#FF7A00);color:var(--paper,#140A1E);' +
         'display:grid;place-items:center;font-weight:700;font-size:13px;flex:none;overflow:hidden}' +
-        '#isr-badge .b-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+        '#isr-badge .b-txt{display:flex;flex-direction:column;min-width:0;line-height:1.15;text-align:left}' +
+        '#isr-badge .b-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;font-size:13px}' +
+        '#isr-badge .b-bal{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px;color:var(--ink-soft,#B9A3C9)}' +
         '#isr-badge .b-panel{display:none;position:absolute;right:0;top:calc(100% + 8px);width:280px;max-width:calc(100vw - 24px);padding:14px;' +
         'background:var(--paper-2,#1E1030);border:1px solid var(--line-strong,#5B3A85);border-top:3px solid var(--yellow,#FF7A00);' +
         'box-shadow:0 10px 30px rgba(0,0,0,.45);border-radius:var(--radius,0)}' +
@@ -120,15 +122,12 @@
         '#isr-badge .b-lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft,#B9A3C9);margin:0 0 4px}' +
         '#isr-badge .b-who{font-weight:700;font-size:15px;word-break:break-word}' +
         '#isr-badge .b-id{font-size:11px;color:var(--ink-soft,#B9A3C9);margin-bottom:10px}' +
-        '#isr-badge .b-roles{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 12px;max-height:150px;overflow:auto}' +
-        '#isr-badge .b-role{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border:1px solid var(--line,#3A2455);font-size:12px;border-radius:999px}' +
-        '#isr-badge .b-role.acc{border-color:var(--yellow,#FF7A00)}' +
-        '#isr-badge .b-dot{width:9px;height:9px;border-radius:50%;background:var(--ink-soft,#B9A3C9);flex:none}' +
-        '#isr-badge .b-out{width:100%;padding:8px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);background:transparent;color:inherit;font:inherit}' +
+                                        '#isr-badge .b-out{width:100%;padding:8px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);background:transparent;color:inherit;font:inherit}' +
         '#isr-badge .b-out:hover{border-color:var(--yellow,#FF7A00);color:var(--yellow,#FF7A00)}' +
         '#isr-badge .b-prof{display:block;text-align:center;text-decoration:none;margin-bottom:6px}' +
         '#isr-badge .b-staff{display:inline-flex;align-items:center;gap:5px;margin-left:6px;font-size:11px;color:var(--yellow,#FF7A00);font-weight:700}' +
-        '@media (max-width:1500px){#isr-badge.in-header .b-name{display:none}#isr-badge.in-header .b-main{padding:3px}}' +
+        '@media (max-width:1500px){#isr-badge.in-header .b-main{max-width:182px}#isr-badge.in-header .b-bal{font-size:9.5px}}' +
+        '@media (max-width:900px){#isr-badge.in-header .b-txt{display:none}#isr-badge.in-header .b-main{padding:3px}}' +
         '@media print{#isr-badge{display:none}}';
       document.head.appendChild(st);
     }
@@ -158,26 +157,17 @@
       ava.src = 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png?size=64';
       ava.onerror = function () { var f = mk('span', 'b-ava', name.charAt(0).toUpperCase()); ava.replaceWith(f); };
     } else { ava = mk('span', 'b-ava', name.charAt(0).toUpperCase()); }
-    main.appendChild(ava); main.appendChild(mk('span', 'b-name', name)); if (user.staff) { var sb = mk('span', 'b-staff'); sb.appendChild(staffIcon(14)); main.appendChild(sb); }
+    var txt = mk('span', 'b-txt'), nm = mk('span', 'b-name', name);
+    if (user.staff) { nm.appendChild(document.createTextNode(' ')); nm.appendChild(staffIcon(13)); }
+    var tot = user.balance && isFinite(Number(user.balance.total)) ? Number(user.balance.total).toLocaleString('ru-RU') : '—';
+    txt.appendChild(nm); txt.appendChild(mk('span', 'b-bal', 'Итоговый баланс: ' + tot));
+    main.appendChild(ava); main.appendChild(txt);
 
-    // выпадающая панель: кто вошёл, роли, выход
+    // выпадающая панель: кто вошёл, профиль, админ-панель, выход
     var panel = mk('div', 'b-panel');
     panel.appendChild(mk('div', 'b-lbl', 'Вы вошли как'));
     var who = mk('div', 'b-who', name); if (user.staff) { who.appendChild(document.createTextNode(' ')); who.appendChild(staffIcon(16)); } panel.appendChild(who);
     panel.appendChild(mk('div', 'b-id', 'Discord ID: ' + user.id));
-    panel.appendChild(mk('div', 'b-lbl', 'Ваши роли'));
-    var roles = mk('div', 'b-roles');
-    (user.roles || []).forEach(function (r) {
-      var chip = mk('span', 'b-role' + (r.staff ? ' acc' : ''));
-      var dot = mk('span', 'b-dot');
-      if (r.color && /^#[0-9a-fA-F]{6}$/.test(r.color)) dot.style.background = r.color;
-      chip.appendChild(dot);
-      chip.appendChild(document.createTextNode(r.name || ('роль …' + String(r.id).slice(-4))));
-      if (r.staff) chip.title = 'Роль стаффа: даёт доступ к админ-панели';
-      roles.appendChild(chip);
-    });
-    if (!(user.roles || []).length) roles.appendChild(mk('span', 'b-lbl', 'нет данных'));
-    panel.appendChild(roles);
     if (/^\d+$/.test(user.id)) {
       var prof = mk('a', 'b-out b-prof', 'Мой профиль'); prof.href = '/#u/' + user.id;
       prof.addEventListener('click', function () { el.classList.remove('open'); });

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Медный"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6BE7C"/><stop offset="1" stop-color="#C0722F"/></linearGradient></defs>
+<rect width="128" height="128" rx="26" fill="#E9DDFF"/>
+<path d="M46 72 L46 118 L64 106 L82 118 L82 72 Z" fill="#D6453D" stroke="#8E2A24" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="64" cy="54" r="36" fill="url(#g)" stroke="#9A5624" stroke-width="4"/>
+<circle cx="64" cy="54" r="27" fill="none" stroke="#FFDDB0" stroke-width="3" opacity=".9"/>
+<rect x="46" y="38" width="36" height="5" rx="2" fill="#8A4A1B"/><rect x="46" y="65" width="36" height="5" rx="2" fill="#8A4A1B"/>
+<rect x="50" y="45" width="6" height="19" rx="2" fill="#8A4A1B"/><rect x="61" y="45" width="6" height="19" rx="2" fill="#8A4A1B"/><rect x="72" y="45" width="6" height="19" rx="2" fill="#8A4A1B"/></svg>

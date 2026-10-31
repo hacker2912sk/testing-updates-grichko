@@ -218,15 +218,17 @@ header.top {
 @media (max-width:1500px) and (min-width:769px) {
   header.top { padding:0 14px; gap:10px; }
   .top-right { gap:8px; }
-  .brand-text .sub { display:none; }
-  nav.tabs { gap:0; }
-  nav.tabs button { padding:8px 7px; letter-spacing:.03em; font-size:11.5px; }
-  nav.tabs button::after { left:7px; right:7px; }
-  .btn-join-top { padding:9px 12px; }
+  header.top nav.tabs { gap:0; }
+  header.top nav.tabs button { padding:8px 6px; letter-spacing:.02em; font-size:11px; }
+  header.top nav.tabs button::after { left:6px; right:6px; }
+  header.top .btn-join-top { padding:9px 10px; }
+}
+@media (max-width:1330px) and (min-width:769px) {
+  header.top .brand-text .sub { display:none; }
 }
 @media (max-width:1120px) and (min-width:769px) {
-  nav.tabs button { padding:8px 5px; font-size:11px; letter-spacing:.02em; }
-  .gear-btn, .more-dropdown { display:none; }
+  header.top nav.tabs button { padding:8px 5px; font-size:11px; letter-spacing:.02em; }
+  header.top .gear-btn, header.top .more-dropdown { display:none; }
 }
 
 nav.tabs { display:flex;gap:2px; }
@@ -972,21 +974,21 @@ footer { background:var(--steel);color:var(--steel-text-dim);padding:40px 24px 0
 .pf-banner { position:relative; height:220px; overflow:hidden; border-bottom:4px solid var(--yellow); background:var(--paper-2); }
 .pf-banner img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
 .pf-banner.pf-default { background:repeating-linear-gradient(135deg,var(--yellow) 0 18px,var(--ink) 18px 36px); }
-.pf-head { display:flex; align-items:flex-end; gap:18px; flex-wrap:wrap; padding:0 24px 18px; border-bottom:2px solid var(--line-strong); }
+.pf-head { display:flex; align-items:flex-start; gap:12px 18px; flex-wrap:wrap; padding:0 24px 18px; border-bottom:2px solid var(--line-strong); }
 .pf-avawrap { position:relative; margin-top:-58px; flex:none; }
-.pf-ava { width:116px; height:116px; border-radius:50%; border:5px solid var(--paper); background:var(--yellow); color:var(--ink);
+.pf-ava { color:var(--pf-on, var(--steel)); width:116px; height:116px; border-radius:50%; border:5px solid var(--paper); background:var(--yellow);
   display:grid; place-items:center; font:700 44px 'Unbounded',sans-serif; overflow:hidden; }
 .pf-ava img { width:100%; height:100%; object-fit:cover; display:block; }
 .pf-badge { position:absolute; right:-10px; bottom:-4px; width:38px; height:38px; border-radius:50%; border:2px dashed var(--ink-soft);
   background:var(--paper); display:grid; place-items:center; font-size:20px; color:var(--ink-soft); }
 .pf-badge.on { border:2px solid var(--yellow); color:var(--ink); }
-.pf-ident { flex:1; min-width:180px; padding-top:14px; }
-.pf-ident h2 { font-size:clamp(22px,4.5vw,34px); line-height:1.1; word-break:break-word; text-transform:none; }
-.pf-sub { margin-top:6px; font-size:11px; color:var(--ink-soft); letter-spacing:.05em; word-break:break-all; }
+.pf-ident { flex:1 1 300px; min-width:min(300px,100%); padding-top:14px; }
+.pf-ident h2 { font-size:clamp(22px,4.5vw,34px); line-height:1.1; overflow-wrap:anywhere; }
+.pf-sub { margin-top:6px; font-size:11px; color:var(--ink-soft); letter-spacing:.05em; overflow-wrap:anywhere; }
 .pf-balrow { margin-top:8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
 #pfShopBtn { font-size:11px; padding:5px 10px; }
-.pf-actions { margin-left:auto; }
-.pf-bal { display:inline-flex; gap:8px; align-items:baseline; flex-wrap:wrap; font:700 13px 'Space Mono',monospace; background:var(--yellow); color:var(--steel); padding:4px 10px; border:1px solid var(--line-strong); }
+.pf-actions { margin-left:auto; align-self:flex-end; }
+.pf-bal { display:inline-flex; flex-direction:column; align-items:flex-start; gap:2px; font:700 13px 'Space Mono',monospace; background:var(--yellow); color:var(--pf-on, var(--steel)); padding:5px 10px; border:1px solid var(--line-strong); }
 .pf-bal small { font-weight:400; font-size:11px; opacity:.8; }
 .pf-bal.off { background:transparent; color:var(--ink-soft); border-style:dashed; font-weight:400; }
 .pf-note { margin-top:8px; font-size:12px; color:#e06b5a; }
@@ -1048,7 +1050,7 @@ footer { background:var(--steel);color:var(--steel-text-dim);padding:40px 24px 0
 /* ---- этап 2: бейджи, картинки, магазин, админ-панель ---- */
 .pf-staff { display:inline-block; margin-left:8px; vertical-align:middle; }
 .pf-badge { overflow:hidden; padding:0; }
-.pf-badge img, .pf-bd img { width:100%; height:100%; object-fit:cover; display:block; image-rendering:pixelated; }
+.pf-badge img, .pf-bd img { width:100%; height:100%; object-fit:cover; display:block; }
 .pf-badge.on { border:2px solid var(--yellow); }
 .pf-badges { display:flex; flex-wrap:wrap; gap:8px; }
 .pf-bd { width:46px; height:46px; border:2px solid var(--line-strong); border-radius:10px; overflow:hidden; background:var(--paper-2); padding:0; position:relative; display:grid; place-items:center; }
@@ -1062,7 +1064,7 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 .pf-shop-group { margin:18px 0 4px; font:700 14px 'Unbounded',sans-serif; }
 .pf-item { flex-direction:row !important; align-items:flex-start; gap:12px !important; }
 .pf-item .pic { width:64px; height:64px; border-radius:12px; overflow:hidden; flex:none; background:var(--paper); }
-.pf-item .pic img { width:100%; height:100%; object-fit:cover; display:block; image-rendering:pixelated; }
+.pf-item .pic img { width:100%; height:100%; object-fit:cover; display:block; }
 .pf-item .info { display:flex; flex-direction:column; gap:5px; min-width:0; flex:1; }
 .pf-item .nm { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
 .pf-shop-grid { grid-template-columns:repeat(auto-fill,minmax(260px,1fr)) !important; }
@@ -1092,10 +1094,34 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 .ad-table th, .ad-table td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line-strong); vertical-align:middle; }
 .ad-table th { font:700 11px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
 .ad-table input[type=number] { width:100px; font:12px 'Space Mono',monospace; }
-.ad-table img { width:34px; height:34px; border-radius:8px; image-rendering:pixelated; vertical-align:middle; }
+.ad-table img { width:34px; height:34px; border-radius:8px; vertical-align:middle; }
 .ad-scroll { overflow-x:auto; }
 .ad-card a { color:var(--yellow); }
 .ad-row select { max-width:260px; }
+#profile, #pfShop { color:var(--ink); }
+.pf-colors { display:grid; gap:8px; margin-top:10px; }
+.pf-cr { display:flex; align-items:center; gap:8px; font-size:13px; flex-wrap:wrap; }
+.pf-cr > span { min-width:150px; }
+.pf-cr input[type=color] { width:38px; height:28px; padding:0; border:1px solid var(--line-strong); background:none; cursor:pointer; }
+#profile .btn-outline, #pfShop .btn-outline { border-color:var(--yellow); color:var(--yellow); background:transparent; }
+#profile .btn-outline:hover:not([disabled]), #pfShop .btn-outline:hover:not([disabled]) { background:var(--yellow); color:var(--pf-on, var(--steel)); }
+#profile #pfSave { background:var(--yellow); color:var(--pf-on, var(--steel)); }
+#profile .pf-ava, #pfShop .pf-ava { color:var(--pf-on, var(--steel)); }
+.pf-modal { position:fixed; inset:0; z-index:3000; background:rgba(0,0,0,.62); display:flex; justify-content:center; align-items:flex-start; padding:4vh 14px; overflow:auto; }
+.pf-modal[hidden] { display:none !important; }
+.pf-modal-box { position:relative; width:100%; max-width:860px; background:var(--paper); border:2px solid var(--line-strong); border-top:4px solid var(--yellow); box-shadow:0 20px 60px rgba(0,0,0,.5); padding:20px 22px 24px; }
+.pf-modal-box h3 { font-size:16px; margin:0 40px 4px 0; }
+.pf-modal-x { position:absolute; right:12px; top:12px; width:34px; height:34px; border:1px solid var(--line-strong); background:transparent; color:var(--ink); font-size:16px; cursor:pointer; }
+.pf-modal-x:hover { background:var(--yellow); color:var(--pf-on, var(--steel)); }
+.ad-list { max-height:360px; overflow:auto; border:1px solid var(--line-strong); margin-top:6px; }
+.ad-urow { display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:8px 12px; border:0; border-bottom:1px solid var(--line-strong); background:transparent; color:var(--ink); cursor:pointer; font:inherit; }
+.ad-urow:hover { background:var(--paper-2); }
+.ad-urow[hidden] { display:none; }
+.ad-uava { width:32px; height:32px; border-radius:50%; overflow:hidden; background:var(--yellow); color:var(--steel); display:grid; place-items:center; font-weight:700; flex:none; }
+.ad-uava img { width:100%; height:100%; object-fit:cover; display:block; }
+.ad-utxt { display:flex; flex-direction:column; min-width:0; flex:1; }
+.ad-utxt small { font:11px 'Space Mono',monospace; color:var(--ink-soft); }
+.ad-more { padding:10px; text-align:center; font-size:12px; color:var(--ink-soft); }
 .ad-state { text-align:center; color:var(--ink-soft); padding:20px; }
 </style>
 </head>
@@ -1567,11 +1593,16 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
               <div class="pf-upl"><button class="btn-outline" type="button" id="pfUpBg">Поставить фон</button><button class="btn-outline" type="button" id="pfRmBg" hidden>Убрать</button></div>
               <input type="file" id="pfFileBg" accept="image/png,image/jpeg,image/webp" hidden>
             </div>
-            <div class="pf-field">
-              <span class="pf-lbl">Аватарка</span>
-              <p class="pf-hint" style="margin-bottom:8px;">По умолчанию берётся аватарка Discord. Можно поставить свою.</p>
-              <div class="pf-upl"><button class="btn-outline" type="button" id="pfUpAvatar">Поставить аватарку</button><button class="btn-outline" type="button" id="pfRmAvatar" hidden>Убрать</button></div>
-              <input type="file" id="pfFileAvatar" accept="image/png,image/jpeg,image/webp" hidden>
+              <div class="pf-field">
+              <span class="pf-lbl">Оформление профиля</span>
+              <p class="pf-hint" style="margin-bottom:8px;">Свои цвета для акцента, текста, рамок и фона карточки. Все видят профиль одинаково, какая бы тема ни стояла у них.</p>
+              <div class="pf-radio"><label><input type="radio" name="pfTh" value="dark"> Тёмная основа</label><label><input type="radio" name="pfTh" value="light"> Светлая основа</label></div>
+              <div class="pf-colors">
+                <div class="pf-cr"><span>Акцент: кнопки, подписи, плашка</span><input type="color" id="pfAccent" value="#f5c400" aria-label="Цвет акцента"><button class="btn-outline" type="button" id="pfAccentReset" style="font-size:11px;padding:5px 9px;">Сбросить</button></div>
+                <div class="pf-cr"><span>Текст</span><input type="color" id="pfText" value="#f2f2f2" aria-label="Цвет текста"><label class="pf-check"><input type="checkbox" id="pfTextOn"> свой</label></div>
+                <div class="pf-cr"><span>Рамки и линии</span><input type="color" id="pfBorder" value="#f5c400" aria-label="Цвет рамок"><label class="pf-check"><input type="checkbox" id="pfBorderOn"> свой</label></div>
+                <div class="pf-cr"><span>Фон карточки</span><input type="color" id="pfBack" value="#0d0d0d" aria-label="Цвет фона карточки"><label class="pf-check"><input type="checkbox" id="pfBackOn"> свой</label></div>
+              </div>
             </div>
             <div class="pf-field">
               <span class="pf-lbl">Описание</span>
@@ -1585,18 +1616,21 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
             </div>
           </div>
           <div class="pf-row">
-            <button class="btn-outline" id="pfSave" type="button" style="background:var(--ink);color:var(--yellow);">Сохранить</button>
+            <button class="btn-outline" id="pfSave" type="button">Сохранить</button>
             <button class="btn-outline" id="pfCancel" type="button">Закрыть</button>
             <span class="pf-status" id="pfStatus"></span>
           </div>
         </div>
       </article>
 
-      <section class="pf-shop" id="pfShop" hidden>
-        <h3>Магазин бейджей</h3>
-        <p class="pf-hint">Бейджи покупаются за валюту сервера (UnbelievaBoat). Цена списывается сначала с рук, потом из банка. Купленный бейдж остаётся навсегда.</p>
-        <div id="pfShopBody"></div>
-      </section>
+      <div class="pf-modal" id="pfShop" hidden role="dialog" aria-modal="true" aria-label="Магазин бейджей">
+        <div class="pf-modal-box">
+          <button class="pf-modal-x" id="pfShopX" type="button" aria-label="Закрыть">✕</button>
+          <h3>Магазин бейджей</h3>
+          <p class="pf-hint">Бейджи покупаются за промкоины. Цена списывается только с «рук», деньги в банке не используются. Купленный бейдж остаётся навсегда.</p>
+          <div id="pfShopBody"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1615,6 +1649,10 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
           <div id="adUsers">
             <div class="ad-row"><input class="input-text grow" id="adId" placeholder="Discord ID игрока (17–19 цифр)" inputmode="numeric" maxlength="25" autocomplete="off"><button class="btn-outline" id="adFind" type="button">Найти</button></div>
             <div id="adUser"></div>
+            <div class="ad-sec" style="margin-top:18px;"><b>Все пользователи сайта</b>
+              <div class="ad-row"><input class="input-text grow" id="adFilter" placeholder="Фильтр по нику или ID среди загруженных"></div>
+              <div class="ad-list" id="adListBox"><div id="adList"></div><div class="ad-more" id="adMore"></div></div>
+            </div>
           </div>
           <div id="adBans" hidden></div>
           <div id="adBadges" hidden></div>
@@ -1969,6 +2007,7 @@ loadIcons();
 const allTabs = document.querySelectorAll('.tabs button, .mobile-menu-panel button[data-page], .mobile-bottom-nav button[data-page]');
 
 function showPage(id){
+  if(window.__pfLeave) window.__pfLeave(id);
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg = document.getElementById(id);
   if(pg) pg.classList.add('active');
@@ -3957,6 +3996,9 @@ document.addEventListener('touchend',()=>{
    Картинки профиля грузятся fetch'ем с токеном и показываются через blob URL (кэш по номеру версии).
 ============================================================ */
 const PF = { data:null, editing:false, shop:false, shopData:null, bt:0, bgt:0, at:0 };
+document.body.appendChild(document.getElementById('pfShop'));   // окно поверх шапки: выносим из страницы (там своё наложение)
+document.body.appendChild(document.getElementById('pfBg'));     // фон профиля: уровнем body, иначе он закрывает ленты сверху и снизу и подвал
+window.__pfLeave = id => { if(id !== 'profile'){ document.getElementById('pfBg').style.display = 'none'; if(PF.shop) pfSetShop(false); } };
 const PF_HASH_RE = /^[a-zA-Z0-9_]{1,64}$/;
 const PF_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
 const PF_ID_RE = /^\d{5,25}$/;
@@ -3965,7 +4007,34 @@ const PF_NAMES = { copper:'Медный', silver:'Серебряный', crown:'
 const pfEl = id => document.getElementById(id);
 const pfMk = (tag, cls, text) => { const n = document.createElement(tag); if(cls) n.className = cls; if(text!=null) n.textContent = text; return n; };
 const pfNum = n => Number(n).toLocaleString('ru-RU');
-const pfBadgeSrc = id => PF_NAMES[id] ? 'img/badges/'+id+'.png' : null;
+const pfCoins = n => { n = Math.abs(Math.round(Number(n))) || 0; const a = n%10, b = n%100; return (b>=11 && b<=14) ? 'промкоинов' : a===1 ? 'промкоин' : (a>=2 && a<=4) ? 'промкоина' : 'промкоинов'; };
+const pfOnColor = hex => { const n = parseInt(hex.slice(1),16), r = n>>16&255, g = n>>8&255, b = n&255; return (0.299*r+0.587*g+0.114*b) > 150 ? '#1E1D18' : '#ffffff'; };
+/* акцент профиля: цвет, выбранный владельцем, перекрывает тему зрителя только внутри страницы профиля */
+const PF_DEF_ACCENT = '#f5c400';
+const PF_PALETTE = {
+  dark:  { paper:'#0d0d0d', ink:'#f2f2f2' },
+  light: { paper:'#f6f3ea', ink:'#1e1d18' },
+};
+const pfRgb = h => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+const pfHex = a => '#'+a.map(v => Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('');
+const pfMix = (a, b, t) => { const x = pfRgb(a), y = pfRgb(b); return pfHex(x.map((v,i) => v*(1-t)+y[i]*t)); };
+const pfLum = h => { const [r,g,b] = pfRgb(h); return (0.299*r+0.587*g+0.114*b)/255; };
+/* Оформление профиля: акцент, текст, рамки и фон карточки задаёт владелец по отдельности.
+   Цвета ставятся только внутри страницы профиля и окна магазина, поэтому тема зрителя на профиль не влияет. */
+function pfApplyAccent(d){
+  const KEYS = ['--paper','--paper-2','--ink','--ink-soft','--yellow','--yellow-deep','--line-strong','--line','--pf-on'];
+  [pfEl('profile'), pfEl('pfShop')].forEach(el => {
+    if(!d){ KEYS.forEach(k => el.style.removeProperty(k)); return; }
+    const ok = v => (v && PF_COLOR_RE.test(v)) ? v : null, pal = PF_PALETTE[d.uiTheme==='light' ? 'light' : 'dark'];
+    const accent = ok(d.uiAccent) || PF_DEF_ACCENT, bg = ok(d.uiBg) || pal.paper, text = ok(d.uiText) || pal.ink, border = ok(d.uiBorder) || accent;
+    const lightBg = pfLum(bg) > 0.55;
+    const vars = { '--paper':bg, '--paper-2':pfMix(bg, lightBg ? '#000000' : '#ffffff', 0.07), '--ink':text, '--ink-soft':pfMix(text, bg, 0.38),
+      '--yellow':accent, '--yellow-deep': lightBg ? pfMix(accent, '#000000', 0.38) : accent, '--line-strong':border, '--line':border, '--pf-on':pfOnColor(accent) };
+    Object.keys(vars).forEach(k => el.style.setProperty(k, vars[k]));
+  });
+}
+
+const pfBadgeSrc = id => PF_NAMES[id] ? 'img/badges/'+id+'.svg' : null;
 const pfStaffIcon = px => (window.ISRGate && ISRGate.staffIcon) ? ISRGate.staffIcon(px) : document.createTextNode('');
 
 function pfToken(){ return (window.ISRGate && ISRGate.token) ? ISRGate.token() : null; }
@@ -4001,7 +4070,7 @@ function pfState(msg, login){
     a.addEventListener('click', () => { try{ if(/^#u\/[\w-]+$/.test(location.hash)) sessionStorage.setItem('isr-after', location.hash); }catch(e){} });
     st.appendChild(a);
   }
-  pfRenderBg(null);
+  pfRenderBg(null); pfApplyAccent(null);
 }
 
 /* Градиент из двух цветов и угла; всё проверяется, иначе null */
@@ -4041,20 +4110,14 @@ function pfRenderBanner(d){
   }
 }
 function pfRenderAvatar(d){
-  const el = pfEl('pfAva'), t = ++PF.at; el.textContent = '';
+  const el = pfEl('pfAva'); el.textContent = '';
   const letter = () => { el.textContent = (d.name||'?').charAt(0).toUpperCase(); };
-  const discordAva = () => {
-    if(d.avatar && PF_HASH_RE.test(d.avatar) && /^\d+$/.test(d.id)){
-      const im = new Image(); im.alt='';
-      im.src = 'https://cdn.discordapp.com/avatars/'+d.id+'/'+d.avatar+'.'+(d.avatar.startsWith('a_')?'gif':'png')+'?size=256';
-      im.onerror = () => { el.textContent=''; letter(); };
-      el.appendChild(im);
-    } else letter();
-  };
-  if(d.img && d.img.avatar){
-    letter();
-    pfImg(d.id,'avatar',d.img.avatar).then(u => { if(PF.at!==t) return; el.textContent=''; const im = new Image(); im.alt=''; im.src=u; el.appendChild(im); }).catch(() => { if(PF.at===t){ el.textContent=''; discordAva(); } });
-  } else discordAva();
+  if(d.avatar && PF_HASH_RE.test(d.avatar) && /^\d+$/.test(d.id)){
+    const im = new Image(); im.alt='';
+    im.src = 'https://cdn.discordapp.com/avatars/'+d.id+'/'+d.avatar+'.'+(d.avatar.startsWith('a_')?'gif':'png')+'?size=256';
+    im.onerror = () => { el.textContent=''; letter(); };
+    el.appendChild(im);
+  } else letter();
 }
 function pfRenderBadgeSlot(d){
   const b = pfEl('pfBadge'); b.textContent = ''; b.classList.remove('on');
@@ -4066,8 +4129,7 @@ function pfRenderBalance(d){
   const el = pfEl('pfBal'); el.textContent = ''; el.classList.remove('off');
   const b = d.balance;
   if(b && Number.isFinite(b.total)){
-    const cur = String(b.currency || 'монет').slice(0,20);
-    el.appendChild(pfMk('span', null, 'Баланс: '+pfNum(b.total)+' '+cur));
+    el.appendChild(pfMk('span', null, 'Баланс: '+pfNum(b.total)+' '+pfCoins(b.total)));
     el.appendChild(pfMk('small', null, 'на руках '+pfNum(b.cash)+' · в банке '+pfNum(b.bank)));
   } else {
     el.classList.add('off');
@@ -4116,7 +4178,7 @@ function pfRender(d){
   if(d.staff){ const w = pfMk('span','pf-staff'); w.appendChild(pfStaffIcon(26)); nm.appendChild(w); }
   pfEl('pfId').textContent = 'Discord ID: ' + d.id;
   pfRenderAvatar(d); pfRenderBanner(d); pfRenderBg(d); pfRenderBalance(d); pfRenderBadgeSlot(d);
-  pfRenderRoles(d); pfRenderBadges(d);
+  pfRenderRoles(d); pfRenderBadges(d); pfApplyAccent(d);
   const ds = pfEl('pfDesc'); ds.classList.toggle('pf-empty', !d.desc); ds.textContent = d.desc || 'нету';
   pfEl('pfEdit').hidden = !d.own;
   pfEl('pfShopBtn').hidden = !d.own;
@@ -4133,7 +4195,7 @@ function pfRender(d){
 }
 
 async function pfOpen(id){
-  PF.editing = false; PF.shop = false;
+  PF.editing = false; if(PF.shop) pfSetShop(false);
   showPage('profile');
   pfState('Загрузка профиля…');
   if(!pfToken()) return pfState('Профили доступны после входа через Discord.', true);
@@ -4142,7 +4204,7 @@ async function pfOpen(id){
     if(r.status===404) return pfState('Профиль не найден: человек ещё не заходил на сайт или скрыл профиль.');
     if(r.status===503) return pfState('Хранилище профилей не подключено (в Worker нужна KV-привязка PROFILES).');
     if(r.status===401) return pfState('Сессия истекла. Войдите заново.', true);
-    if(r.status===403){ const e = await pfJson(r); return pfState(e.error==='banned' ? 'Ваш аккаунт заблокирован.' : e.error==='no_member_role' ? 'Чтобы пользоваться профилем, нужна роль «Высокопоставленный» или выше на сервере ИСР.' : 'Нет доступа. Вы должны быть участником сервера ИСР.'); }
+    if(r.status===403){ const e = await pfJson(r); return pfState(e.error==='banned' ? 'Ваш аккаунт заблокирован.' : e.error==='no_member_role' ? 'Чтобы пользоваться профилем, нужна роль участника на сервере ИСР.' : 'Нет доступа. Вы должны быть участником сервера ИСР.'); }
     if(!r.ok) return pfState('Не удалось загрузить профиль ('+r.status+').');
     PF.data = await r.json();
     pfRender(PF.data);
@@ -4168,8 +4230,8 @@ async function pfLoadShop(){
 function pfRenderShop(){
   const body = pfEl('pfShopBody'), sd = PF.shopData; body.textContent = '';
   if(!sd) return;
-  const owned = new Set(sd.owned || []), total = sd.balance && Number.isFinite(sd.balance.total) ? sd.balance.total : null;
-  const cur = (sd.balance && sd.balance.currency) || 'монет';
+  const owned = new Set(sd.owned || []), cash = sd.balance && Number.isFinite(sd.balance.cash) ? sd.balance.cash : null;
+  if(cash!=null) body.appendChild(pfMk('div','pf-hint','У вас на руках: '+pfNum(cash)+' '+pfCoins(cash)+'. Деньги в банке для покупок не используются.'));
   const groups = [['rarity','🏆 1. Бейджи по редкости'],['isr','⚒️ 2. Бейджи специально для ИСР']];
   groups.forEach(([g, title]) => {
     const items = (sd.catalog || []).filter(b => b.group===g && PF_NAMES[b.id]);
@@ -4183,8 +4245,8 @@ function pfRenderShop(){
       const nm = pfMk('div','nm'); nm.appendChild(pfMk('span',null,PF_NAMES[it.id]));
       const ra = PF_RARITY[it.rarity]; if(ra) nm.appendChild(pfMk('span','pf-tag '+ra[1], ra[0]));
       info.appendChild(nm);
-      const low = total!=null && total < it.price && !owned.has(it.id);
-      info.appendChild(pfMk('div','pr'+(low?' low':''),'Цена: '+pfNum(it.price)+' '+cur+(low?' · не хватает '+pfNum(it.price-total):'')));
+      const low = cash!=null && cash < it.price && !owned.has(it.id);
+      info.appendChild(pfMk('div','pr'+(low?' low':''),'Цена: '+pfNum(it.price)+' '+pfCoins(it.price)+(low?' · не хватает '+pfNum(it.price-cash):'')));
       info.appendChild(pfMk('div','ds',String(it.desc||'').slice(0,120)));
       const row = pfMk('div','row');
       if(owned.has(it.id)){
@@ -4202,13 +4264,13 @@ function pfRenderShop(){
   });
 }
 async function pfBuy(it, btn){
-  if(!confirm('Купить бейдж «'+PF_NAMES[it.id]+'» за '+pfNum(it.price)+'? Деньги спишутся с вашего баланса на сервере.')) return;
+  if(!confirm('Купить бейдж «'+PF_NAMES[it.id]+'» за '+pfNum(it.price)+'? Деньги спишутся с рук (не из банка).')) return;
   btn.disabled = true;
   try {
     const r = await pfSend('POST','/api/badges/buy',{ id:it.id });
     const d = await pfJson(r);
     if(!r.ok){
-      const msg = { not_enough:'Не хватает денег на балансе', owned:'Этот бейдж у вас уже есть', busy:'Покупка уже идёт, подождите секунду', no_economy:'Экономика пока не подключена', economy_error:'Не удалось связаться с экономикой, деньги не списаны', save_failed:'Не удалось выдать бейдж, деньги возвращены', no_badge:'Бейдж недоступен', profile_blocked:'Вам запрещено пользоваться профилем' }[d.error];
+      const msg = { not_enough:'Не хватает промкоинов на руках (из банка не списываем)', owned:'Этот бейдж у вас уже есть', busy:'Покупка уже идёт, подождите секунду', no_economy:'Экономика пока не подключена', economy_error:'Не удалось связаться с экономикой, деньги не списаны', save_failed:'Не удалось выдать бейдж, деньги возвращены', no_badge:'Бейдж недоступен', profile_blocked:'Вам запрещено пользоваться профилем' }[d.error];
       showToast(msg || 'Не удалось купить бейдж'); btn.disabled = false; return;
     }
     showToast('Бейдж куплен!');
@@ -4216,10 +4278,16 @@ async function pfBuy(it, btn){
     pfLoadShop();
   } catch(e){ showToast('Нет связи с сервером'); btn.disabled = false; }
 }
-pfEl('pfShopBtn').addEventListener('click', () => {
-  PF.shop = !PF.shop; pfEl('pfShop').hidden = !PF.shop;
-  if(PF.shop){ pfLoadShop(); pfEl('pfShop').scrollIntoView({behavior:'smooth',block:'start'}); }
-});
+/* магазин открывается окном поверх страницы (без прокрутки вниз) */
+function pfSetShop(on){
+  PF.shop = !!on; pfEl('pfShop').hidden = !PF.shop;
+  document.body.style.overflow = PF.shop ? 'hidden' : '';
+  if(PF.shop) pfLoadShop();
+}
+pfEl('pfShopBtn').addEventListener('click', () => pfSetShop(true));
+pfEl('pfShopX').addEventListener('click', () => pfSetShop(false));
+pfEl('pfShop').addEventListener('click', e => { if(e.target===pfEl('pfShop')) pfSetShop(false); });
+document.addEventListener('keydown', e => { if(e.key==='Escape' && PF.shop) pfSetShop(false); });
 
 /* ----- редактор (только свой профиль) ----- */
 const pfRadio = (name, val) => document.querySelectorAll('input[name="'+name+'"]').forEach(r => { r.checked = r.value===val; });
@@ -4232,6 +4300,11 @@ function pfDraft(){
   d.bgGrad = { c1:pfEl('pfBgC1').value, c2:pfEl('pfBgC2').value, angle:+pfEl('pfBgA').value };
   d.bgBlur = +pfEl('pfBlur').value;
   d.desc = pfEl('pfDescIn').value.trim();
+  d.uiAccent = pfEl('pfAccent').value.toLowerCase()===PF_DEF_ACCENT ? null : pfEl('pfAccent').value;
+  d.uiTheme = pfRadioVal('pfTh','dark');
+  d.uiText = pfEl('pfTextOn').checked ? pfEl('pfText').value : null;
+  d.uiBorder = pfEl('pfBorderOn').checked ? pfEl('pfBorder').value : null;
+  d.uiBg = pfEl('pfBackOn').checked ? pfEl('pfBack').value : null;
   return d;
 }
 function pfSyncOutputs(){
@@ -4242,22 +4315,21 @@ function pfSyncOutputs(){
 function pfSyncImgUi(){
   const im = (PF.data && PF.data.img) || {};
   pfEl('pfBnImg').disabled = !im.banner; pfEl('pfBgImg').disabled = !im.bg;
-  pfEl('pfRmBanner').hidden = !im.banner; pfEl('pfRmBg').hidden = !im.bg; pfEl('pfRmAvatar').hidden = !im.avatar;
+  pfEl('pfRmBanner').hidden = !im.banner; pfEl('pfRmBg').hidden = !im.bg;
   pfEl('pfUpBanner').textContent = im.banner ? 'Заменить баннер' : 'Поставить баннер';
   pfEl('pfUpBg').textContent = im.bg ? 'Заменить фон' : 'Поставить фон';
-  pfEl('pfUpAvatar').textContent = im.avatar ? 'Заменить аватарку' : 'Поставить аватарку';
 }
 function pfPreview(){
   if(!PF.data || !PF.editing) return;
   pfSyncOutputs();
   const d = pfDraft();
-  pfRenderBanner(d); pfRenderBg(d);
+  pfRenderBanner(d); pfRenderBg(d); pfApplyAccent(d);
   pfEl('pfStatus').className = 'pf-status'; pfEl('pfStatus').textContent = '';
 }
 function pfOpenEditor(){
   if(!PF.data || !PF.data.own) return;
   const d = PF.data;
-  PF.editing = true; PF.shop = false;
+  PF.editing = true; if(PF.shop) pfSetShop(false);
   pfEl('pfCols').hidden = true; pfEl('pfEditor').hidden = false; pfEl('pfShop').hidden = true;
   pfRadio('pfBn', d.bannerMode || 'discord'); pfRadio('pfBgM', d.bgMode || 'none');
   const bg = d.bannerGrad || {c1:'#f5c400',c2:'#1e1d18',angle:135}, fg = d.bgGrad || bg;
@@ -4265,19 +4337,20 @@ function pfOpenEditor(){
   pfEl('pfBgC1').value = fg.c1; pfEl('pfBgC2').value = fg.c2; pfEl('pfBgA').value = fg.angle;
   pfEl('pfBlur').value = d.bgBlur || 0;
   pfEl('pfDescIn').value = d.desc || '';
+  pfEl('pfAccent').value = d.uiAccent || PF_DEF_ACCENT; pfRadio('pfTh', d.uiTheme==='light' ? 'light' : 'dark');
+  [['Text','uiText','#f2f2f2'],['Border','uiBorder',d.uiAccent || PF_DEF_ACCENT],['Back','uiBg','#0d0d0d']].forEach(([n,k,def]) => { pfEl('pf'+n).value = d[k] || def; pfEl('pf'+n+'On').checked = !!d[k]; });
   pfEl('pfHidden').checked = !!d.hidden; pfEl('pfHideBal').checked = !!d.hideBalance;
   pfEl('pfStatus').textContent = ''; pfSyncOutputs(); pfSyncImgUi();
 }
 function pfCloseEditor(){ PF.editing = false; if(PF.data) pfRender(PF.data); }
 
 /* картинки: сжатие в браузере (canvas -> WebP/JPEG), отправка base64 в JSON, Worker проверяет тип и размер */
-const PF_LIM = { avatar:{ w:256, sq:true, max:120*1024 }, banner:{ w:1200, max:400*1024 }, bg:{ w:1600, max:450*1024 } };
+const PF_LIM = { banner:{ w:1200, max:400*1024 }, bg:{ w:1600, max:450*1024 } };
 const pfBlobB64 = blob => new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1]); fr.onerror = rej; fr.readAsDataURL(blob); });
 const pfToBlob = (c, type, q) => new Promise(res => c.toBlob(res, type, q));
 async function pfCompress(file, kind){
   const L = PF_LIM[kind], bmp = await createImageBitmap(file);
   let sw = bmp.width, sh = bmp.height, sx = 0, sy = 0;
-  if(L.sq){ const s = Math.min(sw, sh); sx = (sw-s)/2; sy = (sh-s)/2; sw = sh = s; }
   let scale = Math.min(1, L.w/sw);
   for(let attempt = 0; attempt < 6; attempt++){
     const w = Math.max(1, Math.round(sw*scale)), h = Math.max(1, Math.round(sh*scale));
@@ -4295,7 +4368,7 @@ async function pfCompress(file, kind){
 function pfAfterImg(d){
   PF.data = Object.assign(PF.data, { img:d.img, bannerMode:d.bannerMode, bgMode:d.bgMode });
   pfRadio('pfBn', d.bannerMode); pfRadio('pfBgM', d.bgMode);
-  pfRenderAvatar(PF.data); pfSyncImgUi(); pfPreview();
+  pfSyncImgUi(); pfPreview();
 }
 async function pfUpload(kind, file){
   const st = pfEl('pfStatus'); if(!file) return;
@@ -4316,7 +4389,7 @@ async function pfRemoveImg(kind){
     pfAfterImg(await r.json()); pfEl('pfStatus').textContent = 'Убрано';
   } catch(e){ pfEl('pfStatus').className = 'pf-status err'; pfEl('pfStatus').textContent = 'Не удалось убрать'; }
 }
-[['Banner','banner'],['Bg','bg'],['Avatar','avatar']].forEach(([n, kind]) => {
+[['Banner','banner'],['Bg','bg']].forEach(([n, kind]) => {
   const inp = pfEl('pfFile'+n);
   pfEl('pfUp'+n).addEventListener('click', () => inp.click());
   inp.addEventListener('change', () => { const f = inp.files && inp.files[0]; inp.value = ''; pfUpload(kind, f); });
@@ -4324,8 +4397,9 @@ async function pfRemoveImg(kind){
 });
 
 pfEl('pfEdit').addEventListener('click', pfOpenEditor);
+pfEl('pfAccentReset').addEventListener('click', () => { pfEl('pfAccent').value = PF_DEF_ACCENT; pfPreview(); });
 pfEl('pfCancel').addEventListener('click', pfCloseEditor);
-pfEl('pfEditor').addEventListener('input', e => { if(e.target.type!=='file') pfPreview(); });
+pfEl('pfEditor').addEventListener('input', e => { const on = { pfText:'pfTextOn', pfBorder:'pfBorderOn', pfBack:'pfBackOn' }[e.target.id]; if(on) pfEl(on).checked = true; if(e.target.type!=='file') pfPreview(); });
 pfEl('pfEditor').addEventListener('change', e => { if(e.target.type!=='file') pfPreview(); });
 pfEl('pfCopy').addEventListener('click', () => {
   if(!PF.data) return;
@@ -4348,7 +4422,7 @@ pfEl('pfSave').addEventListener('click', async () => {
   st.className = 'pf-status'; st.textContent = 'Сохраняю…';
   try {
     const r = await pfSend('PUT','/api/profile',{ bannerMode:d.bannerMode, bannerGrad:d.bannerGrad, bgMode:d.bgMode, bgGrad:d.bgGrad, bgBlur:d.bgBlur,
-      desc:d.desc, hidden:pfEl('pfHidden').checked, hideBalance:pfEl('pfHideBal').checked });
+      desc:d.desc, uiAccent:d.uiAccent, uiTheme:d.uiTheme, uiText:d.uiText, uiBorder:d.uiBorder, uiBg:d.uiBg, hidden:pfEl('pfHidden').checked, hideBalance:pfEl('pfHideBal').checked });
     if(!r.ok){ const e = await pfJson(r); throw new Error(e.error || r.status); }
     PF.data = await r.json(); PF.editing = false;
     pfRender(PF.data); showToast('Профиль сохранён');
@@ -4372,7 +4446,7 @@ async function adOpen(){
     if(!me.staff) return adState('Нет доступа: админ-панель только для модераторов сайта.');
   } catch(e){ return adState('Нет связи с сервером.'); }
   pfEl('adState').hidden = true; pfEl('adMain').hidden = false;
-  adTab('users');
+  adTab('users'); adListReset();
   if(AD.prefill){ pfEl('adId').value = AD.prefill; AD.prefill = null; adFind(); }
 }
 function adTab(t){
@@ -4391,6 +4465,9 @@ async function adCall(method, path, body, okMsg){
   } catch(e){ showToast('Нет связи с сервером'); return null; }
 }
 const adDate = ts => ts ? new Date(ts).toLocaleString('ru-RU') : '';
+const AD_DUR = [['Навсегда',0],['1 час',3600],['6 часов',21600],['1 день',86400],['3 дня',259200],['7 дней',604800],['30 дней',2592000]];
+const adUntil = b => !b.until ? 'навсегда' : (b.until <= Date.now() ? 'истёк '+adDate(b.until) : 'до '+adDate(b.until));
+function adDurSelect(){ const sel = document.createElement('select'); sel.className = 'input-text'; sel.title = 'Срок бана'; AD_DUR.forEach(([t,v]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; sel.appendChild(o); }); return sel; }
 const adBtn = (text, fn, cls) => { const b = pfMk('button','btn-outline'+(cls?' '+cls:''),text); b.type='button'; b.addEventListener('click', fn); return b; };
 
 async function adFind(){
@@ -4403,7 +4480,8 @@ async function adFind(){
     if(br.ok) banList = (await br.json()).bans || [];
     if(r.ok) d = await r.json(); else if(r.status!==404){ box.textContent = ''; box.appendChild(pfMk('div','ad-state','Ошибка '+r.status)); return; }
   } catch(e){ box.textContent = ''; box.appendChild(pfMk('div','ad-state','Нет связи с сервером.')); return; }
-  adRenderUser(id, d, banList.find(b => b.id===id) || null);
+  const bn = banList.find(b => b.id===id);
+  adRenderUser(id, d, bn && !(bn.until && bn.until <= Date.now()) ? bn : null);
 }
 function adRenderUser(id, d, ban){
   const box = pfEl('adUser'); box.textContent = '';
@@ -4418,7 +4496,7 @@ function adRenderUser(id, d, ban){
     // картинки
     const sec = pfMk('div','ad-sec'); sec.appendChild(pfMk('b',null,'Картинки'));
     const row = pfMk('div','ad-imgs');
-    [['avatar','Аватарка'],['banner','Баннер'],['bg','Фон']].forEach(([k, label]) => {
+    [['banner','Баннер'],['bg','Фон']].forEach(([k, label]) => {
       const cell = pfMk('div','ad-img'); cell.appendChild(pfMk('span',null,label));
       if(d.img && d.img[k]){
         const im = new Image(); im.alt = label; cell.appendChild(im);
@@ -4448,17 +4526,51 @@ function adRenderUser(id, d, ban){
   // баны
   const ks = pfMk('div','ad-sec'); ks.appendChild(pfMk('b',null,'Бан'));
   if(ban){
-    ks.appendChild(pfMk('div','ad-meta','Сейчас: '+(ban.kind==='site' ? 'вход на сайт закрыт' : 'запрещён профиль')+(ban.reason ? ' — '+ban.reason : '')+' ('+(ban.byName||'')+', '+adDate(ban.at)+')'));
+    ks.appendChild(pfMk('div','ad-meta','Сейчас: '+(ban.kind==='site' ? 'вход на сайт закрыт' : 'запрещён профиль')+(ban.reason ? ' — '+ban.reason : '')+' ('+(ban.byName||'')+', '+adDate(ban.at)+') · '+adUntil(ban)));
     const r = pfMk('div','ad-row'); r.appendChild(adBtn('Снять бан', async () => { if(await adCall('DELETE','/api/admin/ban/'+id,undefined,'Бан снят')) refresh(); })); ks.appendChild(r);
   } else {
     if(!d) ks.appendChild(pfMk('div','ad-meta','Можно заблокировать заранее: человек не сможет создать аккаунт.'));
-    const r = pfMk('div','ad-row'); const reason = pfMk('input','input-text grow'); reason.placeholder = 'Причина (до 200 символов)'; reason.maxLength = 200; r.appendChild(reason);
-    r.appendChild(adBtn('Закрыть вход (бан)', async () => { if(!confirm('Закрыть этому игроку вход на сайт?')) return; if(await adCall('PUT','/api/admin/ban',{ id, kind:'site', reason:reason.value },'Игрок заблокирован')) refresh(); }, 'ad-danger'));
-    r.appendChild(adBtn('Запретить профиль', async () => { if(await adCall('PUT','/api/admin/ban',{ id, kind:'profile', reason:reason.value },'Профиль запрещён')) refresh(); }, 'ad-danger'));
+    const r = pfMk('div','ad-row'); const reason = pfMk('input','input-text grow'); reason.placeholder = 'Причина (до 200 символов)'; reason.maxLength = 200; r.appendChild(reason); const dur = adDurSelect(); r.appendChild(dur);
+    r.appendChild(adBtn('Закрыть вход (бан)', async () => { if(!confirm('Закрыть этому игроку вход на сайт?')) return; if(await adCall('PUT','/api/admin/ban',{ id, kind:'site', reason:reason.value, duration:+dur.value },'Игрок заблокирован')) refresh(); }, 'ad-danger'));
+    r.appendChild(adBtn('Запретить профиль', async () => { if(await adCall('PUT','/api/admin/ban',{ id, kind:'profile', reason:reason.value, duration:+dur.value },'Профиль запрещён')) refresh(); }, 'ad-danger'));
     ks.appendChild(r);
   }
   card.appendChild(ks); box.appendChild(card);
 }
+/* все пользователи сайта: порциями по 50, следующая порция подгружается при прокрутке списка */
+const AD_LIST = { cursor:null, loading:false, done:false, n:0 };
+function adListReset(){ Object.assign(AD_LIST, { cursor:null, loading:false, done:false, n:0 }); pfEl('adList').textContent = ''; adListMore(); }
+async function adListMore(){
+  if(AD_LIST.loading || AD_LIST.done) return;
+  AD_LIST.loading = true;
+  const more = pfEl('adMore'); more.textContent = 'Загрузка…';
+  const d = await adCall('GET','/api/admin/users'+(AD_LIST.cursor ? '?cursor='+encodeURIComponent(AD_LIST.cursor) : ''));
+  AD_LIST.loading = false; more.textContent = '';
+  if(!d){ more.appendChild(adBtn('Повторить', adListMore)); return; }
+  AD_LIST.cursor = d.cursor; AD_LIST.done = !d.cursor;
+  d.users.forEach(u => { AD_LIST.n++; adListRow(u); });
+  adListFilter();
+  if(AD_LIST.done) more.textContent = AD_LIST.n ? 'Показаны все: '+AD_LIST.n : 'Пользователей пока нет';
+  else {
+    more.appendChild(adBtn('Загрузить ещё', adListMore));
+    const box = pfEl('adListBox');                                   // если конец списка уже на виду, грузим дальше сами
+    if(!pfEl('adUsers').hidden && more.getBoundingClientRect().top < box.getBoundingClientRect().bottom + 80) setTimeout(adListMore, 60);
+  }
+}
+function adListRow(u){
+  const row = pfMk('button','ad-urow'); row.type = 'button'; row.dataset.q = ((u.name||'')+' '+u.id).toLowerCase();
+  const av = pfMk('span','ad-uava'), first = (u.name||'?').charAt(0).toUpperCase();
+  if(u.avatar && PF_HASH_RE.test(u.avatar) && PF_ID_RE.test(u.id)){ const im = new Image(); im.alt = ''; im.src = 'https://cdn.discordapp.com/avatars/'+u.id+'/'+u.avatar+'.png?size=64'; im.onerror = () => { av.textContent = first; }; av.appendChild(im); } else av.textContent = first;
+  row.appendChild(av);
+  const t = pfMk('span','ad-utxt'); t.appendChild(pfMk('b',null,u.name || '(без имени)')); t.appendChild(pfMk('small',null,u.id)); row.appendChild(t);
+  if(u.hidden) row.appendChild(pfMk('span','pf-tag','скрыт'));
+  row.addEventListener('click', () => { pfEl('adId').value = u.id; adFind(); pfEl('adUser').scrollIntoView({ behavior:'smooth', block:'nearest' }); });
+  pfEl('adList').appendChild(row);
+}
+function adListFilter(){ const q = pfEl('adFilter').value.trim().toLowerCase(); pfEl('adList').querySelectorAll('.ad-urow').forEach(r => { r.hidden = !!q && !r.dataset.q.includes(q); }); }
+pfEl('adFilter').addEventListener('input', adListFilter);
+pfEl('adListBox').addEventListener('scroll', () => { const b = pfEl('adListBox'); if(b.scrollTop + b.clientHeight >= b.scrollHeight - 120) adListMore(); });
+if('IntersectionObserver' in window) new IntersectionObserver(es => { if(es.some(e => e.isIntersecting) && !pfEl('adUsers').hidden) adListMore(); }, { root:pfEl('adListBox'), rootMargin:'120px' }).observe(pfEl('adMore'));
 pfEl('adFind').addEventListener('click', adFind);
 pfEl('adId').addEventListener('keydown', e => { if(e.key==='Enter') adFind(); });
 
@@ -4469,12 +4581,12 @@ async function adLoadBans(){
   const add = pfMk('div','ad-row'); const idIn = pfMk('input','input-text'); idIn.placeholder = 'Discord ID'; idIn.maxLength = 25; idIn.inputMode = 'numeric';
   const kind = document.createElement('select'); kind.className = 'input-text'; [['site','Закрыть вход'],['profile','Запретить профиль']].forEach(([v,t]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; kind.appendChild(o); });
   const why = pfMk('input','input-text grow'); why.placeholder = 'Причина'; why.maxLength = 200;
-  add.appendChild(idIn); add.appendChild(kind); add.appendChild(why);
-  add.appendChild(adBtn('Добавить', async () => { if(!PF_ID_RE.test(idIn.value.trim())) return showToast('Нужен Discord ID из цифр'); if(await adCall('PUT','/api/admin/ban',{ id:idIn.value.trim(), kind:kind.value, reason:why.value },'Бан добавлен')) adLoadBans(); }, 'ad-danger'));
+  const bdur = adDurSelect(); add.appendChild(idIn); add.appendChild(kind); add.appendChild(bdur); add.appendChild(why);
+  add.appendChild(adBtn('Добавить', async () => { if(!PF_ID_RE.test(idIn.value.trim())) return showToast('Нужен Discord ID из цифр'); if(await adCall('PUT','/api/admin/ban',{ id:idIn.value.trim(), kind:kind.value, reason:why.value, duration:+bdur.value },'Бан добавлен')) adLoadBans(); }, 'ad-danger'));
   box.appendChild(add);
   if(!d.bans.length){ box.appendChild(pfMk('div','ad-state','Банов нет.')); return; }
   const wrap = pfMk('div','ad-scroll'); const t = pfMk('table','ad-table');
-  const hr = t.createTHead().insertRow(); ['ID','Тип','Причина','Кто','Когда',''].forEach(h => hr.appendChild(pfMk('th',null,h)));
+  const hr = t.createTHead().insertRow(); ['ID','Тип','Причина','Кто','Когда','Срок',''].forEach(h => hr.appendChild(pfMk('th',null,h)));
   const tb = t.createTBody();
   d.bans.forEach(b => {
     const tr = tb.insertRow();
@@ -4483,6 +4595,7 @@ async function adLoadBans(){
     tr.insertCell().textContent = b.reason || '';
     tr.insertCell().textContent = b.byName || '';
     tr.insertCell().textContent = adDate(b.at);
+    tr.insertCell().textContent = adUntil(b);
     tr.insertCell().appendChild(adBtn('Снять', async () => { if(await adCall('DELETE','/api/admin/ban/'+b.id,undefined,'Бан снят')) adLoadBans(); }));
   });
   wrap.appendChild(t); box.appendChild(wrap);
@@ -4492,21 +4605,17 @@ async function adLoadBadges(){
   const box = pfEl('adBadges'); box.textContent = ''; box.appendChild(pfMk('div','ad-state','Загрузка…'));
   const d = await adCall('GET','/api/admin/badges'); box.textContent = '';
   if(!d){ box.appendChild(pfMk('div','ad-state','Не удалось загрузить каталог.')); return; }
-  box.appendChild(pfMk('p','pf-hint','Цена и доступность бейджей. Выключенный бейдж нельзя купить, уже купленные остаются у игроков.'));
+  box.appendChild(pfMk('p','pf-hint','Каталог только для просмотра. Цены и доступность бейджей задаются в настройках Worker (переменная BADGES_SHOP), в админ-панели их менять нельзя. Выдать или забрать бейдж у игрока можно на вкладке «Игроки».'));
   const wrap = pfMk('div','ad-scroll'); const t = pfMk('table','ad-table');
-  const hr = t.createTHead().insertRow(); ['','Бейдж','Цена','В продаже',''].forEach(h => hr.appendChild(pfMk('th',null,h)));
+  const hr = t.createTHead().insertRow(); ['','Бейдж','Цена','В продаже'].forEach(h => hr.appendChild(pfMk('th',null,h)));
   const tb = t.createTBody();
   d.catalog.forEach(b => {
     if(!PF_NAMES[b.id]) return;
     const tr = tb.insertRow();
-    const pc = tr.insertCell(); const im = new Image(); im.alt=''; im.src = pfBadgeSrc(b.id); pc.appendChild(im);
+    const pc = tr.insertCell(); const im = new Image(); im.alt = ''; im.src = pfBadgeSrc(b.id); pc.appendChild(im);
     tr.insertCell().textContent = PF_NAMES[b.id];
-    const price = document.createElement('input'); price.type = 'number'; price.min = 1; price.max = 10000000; price.step = 1; price.value = b.price; price.className = 'input-text'; tr.insertCell().appendChild(price);
-    const en = document.createElement('input'); en.type = 'checkbox'; en.checked = b.enabled !== false; tr.insertCell().appendChild(en);
-    tr.insertCell().appendChild(adBtn('Сохранить', async () => {
-      const p = parseInt(price.value,10); if(!Number.isInteger(p) || p < 1) return showToast('Цена должна быть целым числом от 1');
-      if(await adCall('PUT','/api/admin/badge',{ id:b.id, price:p, enabled:en.checked },'Сохранено')){}
-    }));
+    tr.insertCell().textContent = pfNum(b.price)+' '+pfCoins(b.price);
+    tr.insertCell().textContent = b.enabled === false ? 'выключен' : 'да';
   });
   wrap.appendChild(t); box.appendChild(wrap);
 }
