@@ -169,12 +169,12 @@
     var who = mk('div', 'b-who', name); if (user.staff) { who.appendChild(document.createTextNode(' ')); who.appendChild(staffIcon(16)); } panel.appendChild(who);
     panel.appendChild(mk('div', 'b-id', 'Discord ID: ' + user.id));
     if (/^\d+$/.test(user.id)) {
-      var prof = mk('a', 'b-out b-prof', 'Мой профиль'); prof.href = '/#u/' + user.id;
+      var prof = mk('a', 'b-out b-prof', 'Мой профиль'); prof.href = '#u/' + user.id;
       prof.addEventListener('click', function () { el.classList.remove('open'); });
       panel.appendChild(prof);
     }
     if (user.staff) {
-      var adm = mk('a', 'b-out b-prof', 'Админ-панель'); adm.href = '/#admin';
+      var adm = mk('a', 'b-out b-prof', 'Админ-панель'); adm.href = '#admin';
       adm.addEventListener('click', function () { el.classList.remove('open'); });
       panel.appendChild(adm);
     }

@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<script src="/isr-gate.js"></script> 
+<script src="/isr-gate.js?v=6"></script> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>ИСР — Индустриальный Сервер Работяг</title>
 <link id="favicon" rel="icon" type="image/png">
@@ -4403,7 +4403,7 @@ pfEl('pfEditor').addEventListener('input', e => { const on = { pfText:'pfTextOn'
 pfEl('pfEditor').addEventListener('change', e => { if(e.target.type!=='file') pfPreview(); });
 pfEl('pfCopy').addEventListener('click', () => {
   if(!PF.data) return;
-  const link = location.origin + '/#u/' + PF.data.id;
+  const link = location.origin + location.pathname + '#u/' + PF.data.id;
   (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(() => showToast('Ссылка на профиль скопирована'), () => prompt('Ссылка на профиль:', link));
 });
 pfEl('pfMod').addEventListener('click', async () => {
@@ -4441,9 +4441,12 @@ async function adOpen(){
   if(!pfToken()) return adState('Админ-панель доступна только стаффу после входа через Discord.');
   try {
     const r = await pfApi('/api/me');
-    if(!r.ok) return adState('Нет доступа.');
+    if(!r.ok){ const e = await pfJson(r); return adState('Нет доступа ('+r.status+(e.error ? ': '+e.error : '')+').'); }
     const me = await r.json();
-    if(!me.staff) return adState('Нет доступа: админ-панель только для модераторов сайта.');
+    if(!me.staff){
+      const names = (me.roles || []).map(x => (x.name || 'без названия')+' ('+x.id+')').join(', ') || 'ролей нет';
+      return adState('Нет доступа: ни одна из ваших ролей не входит в STAFF_ROLE_ID на Worker. Ваши роли: '+names);
+    }
   } catch(e){ return adState('Нет связи с сервером.'); }
   pfEl('adState').hidden = true; pfEl('adMain').hidden = false;
   adTab('users'); adListReset();
