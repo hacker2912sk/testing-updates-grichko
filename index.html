@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<script src="/isr-gate.js?v=6"></script> 
+<script src="/isr-gate.js?v=7"></script> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>ИСР — Индустриальный Сервер Работяг</title>
 <link id="favicon" rel="icon" type="image/png">
@@ -215,15 +215,20 @@ header.top {
 .brand-text .sub { font-size:9.5px;color:var(--yellow);letter-spacing:.12em;margin-top:3px; }
 
 .top-right { display:flex;align-items:center;gap:12px;flex-shrink:0; }
-@media (max-width:1500px) and (min-width:769px) {
+header.top .brand { min-width:0; }
+header.top .brand-text { min-width:0; overflow:hidden; }
+header.top .brand-text .sub { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+@media (max-width:1450px) and (min-width:1331px) {
+  header.top.has-isr .top-right { gap:5px; }          /* вкладки и кнопки остаются в исходном размере, место плашке даём за счёт промежутков и интервала букв в подписи под «ИСР» */
+  header.top.has-isr .brand-text .sub { letter-spacing:.04em; }
+}
+@media (max-width:1330px) and (min-width:769px) {
   header.top { padding:0 14px; gap:10px; }
   .top-right { gap:8px; }
   header.top nav.tabs { gap:0; }
   header.top nav.tabs button { padding:8px 6px; letter-spacing:.02em; font-size:11px; }
   header.top nav.tabs button::after { left:6px; right:6px; }
   header.top .btn-join-top { padding:9px 10px; }
-}
-@media (max-width:1330px) and (min-width:769px) {
   header.top .brand-text .sub { display:none; }
 }
 @media (max-width:1120px) and (min-width:769px) {
@@ -1072,32 +1077,32 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 .pf-r-rare { color:#4f9dff; } .pf-r-epic { color:#ff8a3d; } .pf-r-legendary { color:#b57cff; }
 .pf-item .btn-outline[disabled] { opacity:.55; cursor:default; }
 /* админ-панель */
-.ad-wrap { max-width:960px; margin:0 auto; padding:40px 0 30px; }
-.ad-box { background:var(--paper); border:2px solid var(--line-strong); box-shadow:0 10px 34px rgba(0,0,0,.18); padding:20px 22px 24px; }
-.ad-box h2 { font-size:22px; display:flex; gap:8px; align-items:center; }
-.ad-tabs { display:flex; gap:6px; flex-wrap:wrap; margin:14px 0; border-bottom:2px solid var(--line-strong); padding-bottom:10px; }
-.ad-tabs button { font:700 12px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; padding:8px 14px; background:transparent; color:var(--ink); border:1px solid var(--line-strong); cursor:pointer; }
-.ad-tabs button.on { background:var(--yellow); color:var(--steel); border-color:var(--yellow); }
-.ad-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0; }
-.ad-row input.input-text, .ad-row select { font:12px 'Space Mono',monospace; min-width:0; }
-.ad-row input.grow { flex:1; min-width:160px; }
-.ad-card { border:1px solid var(--line-strong); padding:14px; margin-top:12px; background:var(--paper-2); }
-.ad-card h3 { font-size:15px; margin:0 0 4px; }
-.ad-meta { font-size:12px; color:var(--ink-soft); word-break:break-all; }
-.ad-sec { margin-top:14px; padding-top:12px; border-top:1px dashed var(--line-strong); }
-.ad-sec > b { display:block; font:700 11px 'Space Mono',monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:6px; }
-.ad-imgs { display:flex; gap:16px; flex-wrap:wrap; }
-.ad-img { display:flex; flex-direction:column; gap:4px; align-items:flex-start; font-size:12px; }
-.ad-img img { max-width:150px; max-height:70px; border:1px solid var(--line-strong); object-fit:cover; display:block; }
-.ad-danger { color:#e06b5a !important; border-color:#e06b5a !important; }
-.ad-table { width:100%; border-collapse:collapse; font-size:13px; }
-.ad-table th, .ad-table td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line-strong); vertical-align:middle; }
-.ad-table th { font:700 11px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
-.ad-table input[type=number] { width:100px; font:12px 'Space Mono',monospace; }
-.ad-table img { width:34px; height:34px; border-radius:8px; vertical-align:middle; }
-.ad-scroll { overflow-x:auto; }
-.ad-card a { color:var(--yellow); }
-.ad-row select { max-width:260px; }
+.stf-wrap { max-width:960px; margin:0 auto; padding:40px 0 30px; }
+.stf-box { background:var(--paper); border:2px solid var(--line-strong); box-shadow:0 10px 34px rgba(0,0,0,.18); padding:20px 22px 24px; }
+.stf-box h2 { font-size:22px; display:flex; gap:8px; align-items:center; }
+.stf-tabs { display:flex; gap:6px; flex-wrap:wrap; margin:14px 0; border-bottom:2px solid var(--line-strong); padding-bottom:10px; }
+.stf-tabs button { font:700 12px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; padding:8px 14px; background:transparent; color:var(--ink); border:1px solid var(--line-strong); cursor:pointer; }
+.stf-tabs button.on { background:var(--yellow); color:var(--steel); border-color:var(--yellow); }
+.stf-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0; }
+.stf-row input.input-text, .stf-row select { font:12px 'Space Mono',monospace; min-width:0; }
+.stf-row input.grow { flex:1; min-width:160px; }
+.stf-card { border:1px solid var(--line-strong); padding:14px; margin-top:12px; background:var(--paper-2); }
+.stf-card h3 { font-size:15px; margin:0 0 4px; }
+.stf-meta { font-size:12px; color:var(--ink-soft); word-break:break-all; }
+.stf-sec { margin-top:14px; padding-top:12px; border-top:1px dashed var(--line-strong); }
+.stf-sec > b { display:block; font:700 11px 'Space Mono',monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--yellow-deep); margin-bottom:6px; }
+.stf-imgs { display:flex; gap:16px; flex-wrap:wrap; }
+.stf-img { display:flex; flex-direction:column; gap:4px; align-items:flex-start; font-size:12px; }
+.stf-img img { max-width:150px; max-height:70px; border:1px solid var(--line-strong); object-fit:cover; display:block; }
+.stf-danger { color:#e06b5a !important; border-color:#e06b5a !important; }
+.stf-table { width:100%; border-collapse:collapse; font-size:13px; }
+.stf-table th, .stf-table td { text-align:left; padding:8px 6px; border-bottom:1px solid var(--line-strong); vertical-align:middle; }
+.stf-table th { font:700 11px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+.stf-table input[type=number] { width:100px; font:12px 'Space Mono',monospace; }
+.stf-table img { width:34px; height:34px; border-radius:8px; vertical-align:middle; }
+.stf-scroll { overflow-x:auto; }
+.stf-card a { color:var(--yellow); }
+.stf-row select { max-width:260px; }
 #profile, #pfShop { color:var(--ink); }
 .pf-colors { display:grid; gap:8px; margin-top:10px; }
 .pf-cr { display:flex; align-items:center; gap:8px; font-size:13px; flex-wrap:wrap; }
@@ -1113,16 +1118,16 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 .pf-modal-box h3 { font-size:16px; margin:0 40px 4px 0; }
 .pf-modal-x { position:absolute; right:12px; top:12px; width:34px; height:34px; border:1px solid var(--line-strong); background:transparent; color:var(--ink); font-size:16px; cursor:pointer; }
 .pf-modal-x:hover { background:var(--yellow); color:var(--pf-on, var(--steel)); }
-.ad-list { max-height:360px; overflow:auto; border:1px solid var(--line-strong); margin-top:6px; }
-.ad-urow { display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:8px 12px; border:0; border-bottom:1px solid var(--line-strong); background:transparent; color:var(--ink); cursor:pointer; font:inherit; }
-.ad-urow:hover { background:var(--paper-2); }
-.ad-urow[hidden] { display:none; }
-.ad-uava { width:32px; height:32px; border-radius:50%; overflow:hidden; background:var(--yellow); color:var(--steel); display:grid; place-items:center; font-weight:700; flex:none; }
-.ad-uava img { width:100%; height:100%; object-fit:cover; display:block; }
-.ad-utxt { display:flex; flex-direction:column; min-width:0; flex:1; }
-.ad-utxt small { font:11px 'Space Mono',monospace; color:var(--ink-soft); }
-.ad-more { padding:10px; text-align:center; font-size:12px; color:var(--ink-soft); }
-.ad-state { text-align:center; color:var(--ink-soft); padding:20px; }
+.stf-list { max-height:360px; overflow:auto; border:1px solid var(--line-strong); margin-top:6px; }
+.stf-urow { display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:8px 12px; border:0; border-bottom:1px solid var(--line-strong); background:transparent; color:var(--ink); cursor:pointer; font:inherit; }
+.stf-urow:hover { background:var(--paper-2); }
+.stf-urow[hidden] { display:none; }
+.stf-uava { width:32px; height:32px; border-radius:50%; overflow:hidden; background:var(--yellow); color:var(--steel); display:grid; place-items:center; font-weight:700; flex:none; }
+.stf-uava img { width:100%; height:100%; object-fit:cover; display:block; }
+.stf-utxt { display:flex; flex-direction:column; min-width:0; flex:1; }
+.stf-utxt small { font:11px 'Space Mono',monospace; color:var(--ink-soft); }
+.stf-more { padding:10px; text-align:center; font-size:12px; color:var(--ink-soft); }
+.stf-state { text-align:center; color:var(--ink-soft); padding:20px; }
 </style>
 </head>
 <body>
@@ -1635,27 +1640,27 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
   </section>
 
   <!-- ADMIN PANEL (#admin) -->
-  <section class="page" id="admin">
-    <div class="ad-wrap">
-      <div class="ad-box">
-        <h2 class="display-font"><span id="adIcon"></span> Админ-панель</h2>
-        <div class="ad-state" id="adState">Проверка доступа…</div>
-        <div id="adMain" hidden>
-          <div class="ad-tabs" id="adTabs">
+  <section class="page" id="staffpanel">
+    <div class="stf-wrap">
+      <div class="stf-box">
+        <h2 class="display-font"><span id="stfIcon"></span> Админ-панель</h2>
+        <div class="stf-state" id="stfState">Проверка доступа…</div>
+        <div id="stfMain" hidden>
+          <div class="stf-tabs" id="stfTabs">
             <button type="button" data-tab="users" class="on">Игроки</button>
             <button type="button" data-tab="bans">Баны</button>
             <button type="button" data-tab="badges">Бейджи</button>
           </div>
-          <div id="adUsers">
-            <div class="ad-row"><input class="input-text grow" id="adId" placeholder="Discord ID игрока (17–19 цифр)" inputmode="numeric" maxlength="25" autocomplete="off"><button class="btn-outline" id="adFind" type="button">Найти</button></div>
-            <div id="adUser"></div>
-            <div class="ad-sec" style="margin-top:18px;"><b>Все пользователи сайта</b>
-              <div class="ad-row"><input class="input-text grow" id="adFilter" placeholder="Фильтр по нику или ID среди загруженных"></div>
-              <div class="ad-list" id="adListBox"><div id="adList"></div><div class="ad-more" id="adMore"></div></div>
+          <div id="stfUsers">
+            <div class="stf-row"><input class="input-text grow" id="stfId" placeholder="Discord ID игрока (17–19 цифр)" inputmode="numeric" maxlength="25" autocomplete="off"><button class="btn-outline" id="stfFind" type="button">Найти</button></div>
+            <div id="stfUser"></div>
+            <div class="stf-sec" style="margin-top:18px;"><b>Все пользователи сайта</b>
+              <div class="stf-row"><input class="input-text grow" id="stfFilter" placeholder="Фильтр по нику или ID среди загруженных"></div>
+              <div class="stf-list" id="stfListBox"><div id="stfList"></div><div class="stf-more" id="stfMore"></div></div>
             </div>
           </div>
-          <div id="adBans" hidden></div>
-          <div id="adBadges" hidden></div>
+          <div id="stfBans" hidden></div>
+          <div id="stfBadges" hidden></div>
         </div>
       </div>
     </div>
@@ -2017,7 +2022,7 @@ function showPage(id){
   document.querySelectorAll('#'+id+' .reveal, #'+id+' .stagger').forEach(el=>io.observe(el));
   setTimeout(forceRevealVisible, 60);
   if(id==='updates' || id==='announcements') markPageSeen(id);
-  if((id!=='profile' && /^#u\//.test(location.hash)) || (id!=='admin' && location.hash==='#admin')) history.replaceState(null,'',location.pathname+location.search);
+  if((id!=='profile' && /^#u\//.test(location.hash)) || (id!=='staffpanel' && location.hash==='#admin')) history.replaceState(null,'',location.pathname+location.search);
 }
 allTabs.forEach(t=>{ if(t.dataset.page) t.addEventListener('click',()=>showPage(t.dataset.page)); });
 
@@ -4433,10 +4438,10 @@ pfEl('pfSave').addEventListener('click', async () => {
    АДМИН-ПАНЕЛЬ (#admin). Видна только стаффу; все действия проверяет Worker.
 ============================================================ */
 const AD = { prefill:null, ready:false, cat:null };
-function adState(msg){ pfEl('adMain').hidden = true; const s = pfEl('adState'); s.hidden = false; s.textContent = msg; }
+function adState(msg){ pfEl('stfMain').hidden = true; const s = pfEl('stfState'); s.hidden = false; s.textContent = msg; }
 async function adOpen(){
-  showPage('admin');
-  const ic = pfEl('adIcon'); ic.textContent = ''; ic.appendChild(pfStaffIcon(26));
+  showPage('staffpanel');
+  const ic = pfEl('stfIcon'); ic.textContent = ''; ic.appendChild(pfStaffIcon(26));
   adState('Проверка доступа…');
   if(!pfToken()) return adState('Админ-панель доступна только стаффу после входа через Discord.');
   try {
@@ -4448,16 +4453,17 @@ async function adOpen(){
       return adState('Нет доступа: ни одна из ваших ролей не входит в STAFF_ROLE_ID на Worker. Ваши роли: '+names);
     }
   } catch(e){ return adState('Нет связи с сервером.'); }
-  pfEl('adState').hidden = true; pfEl('adMain').hidden = false;
+  pfEl('stfState').hidden = true; pfEl('stfMain').hidden = false;
+  setTimeout(() => { const bx = document.querySelector('#staffpanel .stf-box'); if(!bx || bx.offsetHeight===0 || getComputedStyle(bx).display==='none') showToast('Админ-панель скрыта расширением браузера (блокировщиком рекламы). Отключите его для этого сайта.'); }, 700);
   adTab('users'); adListReset();
-  if(AD.prefill){ pfEl('adId').value = AD.prefill; AD.prefill = null; adFind(); }
+  if(AD.prefill){ pfEl('stfId').value = AD.prefill; AD.prefill = null; adFind(); }
 }
 function adTab(t){
-  document.querySelectorAll('#adTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab===t));
-  pfEl('adUsers').hidden = t!=='users'; pfEl('adBans').hidden = t!=='bans'; pfEl('adBadges').hidden = t!=='badges';
+  document.querySelectorAll('#stfTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab===t));
+  pfEl('stfUsers').hidden = t!=='users'; pfEl('stfBans').hidden = t!=='bans'; pfEl('stfBadges').hidden = t!=='badges';
   if(t==='bans') adLoadBans(); if(t==='badges') adLoadBadges();
 }
-pfEl('adTabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if(b) adTab(b.dataset.tab); });
+pfEl('stfTabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if(b) adTab(b.dataset.tab); });
 const adErr = { forbidden:'Нет прав', target_protected:'Нельзя: это стафф или вы сами', not_found:'Не найдено', bad_body:'Неверные данные', bad_value:'Неверное значение' };
 async function adCall(method, path, body, okMsg){
   try {
@@ -4474,79 +4480,79 @@ function adDurSelect(){ const sel = document.createElement('select'); sel.classN
 const adBtn = (text, fn, cls) => { const b = pfMk('button','btn-outline'+(cls?' '+cls:''),text); b.type='button'; b.addEventListener('click', fn); return b; };
 
 async function adFind(){
-  const id = pfEl('adId').value.trim(), box = pfEl('adUser'); box.textContent = '';
-  if(!PF_ID_RE.test(id)){ box.appendChild(pfMk('div','ad-state','Введите Discord ID: только цифры (5–25).')); return; }
-  box.appendChild(pfMk('div','ad-state','Ищу…'));
+  const id = pfEl('stfId').value.trim(), box = pfEl('stfUser'); box.textContent = '';
+  if(!PF_ID_RE.test(id)){ box.appendChild(pfMk('div','stf-state','Введите Discord ID: только цифры (5–25).')); return; }
+  box.appendChild(pfMk('div','stf-state','Ищу…'));
   let d = null, banList = [];
   try {
     const [r, br] = await Promise.all([pfApi('/api/profile/'+id), pfApi('/api/admin/bans')]);
     if(br.ok) banList = (await br.json()).bans || [];
-    if(r.ok) d = await r.json(); else if(r.status!==404){ box.textContent = ''; box.appendChild(pfMk('div','ad-state','Ошибка '+r.status)); return; }
-  } catch(e){ box.textContent = ''; box.appendChild(pfMk('div','ad-state','Нет связи с сервером.')); return; }
+    if(r.ok) d = await r.json(); else if(r.status!==404){ box.textContent = ''; box.appendChild(pfMk('div','stf-state','Ошибка '+r.status)); return; }
+  } catch(e){ box.textContent = ''; box.appendChild(pfMk('div','stf-state','Нет связи с сервером.')); return; }
   const bn = banList.find(b => b.id===id);
   adRenderUser(id, d, bn && !(bn.until && bn.until <= Date.now()) ? bn : null);
 }
 function adRenderUser(id, d, ban){
-  const box = pfEl('adUser'); box.textContent = '';
-  const card = pfMk('div','ad-card');
+  const box = pfEl('stfUser'); box.textContent = '';
+  const card = pfMk('div','stf-card');
   card.appendChild(pfMk('h3',null, d ? (d.name||'Игрок') : 'Профиль не найден'));
-  card.appendChild(pfMk('div','ad-meta','Discord ID: '+id));
+  card.appendChild(pfMk('div','stf-meta','Discord ID: '+id));
   const refresh = () => adFind();
   if(d){
     const flags = []; if(d.modHidden) flags.push('скрыт модератором'); if(d.hidden) flags.push('скрыт владельцем'); if(d.staff) flags.push('стафф');
-    if(flags.length) card.appendChild(pfMk('div','ad-meta','Статус: '+flags.join(', ')));
+    if(flags.length) card.appendChild(pfMk('div','stf-meta','Статус: '+flags.join(', ')));
     const a = pfMk('a',null,'Открыть профиль'); a.href = '#u/'+id; a.style.cssText = 'font-size:12px;text-decoration:underline;'; card.appendChild(a);
     // картинки
-    const sec = pfMk('div','ad-sec'); sec.appendChild(pfMk('b',null,'Картинки'));
-    const row = pfMk('div','ad-imgs');
+    const sec = pfMk('div','stf-sec'); sec.appendChild(pfMk('b',null,'Картинки'));
+    const row = pfMk('div','stf-imgs');
     [['banner','Баннер'],['bg','Фон']].forEach(([k, label]) => {
-      const cell = pfMk('div','ad-img'); cell.appendChild(pfMk('span',null,label));
+      const cell = pfMk('div','stf-img'); cell.appendChild(pfMk('span',null,label));
       if(d.img && d.img[k]){
         const im = new Image(); im.alt = label; cell.appendChild(im);
         pfImg(id,k,d.img[k]).then(u => { im.src = u; }).catch(() => {});
-        cell.appendChild(adBtn('Удалить', async () => { if(!confirm('Удалить картинку «'+label+'» игрока?')) return; if(await adCall('DELETE','/api/admin/img/'+id+'/'+k,undefined,'Картинка удалена')) refresh(); }, 'ad-danger'));
-      } else cell.appendChild(pfMk('span','ad-meta','нет'));
+        cell.appendChild(adBtn('Удалить', async () => { if(!confirm('Удалить картинку «'+label+'» игрока?')) return; if(await adCall('DELETE','/api/admin/img/'+id+'/'+k,undefined,'Картинка удалена')) refresh(); }, 'stf-danger'));
+      } else cell.appendChild(pfMk('span','stf-meta','нет'));
       row.appendChild(cell);
     });
     sec.appendChild(row); card.appendChild(sec);
     // бейджи
-    const bs = pfMk('div','ad-sec'); bs.appendChild(pfMk('b',null,'Бейджи'));
-    const owned = pfMk('div','ad-row');
-    if(!(d.badges||[]).length) owned.appendChild(pfMk('span','ad-meta','нет бейджей'));
-    (d.badges||[]).forEach(bid => { if(!PF_NAMES[bid]) return; const c = pfMk('span','pf-tag',PF_NAMES[bid]+' '); c.appendChild(adBtn('Забрать', async () => { if(await adCall('POST','/api/admin/grant',{ id, badge:bid, grant:false },'Бейдж забран')) refresh(); }, 'ad-danger')); owned.appendChild(c); });
+    const bs = pfMk('div','stf-sec'); bs.appendChild(pfMk('b',null,'Бейджи'));
+    const owned = pfMk('div','stf-row');
+    if(!(d.badges||[]).length) owned.appendChild(pfMk('span','stf-meta','нет бейджей'));
+    (d.badges||[]).forEach(bid => { if(!PF_NAMES[bid]) return; const c = pfMk('span','pf-tag',PF_NAMES[bid]+' '); c.appendChild(adBtn('Забрать', async () => { if(await adCall('POST','/api/admin/grant',{ id, badge:bid, grant:false },'Бейдж забран')) refresh(); }, 'stf-danger')); owned.appendChild(c); });
     bs.appendChild(owned);
-    const gr = pfMk('div','ad-row'); const sel = document.createElement('select'); sel.className = 'input-text';
+    const gr = pfMk('div','stf-row'); const sel = document.createElement('select'); sel.className = 'input-text';
     Object.keys(PF_NAMES).filter(k => !(d.badges||[]).includes(k)).forEach(k => { const o = document.createElement('option'); o.value = k; o.textContent = PF_NAMES[k]; sel.appendChild(o); });
     if(sel.options.length){ gr.appendChild(sel); gr.appendChild(adBtn('Выдать бейдж', async () => { if(await adCall('POST','/api/admin/grant',{ id, badge:sel.value, grant:true },'Бейдж выдан')) refresh(); })); }
     bs.appendChild(gr); card.appendChild(bs);
     // профиль
-    const ps = pfMk('div','ad-sec'); ps.appendChild(pfMk('b',null,'Профиль'));
-    const pr = pfMk('div','ad-row');
+    const ps = pfMk('div','stf-sec'); ps.appendChild(pfMk('b',null,'Профиль'));
+    const pr = pfMk('div','stf-row');
     pr.appendChild(adBtn(d.modHidden ? 'Вернуть профиль' : 'Скрыть профиль', async () => { if(await adCall('PUT','/api/profile/'+id,{ modHidden:!d.modHidden }, d.modHidden?'Профиль возвращён':'Профиль скрыт')) refresh(); }));
-    pr.appendChild(adBtn('Удалить профиль', async () => { if(!confirm('Удалить профиль «'+(d.name||id)+'» вместе со всеми картинками и бейджами? Это нельзя отменить.')) return; if(await adCall('DELETE','/api/admin/profile/'+id,undefined,'Профиль удалён')) refresh(); }, 'ad-danger'));
+    pr.appendChild(adBtn('Удалить профиль', async () => { if(!confirm('Удалить профиль «'+(d.name||id)+'» вместе со всеми картинками и бейджами? Это нельзя отменить.')) return; if(await adCall('DELETE','/api/admin/profile/'+id,undefined,'Профиль удалён')) refresh(); }, 'stf-danger'));
     ps.appendChild(pr); card.appendChild(ps);
   }
   // баны
-  const ks = pfMk('div','ad-sec'); ks.appendChild(pfMk('b',null,'Бан'));
+  const ks = pfMk('div','stf-sec'); ks.appendChild(pfMk('b',null,'Бан'));
   if(ban){
-    ks.appendChild(pfMk('div','ad-meta','Сейчас: '+(ban.kind==='site' ? 'вход на сайт закрыт' : 'запрещён профиль')+(ban.reason ? ' — '+ban.reason : '')+' ('+(ban.byName||'')+', '+adDate(ban.at)+') · '+adUntil(ban)));
-    const r = pfMk('div','ad-row'); r.appendChild(adBtn('Снять бан', async () => { if(await adCall('DELETE','/api/admin/ban/'+id,undefined,'Бан снят')) refresh(); })); ks.appendChild(r);
+    ks.appendChild(pfMk('div','stf-meta','Сейчас: '+(ban.kind==='site' ? 'вход на сайт закрыт' : 'запрещён профиль')+(ban.reason ? ' — '+ban.reason : '')+' ('+(ban.byName||'')+', '+adDate(ban.at)+') · '+adUntil(ban)));
+    const r = pfMk('div','stf-row'); r.appendChild(adBtn('Снять бан', async () => { if(await adCall('DELETE','/api/admin/ban/'+id,undefined,'Бан снят')) refresh(); })); ks.appendChild(r);
   } else {
-    if(!d) ks.appendChild(pfMk('div','ad-meta','Можно заблокировать заранее: человек не сможет создать аккаунт.'));
-    const r = pfMk('div','ad-row'); const reason = pfMk('input','input-text grow'); reason.placeholder = 'Причина (до 200 символов)'; reason.maxLength = 200; r.appendChild(reason); const dur = adDurSelect(); r.appendChild(dur);
-    r.appendChild(adBtn('Закрыть вход (бан)', async () => { if(!confirm('Закрыть этому игроку вход на сайт?')) return; if(await adCall('PUT','/api/admin/ban',{ id, kind:'site', reason:reason.value, duration:+dur.value },'Игрок заблокирован')) refresh(); }, 'ad-danger'));
-    r.appendChild(adBtn('Запретить профиль', async () => { if(await adCall('PUT','/api/admin/ban',{ id, kind:'profile', reason:reason.value, duration:+dur.value },'Профиль запрещён')) refresh(); }, 'ad-danger'));
+    if(!d) ks.appendChild(pfMk('div','stf-meta','Можно заблокировать заранее: человек не сможет создать аккаунт.'));
+    const r = pfMk('div','stf-row'); const reason = pfMk('input','input-text grow'); reason.placeholder = 'Причина (до 200 символов)'; reason.maxLength = 200; r.appendChild(reason); const dur = adDurSelect(); r.appendChild(dur);
+    r.appendChild(adBtn('Закрыть вход (бан)', async () => { if(!confirm('Закрыть этому игроку вход на сайт?')) return; if(await adCall('PUT','/api/admin/ban',{ id, kind:'site', reason:reason.value, duration:+dur.value },'Игрок заблокирован')) refresh(); }, 'stf-danger'));
+    r.appendChild(adBtn('Запретить профиль', async () => { if(await adCall('PUT','/api/admin/ban',{ id, kind:'profile', reason:reason.value, duration:+dur.value },'Профиль запрещён')) refresh(); }, 'stf-danger'));
     ks.appendChild(r);
   }
   card.appendChild(ks); box.appendChild(card);
 }
 /* все пользователи сайта: порциями по 50, следующая порция подгружается при прокрутке списка */
 const AD_LIST = { cursor:null, loading:false, done:false, n:0 };
-function adListReset(){ Object.assign(AD_LIST, { cursor:null, loading:false, done:false, n:0 }); pfEl('adList').textContent = ''; adListMore(); }
+function adListReset(){ Object.assign(AD_LIST, { cursor:null, loading:false, done:false, n:0 }); pfEl('stfList').textContent = ''; adListMore(); }
 async function adListMore(){
   if(AD_LIST.loading || AD_LIST.done) return;
   AD_LIST.loading = true;
-  const more = pfEl('adMore'); more.textContent = 'Загрузка…';
+  const more = pfEl('stfMore'); more.textContent = 'Загрузка…';
   const d = await adCall('GET','/api/admin/users'+(AD_LIST.cursor ? '?cursor='+encodeURIComponent(AD_LIST.cursor) : ''));
   AD_LIST.loading = false; more.textContent = '';
   if(!d){ more.appendChild(adBtn('Повторить', adListMore)); return; }
@@ -4556,44 +4562,44 @@ async function adListMore(){
   if(AD_LIST.done) more.textContent = AD_LIST.n ? 'Показаны все: '+AD_LIST.n : 'Пользователей пока нет';
   else {
     more.appendChild(adBtn('Загрузить ещё', adListMore));
-    const box = pfEl('adListBox');                                   // если конец списка уже на виду, грузим дальше сами
-    if(!pfEl('adUsers').hidden && more.getBoundingClientRect().top < box.getBoundingClientRect().bottom + 80) setTimeout(adListMore, 60);
+    const box = pfEl('stfListBox');                                   // если конец списка уже на виду, грузим дальше сами
+    if(!pfEl('stfUsers').hidden && more.getBoundingClientRect().top < box.getBoundingClientRect().bottom + 80) setTimeout(adListMore, 60);
   }
 }
 function adListRow(u){
-  const row = pfMk('button','ad-urow'); row.type = 'button'; row.dataset.q = ((u.name||'')+' '+u.id).toLowerCase();
-  const av = pfMk('span','ad-uava'), first = (u.name||'?').charAt(0).toUpperCase();
+  const row = pfMk('button','stf-urow'); row.type = 'button'; row.dataset.q = ((u.name||'')+' '+u.id).toLowerCase();
+  const av = pfMk('span','stf-uava'), first = (u.name||'?').charAt(0).toUpperCase();
   if(u.avatar && PF_HASH_RE.test(u.avatar) && PF_ID_RE.test(u.id)){ const im = new Image(); im.alt = ''; im.src = 'https://cdn.discordapp.com/avatars/'+u.id+'/'+u.avatar+'.png?size=64'; im.onerror = () => { av.textContent = first; }; av.appendChild(im); } else av.textContent = first;
   row.appendChild(av);
-  const t = pfMk('span','ad-utxt'); t.appendChild(pfMk('b',null,u.name || '(без имени)')); t.appendChild(pfMk('small',null,u.id)); row.appendChild(t);
+  const t = pfMk('span','stf-utxt'); t.appendChild(pfMk('b',null,u.name || '(без имени)')); t.appendChild(pfMk('small',null,u.id)); row.appendChild(t);
   if(u.hidden) row.appendChild(pfMk('span','pf-tag','скрыт'));
-  row.addEventListener('click', () => { pfEl('adId').value = u.id; adFind(); pfEl('adUser').scrollIntoView({ behavior:'smooth', block:'nearest' }); });
-  pfEl('adList').appendChild(row);
+  row.addEventListener('click', () => { pfEl('stfId').value = u.id; adFind(); pfEl('stfUser').scrollIntoView({ behavior:'smooth', block:'nearest' }); });
+  pfEl('stfList').appendChild(row);
 }
-function adListFilter(){ const q = pfEl('adFilter').value.trim().toLowerCase(); pfEl('adList').querySelectorAll('.ad-urow').forEach(r => { r.hidden = !!q && !r.dataset.q.includes(q); }); }
-pfEl('adFilter').addEventListener('input', adListFilter);
-pfEl('adListBox').addEventListener('scroll', () => { const b = pfEl('adListBox'); if(b.scrollTop + b.clientHeight >= b.scrollHeight - 120) adListMore(); });
-if('IntersectionObserver' in window) new IntersectionObserver(es => { if(es.some(e => e.isIntersecting) && !pfEl('adUsers').hidden) adListMore(); }, { root:pfEl('adListBox'), rootMargin:'120px' }).observe(pfEl('adMore'));
-pfEl('adFind').addEventListener('click', adFind);
-pfEl('adId').addEventListener('keydown', e => { if(e.key==='Enter') adFind(); });
+function adListFilter(){ const q = pfEl('stfFilter').value.trim().toLowerCase(); pfEl('stfList').querySelectorAll('.stf-urow').forEach(r => { r.hidden = !!q && !r.dataset.q.includes(q); }); }
+pfEl('stfFilter').addEventListener('input', adListFilter);
+pfEl('stfListBox').addEventListener('scroll', () => { const b = pfEl('stfListBox'); if(b.scrollTop + b.clientHeight >= b.scrollHeight - 120) adListMore(); });
+if('IntersectionObserver' in window) new IntersectionObserver(es => { if(es.some(e => e.isIntersecting) && !pfEl('stfUsers').hidden) adListMore(); }, { root:pfEl('stfListBox'), rootMargin:'120px' }).observe(pfEl('stfMore'));
+pfEl('stfFind').addEventListener('click', adFind);
+pfEl('stfId').addEventListener('keydown', e => { if(e.key==='Enter') adFind(); });
 
 async function adLoadBans(){
-  const box = pfEl('adBans'); box.textContent = ''; box.appendChild(pfMk('div','ad-state','Загрузка…'));
+  const box = pfEl('stfBans'); box.textContent = ''; box.appendChild(pfMk('div','stf-state','Загрузка…'));
   const d = await adCall('GET','/api/admin/bans'); box.textContent = '';
-  if(!d){ box.appendChild(pfMk('div','ad-state','Не удалось загрузить список.')); return; }
-  const add = pfMk('div','ad-row'); const idIn = pfMk('input','input-text'); idIn.placeholder = 'Discord ID'; idIn.maxLength = 25; idIn.inputMode = 'numeric';
+  if(!d){ box.appendChild(pfMk('div','stf-state','Не удалось загрузить список.')); return; }
+  const add = pfMk('div','stf-row'); const idIn = pfMk('input','input-text'); idIn.placeholder = 'Discord ID'; idIn.maxLength = 25; idIn.inputMode = 'numeric';
   const kind = document.createElement('select'); kind.className = 'input-text'; [['site','Закрыть вход'],['profile','Запретить профиль']].forEach(([v,t]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; kind.appendChild(o); });
   const why = pfMk('input','input-text grow'); why.placeholder = 'Причина'; why.maxLength = 200;
   const bdur = adDurSelect(); add.appendChild(idIn); add.appendChild(kind); add.appendChild(bdur); add.appendChild(why);
-  add.appendChild(adBtn('Добавить', async () => { if(!PF_ID_RE.test(idIn.value.trim())) return showToast('Нужен Discord ID из цифр'); if(await adCall('PUT','/api/admin/ban',{ id:idIn.value.trim(), kind:kind.value, reason:why.value, duration:+bdur.value },'Бан добавлен')) adLoadBans(); }, 'ad-danger'));
+  add.appendChild(adBtn('Добавить', async () => { if(!PF_ID_RE.test(idIn.value.trim())) return showToast('Нужен Discord ID из цифр'); if(await adCall('PUT','/api/admin/ban',{ id:idIn.value.trim(), kind:kind.value, reason:why.value, duration:+bdur.value },'Бан добавлен')) adLoadBans(); }, 'stf-danger'));
   box.appendChild(add);
-  if(!d.bans.length){ box.appendChild(pfMk('div','ad-state','Банов нет.')); return; }
-  const wrap = pfMk('div','ad-scroll'); const t = pfMk('table','ad-table');
+  if(!d.bans.length){ box.appendChild(pfMk('div','stf-state','Банов нет.')); return; }
+  const wrap = pfMk('div','stf-scroll'); const t = pfMk('table','stf-table');
   const hr = t.createTHead().insertRow(); ['ID','Тип','Причина','Кто','Когда','Срок',''].forEach(h => hr.appendChild(pfMk('th',null,h)));
   const tb = t.createTBody();
   d.bans.forEach(b => {
     const tr = tb.insertRow();
-    const idc = tr.insertCell(); const a = pfMk('a',null,b.id); a.href = '#admin'; a.addEventListener('click', e => { e.preventDefault(); adTab('users'); pfEl('adId').value = b.id; adFind(); }); idc.appendChild(a);
+    const idc = tr.insertCell(); const a = pfMk('a',null,b.id); a.href = '#admin'; a.addEventListener('click', e => { e.preventDefault(); adTab('users'); pfEl('stfId').value = b.id; adFind(); }); idc.appendChild(a);
     tr.insertCell().textContent = b.kind==='site' ? 'вход закрыт' : 'профиль запрещён';
     tr.insertCell().textContent = b.reason || '';
     tr.insertCell().textContent = b.byName || '';
@@ -4605,11 +4611,11 @@ async function adLoadBans(){
 }
 
 async function adLoadBadges(){
-  const box = pfEl('adBadges'); box.textContent = ''; box.appendChild(pfMk('div','ad-state','Загрузка…'));
+  const box = pfEl('stfBadges'); box.textContent = ''; box.appendChild(pfMk('div','stf-state','Загрузка…'));
   const d = await adCall('GET','/api/admin/badges'); box.textContent = '';
-  if(!d){ box.appendChild(pfMk('div','ad-state','Не удалось загрузить каталог.')); return; }
+  if(!d){ box.appendChild(pfMk('div','stf-state','Не удалось загрузить каталог.')); return; }
   box.appendChild(pfMk('p','pf-hint','Каталог только для просмотра. Цены и доступность бейджей задаются в настройках Worker (переменная BADGES_SHOP), в админ-панели их менять нельзя. Выдать или забрать бейдж у игрока можно на вкладке «Игроки».'));
-  const wrap = pfMk('div','ad-scroll'); const t = pfMk('table','ad-table');
+  const wrap = pfMk('div','stf-scroll'); const t = pfMk('table','stf-table');
   const hr = t.createTHead().insertRow(); ['','Бейдж','Цена','В продаже'].forEach(h => hr.appendChild(pfMk('th',null,h)));
   const tb = t.createTBody();
   d.catalog.forEach(b => {
