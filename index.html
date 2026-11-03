@@ -1127,6 +1127,20 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 .stf-utxt { display:flex; flex-direction:column; min-width:0; flex:1; }
 .stf-utxt small { font:11px 'Space Mono',monospace; color:var(--ink-soft); }
 .stf-more { padding:10px; text-align:center; font-size:12px; color:var(--ink-soft); }
+.stf-lrow { display:grid; grid-template-columns:150px 150px 190px 1fr; gap:4px 10px; padding:8px 12px; border-bottom:1px solid var(--line-strong); font-size:13px; align-items:baseline; }
+.stf-lrow:hover { background:var(--paper-2); }
+.stf-lrow[hidden] { display:none; }
+.stf-lrow .t { font:11px 'Space Mono',monospace; color:var(--ink-soft); }
+.stf-lrow .act { font-weight:700; }
+.stf-lrow .act.ai { color:var(--yellow); }
+.stf-lrow a { color:var(--yellow); cursor:pointer; text-decoration:underline; word-break:break-all; }
+.stf-lrow .det { color:var(--ink-soft); overflow-wrap:anywhere; }
+.stf-rev { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; }
+.stf-rev .th { width:220px; height:110px; border:1px solid var(--line-strong); background:var(--paper-2); object-fit:cover; display:block; flex:none; }
+.stf-rev .inf { flex:1; min-width:220px; display:flex; flex-direction:column; gap:6px; }
+.stf-cat { display:inline-block; font:700 10px 'Space Mono',monospace; padding:2px 7px; border:1px solid #e06b5a; color:#e06b5a; border-radius:999px; margin-right:5px; }
+.stf-note { font-size:12px; color:var(--ink-soft); }
+@media (max-width:760px){ .stf-lrow { grid-template-columns:1fr 1fr; } .stf-lrow .det { grid-column:1 / -1; } }
 .stf-state { text-align:center; color:var(--ink-soft); padding:20px; }
 </style>
 </head>
@@ -1567,7 +1581,7 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 
         <div class="pf-editor" id="pfEditor" hidden>
           <h3>Настройки профиля</h3>
-          <p class="pf-hint">Градиенты, описание и размытие видны сразу, но сохраняются кнопкой «Сохранить». Картинки загружаются сразу после выбора файла (JPEG, PNG или WebP, они сжимаются автоматически).</p>
+          <p class="pf-hint">Градиенты, описание и размытие видны сразу, но сохраняются кнопкой «Сохранить». Картинки загружаются сразу после выбора файла (JPEG, PNG или WebP, до 5 МБ; они сжимаются автоматически).</p>
           <div class="pf-grid">
             <div class="pf-field">
               <span class="pf-lbl">Баннер</span>
@@ -1650,6 +1664,8 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
             <button type="button" data-tab="users" class="on">Игроки</button>
             <button type="button" data-tab="bans">Баны</button>
             <button type="button" data-tab="badges">Бейджи</button>
+            <button type="button" data-tab="review" id="stfRevTab">Проверка</button>
+            <button type="button" data-tab="logs">Логи</button>
           </div>
           <div id="stfUsers">
             <div class="stf-row"><input class="input-text grow" id="stfId" placeholder="Discord ID игрока (17–19 цифр)" inputmode="numeric" maxlength="25" autocomplete="off"><button class="btn-outline" id="stfFind" type="button">Найти</button></div>
@@ -1661,6 +1677,8 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
           </div>
           <div id="stfBans" hidden></div>
           <div id="stfBadges" hidden></div>
+          <div id="stfReview" hidden></div>
+          <div id="stfLogs" hidden></div>
         </div>
       </div>
     </div>
@@ -4007,6 +4025,8 @@ window.__pfLeave = id => { if(id !== 'profile'){ document.getElementById('pfBg')
 const PF_HASH_RE = /^[a-zA-Z0-9_]{1,64}$/;
 const PF_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
 const PF_ID_RE = /^\d{5,25}$/;
+const PF_CATS = { sexual:'18+ / порнография', minors:'сексуализация несовершеннолетних', nazi:'нацистская символика', extremism:'экстремизм / терроризм', hate:'ненависть / дискриминация', gore:'жестокость / шок-контент', self_harm:'самоповреждение', illegal:'незаконный контент', other:'запрещённый контент' };
+const pfCatText = arr => (arr || []).map(c => PF_CATS[c] || null).filter(Boolean).join(', ');
 const PF_RARITY = { common:['Обычный',''], rare:['Редкий','pf-r-rare'], epic:['Эпический','pf-r-epic'], legendary:['Легендарный','pf-r-legendary'] };
 const PF_NAMES = { copper:'Медный', silver:'Серебряный', crown:'Золотая корона', crystal:'Легендарный кристалл', veteran:'Ветеран ИСР', mechanic:'Механик', legend:'Легенда сервера', danger:'Опасный тип' };
 const pfEl = id => document.getElementById(id);
@@ -4189,6 +4209,7 @@ function pfRender(d){
   pfEl('pfShopBtn').hidden = !d.own;
   const note = pfEl('pfNote'), notes = [];
   if(d.own && d.hidden) notes.push('Ваш профиль скрыт от других игроков.');
+  if(d.own && d.imgState && (d.imgState.banner==='pending' || d.imgState.bg==='pending')) notes.push('Ваш '+[d.imgState.banner==='pending' ? 'баннер' : null, d.imgState.bg==='pending' ? 'фон' : null].filter(Boolean).join(' и ')+' на проверке у модераторов: пока его видите только вы.');
   if(d.modHidden) notes.push(d.own ? 'Профиль скрыт модератором.' : 'Профиль скрыт (вы видите его как модератор).');
   note.hidden = !notes.length; note.textContent = notes.join(' ');
   const mod = pfEl('pfMod'); mod.hidden = !(d.canModerate && !d.own);
@@ -4371,7 +4392,7 @@ async function pfCompress(file, kind){
   throw new Error('too_big');
 }
 function pfAfterImg(d){
-  PF.data = Object.assign(PF.data, { img:d.img, bannerMode:d.bannerMode, bgMode:d.bgMode });
+  PF.data = Object.assign(PF.data, { img:d.img, imgState:d.imgState, bannerMode:d.bannerMode, bgMode:d.bgMode });
   pfRadio('pfBn', d.bannerMode); pfRadio('pfBgM', d.bgMode);
   pfSyncImgUi(); pfPreview();
 }
@@ -4379,13 +4400,19 @@ async function pfUpload(kind, file){
   const st = pfEl('pfStatus'); if(!file) return;
   const fail = m => { st.className = 'pf-status err'; st.textContent = m; };
   if(!/^image\/(jpeg|png|webp)$/.test(file.type)) return fail('Нужен файл JPEG, PNG или WebP');
-  if(file.size > 20*1024*1024) return fail('Файл слишком большой (больше 20 МБ)');
+  if(file.size > 5*1024*1024) return fail('Файл больше 5 МБ. Выберите картинку поменьше.');
   st.className = 'pf-status'; st.textContent = 'Сжимаю и загружаю…';
   try {
     const data = await pfCompress(file, kind);
     const r = await pfSend('PUT','/api/img/'+kind,{ data });
-    if(!r.ok){ const e = await pfJson(r); return fail({ bad_type:'Этот тип файла не подходит', too_big:'Картинка слишком большая', profile_blocked:'Вам запрещено менять профиль' }[e.error] || 'Не удалось загрузить'); }
-    pfAfterImg(await r.json()); st.textContent = 'Загружено';
+    if(!r.ok){
+      const e = await pfJson(r);
+      if(e.error==='content_blocked') return fail('Картинка не прошла проверку'+(pfCatText(e.categories) ? ': '+pfCatText(e.categories) : '')+'. Выберите другую.');
+      return fail({ bad_type:'Этот тип файла не подходит', too_big:'Картинка больше 5 МБ', profile_blocked:'Вам запрещено менять профиль',
+        moderation_unavailable:'Проверка картинок сейчас недоступна, попробуйте позже', too_many:'Слишком много попыток, подождите несколько минут' }[e.error] || 'Не удалось загрузить');
+    }
+    const nd = await r.json(); pfAfterImg(nd);
+    st.textContent = nd.imgState && nd.imgState[kind]==='pending' ? 'Загружено: картинка на проверке у модераторов, пока её видите только вы' : 'Загружено';
   } catch(e){ fail(e && e.message==='too_big' ? 'Не удалось сжать картинку до нужного размера' : 'Не удалось обработать картинку'); }
 }
 async function pfRemoveImg(kind){
@@ -4455,13 +4482,13 @@ async function adOpen(){
   } catch(e){ return adState('Нет связи с сервером.'); }
   pfEl('stfState').hidden = true; pfEl('stfMain').hidden = false;
   setTimeout(() => { const bx = document.querySelector('#staffpanel .stf-box'); if(!bx || bx.offsetHeight===0 || getComputedStyle(bx).display==='none') showToast('Админ-панель скрыта расширением браузера (блокировщиком рекламы). Отключите его для этого сайта.'); }, 700);
-  adTab('users'); adListReset();
+  adTab('users'); adListReset(); adReviewCount();
   if(AD.prefill){ pfEl('stfId').value = AD.prefill; AD.prefill = null; adFind(); }
 }
 function adTab(t){
   document.querySelectorAll('#stfTabs button').forEach(b => b.classList.toggle('on', b.dataset.tab===t));
-  pfEl('stfUsers').hidden = t!=='users'; pfEl('stfBans').hidden = t!=='bans'; pfEl('stfBadges').hidden = t!=='badges';
-  if(t==='bans') adLoadBans(); if(t==='badges') adLoadBadges();
+  ['users','bans','badges','review','logs'].forEach(n => { pfEl('stf'+n.charAt(0).toUpperCase()+n.slice(1)).hidden = t!==n; });
+  if(t==='bans') adLoadBans(); if(t==='badges') adLoadBadges(); if(t==='review') adLoadReview(); if(t==='logs') adLogsReset();
 }
 pfEl('stfTabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if(b) adTab(b.dataset.tab); });
 const adErr = { forbidden:'Нет прав', target_protected:'Нельзя: это стафф или вы сами', not_found:'Не найдено', bad_body:'Неверные данные', bad_value:'Неверное значение' };
@@ -4608,6 +4635,101 @@ async function adLoadBans(){
     tr.insertCell().appendChild(adBtn('Снять', async () => { if(await adCall('DELETE','/api/admin/ban/'+b.id,undefined,'Бан снят')) adLoadBans(); }));
   });
   wrap.appendChild(t); box.appendChild(wrap);
+}
+
+/* ----- очередь проверки: картинки, которые ИИ счёл спорными ----- */
+async function adReviewCount(){
+  const d = await adCallQuiet('GET','/api/admin/review'); const b = pfEl('stfRevTab');
+  b.textContent = d && d.items.length ? 'Проверка ('+d.items.length+')' : 'Проверка';
+}
+async function adCallQuiet(method, path){ try { const r = await pfSend(method, path); return r.ok ? await r.json() : null; } catch(e){ return null; } }
+async function adLoadReview(){
+  const box = pfEl('stfReview'); box.textContent = ''; box.appendChild(pfMk('div','stf-state','Загрузка…'));
+  const d = await adCall('GET','/api/admin/review'); box.textContent = '';
+  if(!d){ box.appendChild(pfMk('div','stf-state','Не удалось загрузить очередь.')); return; }
+  box.appendChild(pfMk('p','pf-hint','Сюда попадают картинки, которые ИИ счёл спорными. Пока модератор не решит, их видят только владелец и модераторы. «Одобрить» открывает картинку всем, «Удалить» убирает её (владелец сможет загрузить другую).'));
+  pfEl('stfRevTab').textContent = d.items.length ? 'Проверка ('+d.items.length+')' : 'Проверка';
+  if(!d.items.length){ box.appendChild(pfMk('div','stf-state','Очередь пуста.')); return; }
+  d.items.forEach(it => {
+    const card = pfMk('div','stf-card'), row = pfMk('div','stf-rev');
+    const th = new Image(); th.className = 'th'; th.alt = ''; row.appendChild(th);
+    pfImg(it.id, it.kind, it.at).then(u => { th.src = u; }).catch(() => {});
+    const inf = pfMk('div','inf');
+    inf.appendChild(pfMk('b',null,(it.name || 'Игрок')+' · '+(it.kind==='banner' ? 'баннер' : 'фон')));
+    inf.appendChild(pfMk('div','stf-meta','Discord ID: '+it.id+' · '+adDate(it.at)));
+    const cats = pfMk('div'); (it.categories || []).forEach(c => cats.appendChild(pfMk('span','stf-cat',PF_CATS[c] || c))); if(cats.childNodes.length) inf.appendChild(cats);
+    if(it.reason) inf.appendChild(pfMk('div','stf-note','Оценка проверки: '+it.reason));
+    const btns = pfMk('div','stf-row');
+    const done = async act => { if(act==='reject' && !confirm('Удалить эту картинку?')) return; if(await adCall('POST','/api/admin/review',{ id:it.id, kind:it.kind, action:act }, act==='approve' ? 'Картинка одобрена' : 'Картинка удалена')) adLoadReview(); };
+    btns.appendChild(adBtn('Одобрить', () => done('approve')));
+    btns.appendChild(adBtn('Удалить', () => done('reject'), 'stf-danger'));
+    btns.appendChild(adBtn('Открыть игрока', () => { adTab('users'); pfEl('stfId').value = it.id; adFind(); }));
+    inf.appendChild(btns); row.appendChild(inf); card.appendChild(row); box.appendChild(card);
+  });
+}
+
+/* ----- журнал действий модераторов: новые сверху, порциями при прокрутке ----- */
+const AD_ACTS = { ban:'Бан', unban:'Снятие бана', delete_profile:'Удаление профиля', delete_img:'Удаление картинки', hide_profile:'Скрытие профиля', unhide_profile:'Возврат профиля', grant_badge:'Выдача бейджа', revoke_badge:'Снятие бейджа', ai_block:'ИИ отклонил картинку', ai_approve:'Одобрена после проверки', ai_reject:'Удалена после проверки' };
+const AD_LOG = { cursor:null, loading:false, done:false, n:0 };
+function adLogDetail(l){
+  const kindImg = l.k==='banner' ? 'баннер' : l.k==='bg' ? 'фон' : (l.k || '');
+  const p = [];
+  if(l.act==='ban'){ p.push(l.k==='site' ? 'вход закрыт' : 'профиль запрещён'); p.push(l.u ? 'до '+adDate(l.u) : 'навсегда'); if(l.r) p.push('причина: '+l.r); }
+  else if(l.act==='unban') p.push(l.k==='site' ? 'вход' : l.k==='profile' ? 'профиль' : '');
+  else if(l.act==='grant_badge' || l.act==='revoke_badge') p.push(PF_NAMES[l.k] || l.k || '');
+  else if(l.act==='ai_block'){ p.push(kindImg); const c = pfCatText(String(l.r||'').split(',')); if(c) p.push(c); }
+  else if(l.k) p.push(kindImg);
+  return p.filter(Boolean).join(' · ');
+}
+function adLogRow(l){
+  const row = pfMk('div','stf-lrow'), act = AD_ACTS[l.act] || l.act;
+  const who = l.by==='ai' ? 'ИИ-проверка' : (l.byName || l.by || '');
+  row.dataset.q = (act+' '+who+' '+(l.tn||'')+' '+(l.tid||'')+' '+adLogDetail(l)).toLowerCase(); row.dataset.act = l.act;
+  row.appendChild(pfMk('span','t',adDate(l.t)));
+  row.appendChild(pfMk('span','',who));
+  row.appendChild(pfMk('span','act'+(l.by==='ai' ? ' ai' : ''),act));
+  const tg = pfMk('span','det');
+  if(l.tid && PF_ID_RE.test(l.tid)){ const a = pfMk('a',null,(l.tn || l.tid)); a.title = 'Discord ID: '+l.tid; a.addEventListener('click', () => { adTab('users'); pfEl('stfId').value = l.tid; adFind(); }); tg.appendChild(a); const d = adLogDetail(l); if(d) tg.appendChild(document.createTextNode(' — '+d)); }
+  else tg.textContent = adLogDetail(l);
+  row.appendChild(tg);
+  pfEl('stfLogList').appendChild(row);
+}
+function adLogsFilter(){
+  const q = pfEl('stfLogQ').value.trim().toLowerCase(), a = pfEl('stfLogAct').value;
+  pfEl('stfLogList').querySelectorAll('.stf-lrow').forEach(r => { r.hidden = (!!q && !r.dataset.q.includes(q)) || (!!a && r.dataset.act!==a); });
+}
+function adLogsReset(){
+  const box = pfEl('stfLogs'); box.textContent = '';
+  box.appendChild(pfMk('p','pf-hint','Действия модераторов и ИИ-проверки. Записи хранятся ограниченное время (по умолчанию 90 дней).'));
+  const bar = pfMk('div','stf-row'), q = pfMk('input','input-text grow'); q.id = 'stfLogQ'; q.placeholder = 'Поиск по нику, ID, модератору или действию среди загруженных';
+  const sel = document.createElement('select'); sel.className = 'input-text'; sel.id = 'stfLogAct';
+  const o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'Все действия'; sel.appendChild(o0);
+  Object.keys(AD_ACTS).forEach(k => { const o = document.createElement('option'); o.value = k; o.textContent = AD_ACTS[k]; sel.appendChild(o); });
+  bar.appendChild(q); bar.appendChild(sel); box.appendChild(bar);
+  q.addEventListener('input', adLogsFilter); sel.addEventListener('change', adLogsFilter);
+  const wrap = pfMk('div','stf-list'); wrap.id = 'stfLogBox'; const list = pfMk('div'); list.id = 'stfLogList'; const more = pfMk('div','stf-more'); more.id = 'stfLogMore';
+  wrap.appendChild(list); wrap.appendChild(more); box.appendChild(wrap);
+  wrap.addEventListener('scroll', () => { if(wrap.scrollTop + wrap.clientHeight >= wrap.scrollHeight - 120) adLogsMore(); });
+  if('IntersectionObserver' in window) new IntersectionObserver(es => { if(es.some(e => e.isIntersecting) && !pfEl('stfLogs').hidden) adLogsMore(); }, { root:wrap, rootMargin:'120px' }).observe(more);
+  Object.assign(AD_LOG, { cursor:null, loading:false, done:false, n:0 });
+  adLogsMore();
+}
+async function adLogsMore(){
+  if(AD_LOG.loading || AD_LOG.done) return;
+  AD_LOG.loading = true;
+  const more = pfEl('stfLogMore'); more.textContent = 'Загрузка…';
+  const d = await adCall('GET','/api/admin/logs'+(AD_LOG.cursor ? '?cursor='+encodeURIComponent(AD_LOG.cursor) : ''));
+  AD_LOG.loading = false; more.textContent = '';
+  if(!d){ more.appendChild(adBtn('Повторить', adLogsMore)); return; }
+  AD_LOG.cursor = d.cursor; AD_LOG.done = !d.cursor;
+  d.logs.forEach(l => { AD_LOG.n++; adLogRow(l); });
+  adLogsFilter();
+  if(AD_LOG.done) more.textContent = AD_LOG.n ? 'Показаны все записи: '+AD_LOG.n : 'Записей пока нет';
+  else {
+    more.appendChild(adBtn('Загрузить ещё', adLogsMore));
+    const box = pfEl('stfLogBox');
+    if(!pfEl('stfLogs').hidden && more.getBoundingClientRect().top < box.getBoundingClientRect().bottom + 80) setTimeout(adLogsMore, 60);
+  }
 }
 
 async function adLoadBadges(){

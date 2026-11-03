@@ -1,20 +1,9 @@
-/* ИСР — проверка доступа на стороне сайта (работает вместе с Cloudflare Worker).
- *
- * Подключается ПЕРВЫМ скриптом в <head> страницы:  <script src="/isr-gate.js"></script>
- * Эта строка должна быть в index.html. Остальное в index.html можно менять как угодно.
- *
- * Войти в аккаунт (профиль, бейджи) может участник с одной из ролей из списка MEMBER_ROLE_ID (на Worker).
- * json/accessFILE решает только, закрыт ли САЙТ для обычных участников:
- *   {"enabled": true}   сайт закрыт: пускаем только роли из ROLE_ID на Worker
- *   {"enabled": false}  сайт открыт всем; вход нужен лишь для профиля, бейджей и админ-панели
- * Если файл не читается или в нём ошибка — сайт считается ЗАКРЫТЫМ (так безопаснее).
- */
 (function () {
-  var WORKER_URL = 'https://isr-auth.isr-auth.workers.dev';   // без слеша в конце
+  var WORKER_URL = 'https://isr-auth.isr-auth.workers.dev';
   var GATE_PAGE = '/gate.html';
-  var ACCESS_FILE = '/json/accessFILE';   // {"enabled": true|false} — включает/выключает вход через Discord
+  var ACCESS_FILE = '/json/accessFILE'
   var KEY = 'isr-auth-token';
-  var RECHECK_MS = 60000;   // как часто перепроверять доступ, пока сайт открыт (мс)
+  var RECHECK_MS = 60000;
 
   var isGate = !!(document.currentScript && document.currentScript.getAttribute('data-page') === 'gate');
   var store = {
@@ -96,7 +85,7 @@
   function renderBadge(user, open) {
     var old = document.getElementById('isr-badge');
     var showLogin = !user && open && window.ISRGate.configured;     // сайт открыт, человек не вошёл: кнопка «Войти»
-    if (!user && !showLogin) { if (old) old.remove(); return; }
+    if (!user && !showLogin) { if (old) old.remove(); var hd0 = document.querySelector('header.has-isr'); if (hd0) hd0.classList.remove('has-isr'); return; }
     if (!document.body) { document.addEventListener('DOMContentLoaded', function () { renderBadge(user, open); }); return; }
 
     if (!document.getElementById('isr-badge-style')) {
@@ -126,7 +115,7 @@
         '#isr-badge .b-out:hover{border-color:var(--yellow,#FF7A00);color:var(--yellow,#FF7A00)}' +
         '#isr-badge .b-prof{display:block;text-align:center;text-decoration:none;margin-bottom:6px}' +
         '#isr-badge .b-staff{display:inline-flex;align-items:center;gap:5px;margin-left:6px;font-size:11px;color:var(--yellow,#FF7A00);font-weight:700}' +
-        '@media (max-width:1500px){#isr-badge.in-header .b-main{max-width:182px}#isr-badge.in-header .b-bal{font-size:9.5px}}' +
+        '@media (max-width:1450px){#isr-badge.in-header .b-main{max-width:182px;padding:3px 8px 3px 3px;gap:7px}#isr-badge.in-header .b-bal{font-size:9px;letter-spacing:0}}' +
         '@media (max-width:900px){#isr-badge.in-header .b-txt{display:none}#isr-badge.in-header .b-main{padding:3px}}' +
         '@media print{#isr-badge{display:none}}';
       document.head.appendChild(st);
@@ -139,7 +128,8 @@
       var burger = document.getElementById('burgerBtn'), host = burger && burger.parentNode;
       var wasOpen = old && old.classList.contains('open');
       if (old) old.remove();
-      if (host) { el.classList.add('in-header'); host.insertBefore(el, burger); } else document.body.appendChild(el);
+      var hd = host && host.closest('header');
+      if (host) { el.classList.add('in-header'); host.insertBefore(el, burger); if (hd) hd.classList.add('has-isr'); } else document.body.appendChild(el);
       if (wasOpen) el.classList.add('open');
     }
     if (showLogin) {
