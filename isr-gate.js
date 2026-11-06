@@ -1,9 +1,20 @@
+/* ИСР — проверка доступа на стороне сайта (работает вместе с Cloudflare Worker).
+ *
+ * Подключается ПЕРВЫМ скриптом в <head> страницы:  <script src="/isr-gate.js"></script>
+ * Эта строка должна быть в index.html. Остальное в index.html можно менять как угодно.
+ *
+ * Войти в аккаунт (профиль, бейджи) может участник с одной из ролей из списка MEMBER_ROLE_ID (на Worker).
+ * json/accessFILE решает только, закрыт ли САЙТ для обычных участников:
+ *   {"enabled": true}   сайт закрыт: пускаем только роли из ROLE_ID на Worker
+ *   {"enabled": false}  сайт открыт всем; вход нужен лишь для профиля, бейджей и админ-панели
+ * Если файл не читается или в нём ошибка — сайт считается ЗАКРЫТЫМ (так безопаснее).
+ */
 (function () {
-  var WORKER_URL = 'https://isr-auth.isr-auth.workers.dev';
+  var WORKER_URL = 'https://isr-auth.isr-auth.workers.dev';   // без слеша в конце
   var GATE_PAGE = '/gate.html';
-  var ACCESS_FILE = '/json/accessFILE'
+  var ACCESS_FILE = '/json/accessFILE';   // {"enabled": true|false} — включает/выключает вход через Discord
   var KEY = 'isr-auth-token';
-  var RECHECK_MS = 60000;
+  var RECHECK_MS = 60000;   // как часто перепроверять доступ, пока сайт открыт (мс)
 
   var isGate = !!(document.currentScript && document.currentScript.getAttribute('data-page') === 'gate');
   var store = {
@@ -82,18 +93,27 @@
   }
 
   /* ---------- Плашка «Вы вошли как…» (только когда вход включён и человек вошёл) ---------- */
+  /* Плашка стоит чуть ниже шапки (шапка липкая, её высота может отличаться на разных экранах и темах) */
+  function positionBadge() {
+    var el = document.getElementById('isr-badge'); if (!el) return;
+    var h = document.querySelector('header.top'), b = h ? h.getBoundingClientRect().bottom : 0;
+    el.style.top = Math.max(12, Math.round(b) + 10) + 'px';
+  }
+  var posTick = 0;
+  function posSoon() { if (posTick) return; posTick = requestAnimationFrame(function () { posTick = 0; positionBadge(); }); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { var b = document.getElementById('isr-badge'); if (b) b.classList.remove('open'); } });   // Esc закрывает меню профиля
+  window.addEventListener('resize', posSoon); window.addEventListener('scroll', posSoon, { passive: true });
   function renderBadge(user, open) {
     var old = document.getElementById('isr-badge');
     var showLogin = !user && open && window.ISRGate.configured;     // сайт открыт, человек не вошёл: кнопка «Войти»
-    if (!user && !showLogin) { if (old) old.remove(); var hd0 = document.querySelector('header.has-isr'); if (hd0) hd0.classList.remove('has-isr'); return; }
+    if (!user && !showLogin) { if (old) old.remove(); return; }
     if (!document.body) { document.addEventListener('DOMContentLoaded', function () { renderBadge(user, open); }); return; }
 
     if (!document.getElementById('isr-badge-style')) {
       var st = document.createElement('style');
       st.id = 'isr-badge-style';
       st.textContent =
-        '#isr-badge{position:fixed;right:12px;top:12px;z-index:9000;font:13px/1.35 var(--font-body,system-ui,sans-serif);color:var(--ink,#F4E9D8)}' +
-        '#isr-badge.in-header{position:relative;right:auto;top:auto;z-index:50;margin-left:6px;flex:none}' +
+        '#isr-badge{position:fixed;right:14px;top:92px;z-index:400;font:13px/1.35 var(--font-body,system-ui,sans-serif);color:var(--ink,#F4E9D8)}' +
         '#isr-badge .b-login{display:inline-flex;align-items:center;padding:8px 14px;border:1px solid var(--line-strong,#5B3A85);background:var(--paper-2,#1E1030);color:inherit;text-decoration:none;font:600 12px var(--font-body,system-ui,sans-serif);letter-spacing:.06em;text-transform:uppercase;border-radius:var(--radius,0)}' +
         '#isr-badge .b-login:hover{border-color:var(--yellow,#FF7A00);color:var(--yellow,#FF7A00)}' +
         '#isr-badge .b-main{display:flex;align-items:center;gap:8px;max-width:210px;padding:4px 10px 4px 4px;cursor:pointer;border:1px solid var(--line-strong,#5B3A85);' +
@@ -115,8 +135,7 @@
         '#isr-badge .b-out:hover{border-color:var(--yellow,#FF7A00);color:var(--yellow,#FF7A00)}' +
         '#isr-badge .b-prof{display:block;text-align:center;text-decoration:none;margin-bottom:6px}' +
         '#isr-badge .b-staff{display:inline-flex;align-items:center;gap:5px;margin-left:6px;font-size:11px;color:var(--yellow,#FF7A00);font-weight:700}' +
-        '@media (max-width:1450px){#isr-badge.in-header .b-main{max-width:182px;padding:3px 8px 3px 3px;gap:7px}#isr-badge.in-header .b-bal{font-size:9px;letter-spacing:0}}' +
-        '@media (max-width:900px){#isr-badge.in-header .b-txt{display:none}#isr-badge.in-header .b-main{padding:3px}}' +
+        '@media (max-width:900px){#isr-badge .b-txt{display:none}#isr-badge .b-main{padding:3px}}' +
         '@media print{#isr-badge{display:none}}';
       document.head.appendChild(st);
     }
@@ -124,13 +143,12 @@
     var el = document.createElement('div');
     el.id = 'isr-badge';
     function mk(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
-    function place() {
-      var burger = document.getElementById('burgerBtn'), host = burger && burger.parentNode;
+    function place() {                                   // плашка висит под шапкой в правом верхнем углу
       var wasOpen = old && old.classList.contains('open');
       if (old) old.remove();
-      var hd = host && host.closest('header');
-      if (host) { el.classList.add('in-header'); host.insertBefore(el, burger); if (hd) hd.classList.add('has-isr'); } else document.body.appendChild(el);
+      document.body.appendChild(el);
       if (wasOpen) el.classList.add('open');
+      positionBadge();
     }
     if (showLogin) {
       var lg = mk('a', 'b-login', 'Войти'); lg.href = window.ISRGate.loginUrl();
@@ -214,6 +232,7 @@
 
     // Пока страница открыта, периодически перепроверяем доступ (сняли роль, забанили, включили закрытый режим — выкидывает на gate.html)
     var recheck = function () {
+      if (document.hidden) return;                  // вкладка в фоне: не тратим запросы (при возврате проверим сразу)
       evaluate().then(function (r) {
         if (denied(r)) return goGate(r.reason);
         window.ISR_USER = r.user || null;
