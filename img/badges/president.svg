@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Президент ИСР"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE48F"/><stop offset="1" stop-color="#CE9420"/></linearGradient></defs>
+<rect width="128" height="128" rx="26" fill="#1B2438"/>
+<path d="M24 92 C10 74 10 46 26 30" fill="none" stroke="#E2A92C" stroke-width="5" stroke-linecap="round"/><path d="M104 92 C118 74 118 46 102 30" fill="none" stroke="#E2A92C" stroke-width="5" stroke-linecap="round"/>
+<path d="M64 14 L72 40 L100 40 L77 56 L86 83 L64 67 L42 83 L51 56 L28 40 L56 40 Z" fill="url(#g)" stroke="#8A5E0B" stroke-width="3.5" stroke-linejoin="round"/>
+<rect x="34" y="94" width="60" height="14" rx="4" fill="#E5484D" stroke="#7A1B1F" stroke-width="3"/><path d="M48 101 H80" stroke="#FFE48F" stroke-width="3" stroke-linecap="round"/></svg>

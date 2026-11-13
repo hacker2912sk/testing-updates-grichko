@@ -1050,6 +1050,7 @@ footer { background:var(--steel);color:var(--steel-text-dim);padding:40px 24px 0
 
 /* ---- этап 2: бейджи, картинки, магазин, админ-панель ---- */
 .pf-staff { display:inline-block; margin-left:8px; vertical-align:middle; }
+.pf-rank img { width:30px; height:30px; border-radius:7px; display:block; }
 .pf-badge { overflow:hidden; padding:0; }
 .pf-badge img, .pf-bd img { width:100%; height:100%; object-fit:cover; display:block; }
 .pf-badge.on { border:2px solid var(--yellow); }
@@ -1072,6 +1073,38 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 .pf-tag { font:700 10px 'Space Mono',monospace; padding:2px 7px; border-radius:999px; background:var(--paper); border:1px solid var(--line-strong); }
 .pf-r-rare { color:#4f9dff; } .pf-r-epic { color:#ff8a3d; } .pf-r-legendary { color:#b57cff; }
 .pf-item .btn-outline[disabled] { opacity:.55; cursor:default; }
+/* вкладки магазина и кейсы */
+.pf-tabs { display:flex; gap:6px; margin:12px 0 4px; border-bottom:2px solid var(--line-strong); padding-bottom:10px; }
+.pf-tabs button { font:700 12px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; padding:8px 16px; background:transparent; color:var(--ink); border:1px solid var(--line-strong); cursor:pointer; }
+.pf-tabs button.on { background:var(--yellow); color:var(--pf-on, var(--steel)); border-color:var(--yellow); }
+.cs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; margin-top:12px; }
+.cs-card { display:flex; flex-direction:column; align-items:flex-start; gap:6px; text-align:left; padding:16px; border:1px solid var(--line-strong); background:var(--paper-2); color:var(--ink); cursor:pointer; font:inherit; transition:transform .15s, border-color .15s; }
+.cs-card:hover, .cs-card:focus-visible { transform:translateY(-2px); border-color:var(--yellow); }
+.cs-card .cs-em { font-size:38px; line-height:1.1; width:auto; height:auto; }
+.cs-card .nm { font-weight:700; font-size:15px; }
+.cs-card .pr { font:700 12px 'Space Mono',monospace; }
+.cs-card .ds { font-size:12px; color:var(--ink-soft); }
+.cs-back { margin:12px 0 0; font-size:11px; padding:6px 10px; }
+.cs-title { font:700 18px 'Unbounded',sans-serif; margin:12px 0 2px; }
+.cs-roll { position:relative; overflow:hidden; margin:14px 0 10px; border:2px solid var(--line-strong); background:var(--paper-2); padding:10px 0; }
+.cs-roll::after { content:''; position:absolute; top:0; bottom:0; left:50%; width:3px; margin-left:-1.5px; background:var(--yellow); box-shadow:0 0 10px var(--yellow); z-index:2; pointer-events:none; }
+.cs-strip { display:flex; gap:8px; width:max-content; will-change:transform; }
+.cs-tile { width:112px; height:112px; flex:none; border:2px solid var(--line-strong); background:var(--paper); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; padding:6px; text-align:center; overflow:hidden; }
+.cs-tile .cs-ic { font-size:30px; line-height:1; width:auto; height:auto; flex:none; }
+.cs-tile img { width:54px; height:54px; border-radius:10px; display:block; }
+.cs-tile .cs-lb { font:700 11px 'Space Mono',monospace; line-height:1.2; word-break:break-word; }
+.cs-tile .cs-dot { width:12px; height:12px; border-radius:50%; background:var(--ink-soft); display:inline-block; }
+.t-rare { border-color:#4f9dff; } .t-epic { border-color:#ff8a3d; } .t-legendary { border-color:#b57cff; box-shadow:0 0 10px rgba(181,124,255,.5); }
+.cs-act { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0; }
+.cs-result { margin:10px 0; padding:14px; border:2px solid var(--line-strong); background:var(--paper-2); font-size:14px; }
+.cs-result b { font-size:16px; }
+.cs-result.t-rare { border-color:#4f9dff; } .cs-result.t-epic { border-color:#ff8a3d; } .cs-result.t-legendary { border-color:#b57cff; }
+.cs-drops { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin-top:8px; }
+.cs-drops .cs-tile { width:auto; height:auto; min-height:96px; }
+.cs-drops .cs-ch { font:11px 'Space Mono',monospace; color:var(--ink-soft); }
+.cs-recent { margin-top:16px; font-size:12px; color:var(--ink-soft); }
+.cs-recent li { margin:3px 0; }
+@media (prefers-reduced-motion: reduce) { .cs-card { transition:none; } }
 /* админ-панель */
 .stf-wrap { max-width:960px; margin:0 auto; padding:40px 0 30px; }
 .stf-box { background:var(--paper); border:2px solid var(--line-strong); box-shadow:0 10px 34px rgba(0,0,0,.18); padding:20px 22px 24px; }
@@ -1558,7 +1591,7 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
           <div class="pf-ident">
             <h2 class="display-font" id="pfName"></h2>
             <div class="pf-sub mono" id="pfId"></div>
-            <div class="pf-balrow"><div class="pf-bal" id="pfBal"></div><button class="btn-outline" id="pfShopBtn" type="button" hidden>Магазин бейджей</button></div>
+            <div class="pf-balrow"><div class="pf-bal" id="pfBal"></div><button class="btn-outline" id="pfShopBtn" type="button" hidden>Магазин</button></div>
             <div class="pf-note" id="pfNote" hidden></div>
           </div>
           <div class="pf-actions">
@@ -1572,7 +1605,7 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
         <div class="pf-cols" id="pfCols">
           <div class="pf-col"><h3>Роли</h3><div class="pf-roles" id="pfRoles"></div></div>
           <div class="pf-col"><h3>Описание</h3><p class="pf-desc" id="pfDesc"></p></div>
-          <div class="pf-col"><h3>Бейджи</h3><div class="pf-badges" id="pfBadges"></div><div class="pf-bd-hint" id="pfBadgesHint" hidden>Нажмите на бейдж, чтобы надеть его у аватара или снять.</div></div>
+          <div class="pf-col"><h3>Бейджи</h3><div class="pf-badges" id="pfBadges"></div><div class="pf-bd-hint" id="pfBadgesHint" hidden>Бейдж из магазина нажатием надевается у аватара. Бейдж должности (президент, разработчик) стоит у ника вместо значка модератора, его можно скрыть, значок модератора скрыть нельзя.</div></div>
         </div>
 
         <div class="pf-editor" id="pfEditor" hidden>
@@ -1638,12 +1671,21 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
         </div>
       </article>
 
-      <div class="pf-modal" id="pfShop" hidden role="dialog" aria-modal="true" aria-label="Магазин бейджей">
+      <div class="pf-modal" id="pfShop" hidden role="dialog" aria-modal="true" aria-label="Магазин">
         <div class="pf-modal-box">
           <button class="pf-modal-x" id="pfShopX" type="button" aria-label="Закрыть">✕</button>
-          <h3>Магазин бейджей</h3>
-          <p class="pf-hint">Бейджи покупаются за промкоины. Цена списывается только с «рук», деньги в банке не используются. Купленный бейдж остаётся навсегда.</p>
-          <div id="pfShopBody"></div>
+          <h3>Магазин</h3>
+          <div class="pf-tabs" role="tablist" aria-label="Разделы магазина">
+            <button type="button" role="tab" id="pfTabBadges" class="on" aria-selected="true" aria-controls="pfPaneBadges">Бейджи</button>
+            <button type="button" role="tab" id="pfTabCases" aria-selected="false" aria-controls="pfPaneCases">Кейсы</button>
+          </div>
+          <div id="pfPaneBadges" role="tabpanel" aria-labelledby="pfTabBadges">
+            <p class="pf-hint">Бейджи покупаются за промкоины. Цена списывается только с «рук», деньги в банке не используются. Купленный бейдж остаётся навсегда.</p>
+            <div id="pfShopBody"></div>
+          </div>
+          <div id="pfPaneCases" role="tabpanel" aria-labelledby="pfTabCases" hidden>
+            <div id="pfCasesBody"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -4014,7 +4056,7 @@ document.addEventListener('touchend',()=>{
    Всё, что пришло с сервера, перепроверяется регулярками и выводится через textContent.
    Картинки профиля грузятся fetch'ем с токеном и показываются через blob URL (кэш по номеру версии).
 ============================================================ */
-const PF = { data:null, editing:false, shop:false, shopData:null, bt:0, bgt:0, at:0 };
+const PF = { data:null, editing:false, shop:false, shopData:null, bt:0, bgt:0, at:0, tab:'badges', cases:null, caseView:null, csBusy:false };
 document.body.appendChild(document.getElementById('pfShop'));   // окно поверх шапки: выносим из страницы (там своё наложение)
 document.body.appendChild(document.getElementById('pfBg'));     // фон профиля: уровнем body, иначе он закрывает ленты сверху и снизу и подвал
 window.__pfLeave = id => { if(id !== 'profile'){ document.getElementById('pfBg').style.display = 'none'; if(PF.shop) pfSetShop(false); } };
@@ -4060,7 +4102,9 @@ function pfApplyAccent(d){
   });
 }
 
-const pfBadgeSrc = id => PF_NAMES[id] ? 'img/badges/'+id+'.svg' : null;
+const PF_ROLE = { president:'Президент ИСР', developer:'Разработчик сайта' };   // бейджи должностей: выдаются автоматически, в магазине их нет
+const pfBadgeName = id => PF_NAMES[id] || PF_ROLE[id] || '';
+const pfBadgeSrc = id => pfBadgeName(id) ? 'img/badges/'+id+'.svg' : null;
 const pfStaffIcon = px => (window.ISRGate && ISRGate.staffIcon) ? ISRGate.staffIcon(px) : document.createTextNode('');
 
 function pfToken(){ return (window.ISRGate && ISRGate.token) ? ISRGate.token() : null; }
@@ -4148,7 +4192,7 @@ function pfRenderAvatar(d){
 function pfRenderBadgeSlot(d){
   const b = pfEl('pfBadge'); b.textContent = ''; b.classList.remove('on');
   const src = d.badgeEq ? pfBadgeSrc(d.badgeEq) : null;
-  if(src){ const im = new Image(); im.alt = PF_NAMES[d.badgeEq]; im.src = src; b.appendChild(im); b.classList.add('on'); b.title = PF_NAMES[d.badgeEq]; }
+  if(src){ const im = new Image(); im.alt = pfBadgeName(d.badgeEq); im.src = src; b.appendChild(im); b.classList.add('on'); b.title = pfBadgeName(d.badgeEq); }
   else { b.textContent = '+'; b.title = 'Место под бейдж'; }
 }
 function pfRenderBalance(d){
@@ -4177,18 +4221,37 @@ function pfRenderBadges(d){
   const box = pfEl('pfBadges'); box.textContent = '';
   let n = 0;
   if(d.staff){ const m = pfMk('span','pf-bd mod'); m.title = 'Модератор ИСР'; m.appendChild(pfStaffIcon(30)); box.appendChild(m); n++; }
+  (d.rankOwned || []).forEach(id => {
+    if(!pfBadgeSrc(id)) return;
+    const shown = !(d.rankHide || []).includes(id);
+    if(!d.own && !shown) return;
+    const el = d.own ? pfMk('button','pf-bd'+(shown?' eq':'')) : pfMk('span','pf-bd');
+    if(d.own) el.type = 'button';
+    el.title = pfBadgeName(id) + ' — у ника' + (d.own ? (shown ? ' · нажмите, чтобы скрыть' : ' · скрыт, нажмите, чтобы показать') : '');
+    const im = new Image(); im.alt = pfBadgeName(id); im.src = pfBadgeSrc(id); if(d.own && !shown) im.style.opacity = '.35'; el.appendChild(im);
+    if(d.own) el.addEventListener('click', () => pfRankToggle(id, shown));   // показан -> скрыть, скрыт -> показать
+    box.appendChild(el); n++;
+  });
   (d.badges || []).forEach(id => {
     const src = pfBadgeSrc(id); if(!src) return;
     const eq = d.badgeEq === id;
     const el = d.own ? pfMk('button','pf-bd'+(eq?' eq':'')) : pfMk('span','pf-bd'+(eq?' eq':''));
     if(d.own) el.type = 'button';
-    el.title = PF_NAMES[id] + (d.own ? (eq ? ' — нажмите, чтобы снять' : ' — нажмите, чтобы надеть') : '');
-    const im = new Image(); im.alt = PF_NAMES[id]; im.src = src; el.appendChild(im);
+    el.title = pfBadgeName(id) + (d.own ? (eq ? ' — нажмите, чтобы снять' : ' — нажмите, чтобы надеть') : '');
+    const im = new Image(); im.alt = pfBadgeName(id); im.src = src; el.appendChild(im);
     if(d.own) el.addEventListener('click', () => pfEquip(eq ? null : id));
     box.appendChild(el); n++;
   });
   if(!n) box.appendChild(pfMk('span','pf-empty','нету'));
-  pfEl('pfBadgesHint').hidden = !(d.own && (d.badges||[]).length);
+  pfEl('pfBadgesHint').hidden = !(d.own && ((d.badges||[]).length || (d.rankOwned||[]).length));
+}
+async function pfRankToggle(id, hide){
+  try {
+    const cur = new Set((PF.data && PF.data.rankHide) || []); if(hide) cur.add(id); else cur.delete(id);
+    const r = await pfSend('PUT','/api/profile',{ rankHide: [...cur] });
+    if(!r.ok) throw new Error(r.status);
+    PF.data = await r.json(); pfRender(PF.data);
+  } catch(e){ showToast('Не удалось изменить бейдж у ника'); }
 }
 async function pfEquip(id){
   try {
@@ -4201,7 +4264,11 @@ function pfRender(d){
   pfEl('pfState').hidden = true;
   pfEl('pfCard').hidden = false;
   const nm = pfEl('pfName'); nm.textContent = d.name || 'Игрок';
-  if(d.staff){ const w = pfMk('span','pf-staff'); w.appendChild(pfStaffIcon(26)); nm.appendChild(w); }
+  const rb = (d.rankBadges || []).filter(id => pfBadgeSrc(id));
+  if(rb.length){                                                      // президент и/или разработчик вместо значка модератора (при двух ролях стоят оба)
+    rb.forEach(id => { const w = pfMk('span','pf-staff pf-rank'); w.title = pfBadgeName(id);
+      const im = new Image(); im.alt = pfBadgeName(id); im.src = pfBadgeSrc(id); w.appendChild(im); nm.appendChild(w); });
+  } else if(d.staff){ const w = pfMk('span','pf-staff'); w.appendChild(pfStaffIcon(26)); nm.appendChild(w); }   // значок модератора: скрыть нельзя
   pfEl('pfId').textContent = 'Discord ID: ' + d.id;
   pfRenderAvatar(d); pfRenderBanner(d); pfRenderBg(d); pfRenderBalance(d); pfRenderBadgeSlot(d);
   pfRenderRoles(d); pfRenderBadges(d); pfApplyAccent(d);
@@ -4291,6 +4358,131 @@ function pfRenderShop(){
     body.appendChild(grid);
   });
 }
+
+/* ----- вкладки магазина и кейсы (выпадение выбирает Worker, здесь только показ и анимация) ----- */
+function pfSetTab(tab){
+  PF.tab = tab==='cases' ? 'cases' : 'badges';
+  const c = PF.tab==='cases';
+  pfEl('pfTabBadges').classList.toggle('on', !c); pfEl('pfTabBadges').setAttribute('aria-selected', String(!c));
+  pfEl('pfTabCases').classList.toggle('on', c);   pfEl('pfTabCases').setAttribute('aria-selected', String(c));
+  pfEl('pfPaneBadges').hidden = c; pfEl('pfPaneCases').hidden = !c;
+  if(c) pfLoadCases();
+}
+pfEl('pfTabBadges').addEventListener('click', () => pfSetTab('badges'));
+pfEl('pfTabCases').addEventListener('click', () => pfSetTab('cases'));
+
+async function pfLoadCases(){
+  if(PF.csBusy) return;                                   // не перерисовываем, пока идёт анимация
+  const body = pfEl('pfCasesBody');
+  if(!PF.cases) body.textContent = 'Загрузка…';
+  try {
+    const r = await pfApi('/api/cases'); if(!r.ok) throw new Error(r.status);
+    PF.cases = await r.json(); pfRenderCases();
+  } catch(e){ body.textContent = 'Не удалось загрузить кейсы.'; }
+}
+const CS_ERR = { not_enough:'Не хватает промкоинов на руках (из банка не списываем)', busy:'Открытие уже идёт, подождите секунду', no_economy:'Экономика пока не подключена', economy_error:'Не удалось связаться с экономикой, деньги не списаны', prize_failed:'Не удалось выдать приз, деньги возвращены', case_unavailable:'Этот кейс сейчас недоступен', no_case:'Кейс не найден', profile_blocked:'Вам запрещено пользоваться профилем', no_profile:'Профиль ещё не создан' };
+const csCash = () => { const b = PF.cases && PF.cases.balance; return b && Number.isFinite(b.cash) ? b.cash : null; };
+
+function csTile(d){
+  const t = pfMk('div','cs-tile'+(d.tier && d.tier!=='common' ? ' t-'+d.tier : ''));
+  if(d.type==='badge' && pfBadgeSrc(d.badge)){ const im = new Image(); im.alt = ''; im.src = pfBadgeSrc(d.badge); t.appendChild(im); }
+  else if(d.type==='role'){ const dot = pfMk('span','cs-dot'); if(d.color && PF_COLOR_RE.test(d.color)) dot.style.background = d.color; t.appendChild(pfMk('div','cs-ic','🎭')); t.appendChild(dot); }
+  else t.appendChild(pfMk('div','cs-ic','💰'));
+  t.appendChild(pfMk('div','cs-lb', d.label));
+  return t;
+}
+function csRandDrop(drops){ let x = Math.random()*100, a = 0; for(const d of drops){ a += d.chance; if(x < a) return d; } return drops[0]; }
+
+function pfRenderCases(){
+  if(PF.csBusy) return;
+  const body = pfEl('pfCasesBody'), cd = PF.cases; body.textContent = '';
+  if(!cd) return;
+  const cash = csCash();
+  body.appendChild(pfMk('p','pf-hint','Кейс открывается за промкоины. Цена списывается только с «рук», банк не используется. Приз выбирается на сервере, шансы показаны честно.'
+    + (cash!=null ? ' У вас на руках: '+pfNum(cash)+' '+pfCoins(cash)+'.' : '')));
+  const cs = (cd.cases || []).find(c => c.id===PF.caseView);
+  if(!cs){ PF.caseView = null; return csRenderList(body, cd); }
+  csRenderCase(body, cs);
+}
+function csRenderList(body, cd){
+  if(!(cd.cases||[]).length){ body.appendChild(pfMk('p','pf-empty','Кейсов пока нет.')); return; }
+  const grid = pfMk('div','cs-grid');
+  cd.cases.forEach(c => {
+    const b = pfMk('button','cs-card'); b.type = 'button';
+    b.appendChild(pfMk('div','cs-em',c.emoji||'📦')); b.appendChild(pfMk('div','nm',c.name));
+    b.appendChild(pfMk('div','pr','Цена: '+pfNum(c.price)+' '+pfCoins(c.price)));
+    if(c.desc) b.appendChild(pfMk('div','ds',c.desc));
+    b.addEventListener('click', () => { PF.caseView = c.id; pfRenderCases(); });
+    grid.appendChild(b);
+  });
+  body.appendChild(grid);
+  csRenderRecent(body, cd);
+}
+function csRenderRecent(body, cd){
+  const old = body.querySelector('.cs-recent'); if(old) old.remove();
+  if(!(cd.recent||[]).length) return;
+  const box = pfMk('div','cs-recent'); box.appendChild(pfMk('b',null,'Недавние редкие выпадения'));
+  const ul = pfMk('ul'); cd.recent.forEach(r => ul.appendChild(pfMk('li',null,(r.n||'Игрок')+' получил(а): '+r.l+' ('+r.c+')')));
+  box.appendChild(ul); body.appendChild(box);
+}
+function csRenderCase(body, cs){
+  const back = pfMk('button','btn-outline cs-back','← Все кейсы'); back.type = 'button';
+  back.addEventListener('click', () => { PF.caseView = null; pfRenderCases(); });
+  body.appendChild(back);
+  body.appendChild(pfMk('div','cs-title',(cs.emoji||'📦')+' '+cs.name));
+  if(cs.desc) body.appendChild(pfMk('div','pf-hint',cs.desc));
+  const drops = cs.drops || [];
+  const roll = pfMk('div','cs-roll'), strip = pfMk('div','cs-strip'); roll.appendChild(strip); body.appendChild(roll);
+  const head = Array.from({length:8}, () => csRandDrop(drops)); head.forEach(d => strip.appendChild(csTile(d)));
+  const act = pfMk('div','cs-act'), open = pfMk('button','btn-outline'), skip = pfMk('button','btn-outline','Пропустить');
+  open.type = 'button'; skip.type = 'button'; skip.hidden = true;
+  const refreshOpen = () => { const c = csCash(), low = c!=null && c < cs.price; open.disabled = low || PF.csBusy;
+    open.textContent = low ? 'Не хватает '+pfNum(cs.price - c) : 'Открыть за '+pfNum(cs.price); };
+  refreshOpen(); act.appendChild(open); act.appendChild(skip); body.appendChild(act);
+  const res = pfMk('div','cs-result'); res.hidden = true; res.setAttribute('role','status'); res.setAttribute('aria-live','polite'); body.appendChild(res);
+  body.appendChild(pfMk('div','pf-shop-group','Что может выпасть'));
+  const dl = pfMk('div','cs-drops');
+  [...drops].sort((a,b) => a.chance - b.chance).forEach(d => { const t = csTile(d); t.appendChild(pfMk('div','cs-ch',d.chance+'%')); dl.appendChild(t); });
+  body.appendChild(dl);
+
+  open.addEventListener('click', async () => {
+    if(PF.csBusy) return;
+    PF.csBusy = true; open.disabled = true; res.hidden = true; back.disabled = true;
+    let d;
+    try {
+      const r = await pfSend('POST','/api/cases/open',{ id:cs.id }); d = await pfJson(r);
+      if(!r.ok){ showToast(CS_ERR[d.error] || 'Не удалось открыть кейс'); PF.csBusy = false; back.disabled = false; refreshOpen(); if(d.error==='not_enough') pfLoadCases(); return; }
+    } catch(e){ showToast('Нет связи с сервером'); PF.csBusy = false; back.disabled = false; refreshOpen(); return; }
+    // лента: первые плитки те же, победная стоит далеко справа
+    const WIN = 36, N = 44; strip.textContent = ''; strip.style.transition = 'none'; strip.style.transform = 'translateX(0)';
+    for(let i=0;i<N;i++) strip.appendChild(csTile(i < head.length ? head[i] : (i===WIN ? drops[d.index] : csRandDrop(drops))));
+    let done = false;
+    const finish = () => {
+      if(done) return; done = true; skip.hidden = true;
+      const pz = d.prize || {}, rs = res; rs.textContent = ''; rs.className = 'cs-result'+(pz.tier && pz.tier!=='common' ? ' t-'+pz.tier : ''); rs.hidden = false;
+      let line;
+      if(pz.duplicate) line = (pz.type==='badge' ? 'Бейдж «'+pz.label+'» у вас уже есть' : 'Роль «'+pz.label+'» у вас уже есть')+'. Компенсация: +'+pfNum(pz.compensation||0)+' '+pfCoins(pz.compensation||0)+'.';
+      else if(pz.type==='money') line = 'Вы получили +'+pfNum(pz.amount)+' '+pfCoins(pz.amount)+'!';
+      else if(pz.type==='badge') line = 'Бейдж «'+pz.label+'» добавлен в ваш профиль!';
+      else line = 'Вам выдана роль «'+pz.label+'» на сервере Discord!';
+      rs.appendChild(pfMk('b',null,line)); rs.appendChild(pfMk('div','pf-hint','Шанс выпадения: '+pz.chance+'%'));
+      if(PF.cases){ PF.cases.balance = d.balance || PF.cases.balance; }
+      PF.csBusy = false; back.disabled = false; refreshOpen();
+      pfApi('/api/profile/me').then(async p => { if(p.ok){ PF.data = await p.json(); pfRender(PF.data); } }).catch(() => {});
+      pfApi('/api/cases').then(async r2 => { if(r2.ok){ const nd = await r2.json(); PF.cases.recent = nd.recent; csRenderRecent(pfEl('pfCasesBody'), PF.cases); const rc = pfEl('pfCasesBody').querySelector('.cs-recent'); if(rc && PF.caseView) rc.remove(); } }).catch(() => {});
+    };
+    const tiles = strip.children, tw = tiles[WIN].offsetWidth;
+    const target = tiles[WIN].offsetLeft + tw/2 - roll.clientWidth/2 + (Math.random()-0.5)*tw*0.6;
+    const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduce){ strip.style.transform = 'translateX(-'+target+'px)'; return finish(); }
+    skip.hidden = false;
+    void strip.offsetWidth;                                  // сброс, чтобы анимация началась с нуля
+    strip.style.transition = 'transform 5.4s cubic-bezier(.1,.6,.05,1)'; strip.style.transform = 'translateX(-'+target+'px)';
+    strip.addEventListener('transitionend', finish, { once:true });
+    setTimeout(finish, 6200);
+    skip.addEventListener('click', () => { strip.style.transition = 'none'; strip.style.transform = 'translateX(-'+target+'px)'; finish(); }, { once:true });
+  });
+}
 async function pfBuy(it, btn){
   if(!confirm('Купить бейдж «'+PF_NAMES[it.id]+'» за '+pfNum(it.price)+'? Деньги спишутся с рук (не из банка).')) return;
   btn.disabled = true;
@@ -4311,7 +4503,7 @@ function pfSetShop(on){
   const was = PF.shop;
   PF.shop = !!on; pfEl('pfShop').hidden = !PF.shop;
   document.body.style.overflow = PF.shop ? 'hidden' : '';
-  if(PF.shop && !was){ PF.lastFocus = document.activeElement; pfLoadShop(); const bx = pfEl('pfShop').querySelector('.pf-modal-box'); bx.setAttribute('tabindex','-1'); bx.focus(); }
+  if(PF.shop && !was){ PF.lastFocus = document.activeElement; pfLoadShop(); if(PF.tab==='cases') pfLoadCases(); const bx = pfEl('pfShop').querySelector('.pf-modal-box'); bx.setAttribute('tabindex','-1'); bx.focus(); }
   if(!PF.shop && was && PF.lastFocus && PF.lastFocus.focus){ try{ PF.lastFocus.focus(); }catch(e){} PF.lastFocus = null; }
 }
 pfEl('pfShopBtn').addEventListener('click', () => pfSetShop(true));
@@ -4505,7 +4697,7 @@ function adTab(t){
   if(t==='bans') adLoadBans(); if(t==='badges') adLoadBadges(); if(t==='review') adLoadReview(); if(t==='logs') adLogsReset();
 }
 pfEl('stfTabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if(b) adTab(b.dataset.tab); });
-const adErr = { forbidden:'Нет прав', target_protected:'Нельзя: это стафф или вы сами', not_found:'Не найдено', bad_body:'Неверные данные', bad_value:'Неверное значение' };
+const adErr = { forbidden:'Нет прав', target_protected:'Нельзя: этот человек не ниже вас по должности (президент > разработчик > модератор)', not_found:'Не найдено', bad_body:'Неверные данные', bad_value:'Неверное значение' };
 async function adCall(method, path, body, okMsg){
   try {
     const r = await pfSend(method, path, body); const d = await pfJson(r);
@@ -4540,7 +4732,7 @@ function adRenderUser(id, d, ban){
   card.appendChild(pfMk('div','stf-meta','Discord ID: '+id));
   const refresh = () => adFind();
   if(d){
-    const flags = []; if(d.modHidden) flags.push('скрыт модератором'); if(d.hidden) flags.push('скрыт владельцем'); if(d.staff) flags.push('стафф');
+    const flags = []; if(d.modHidden) flags.push('скрыт модератором'); if(d.hidden) flags.push('скрыт владельцем'); if(d.siteRank==='president') flags.push('президент'); else if(d.siteRank==='developer') flags.push('разработчик сайта'); else if(d.staff) flags.push('модератор');
     if(flags.length) card.appendChild(pfMk('div','stf-meta','Статус: '+flags.join(', ')));
     const a = pfMk('a',null,'Открыть профиль'); a.href = '#u/'+id; a.style.cssText = 'font-size:12px;text-decoration:underline;'; card.appendChild(a);
     // картинки
@@ -4683,7 +4875,7 @@ async function adLoadReview(){
 }
 
 /* ----- журнал действий модераторов: новые сверху, порциями при прокрутке ----- */
-const AD_ACTS = { ban:'Бан', unban:'Снятие бана', delete_profile:'Удаление профиля', delete_img:'Удаление картинки', hide_profile:'Скрытие профиля', unhide_profile:'Возврат профиля', grant_badge:'Выдача бейджа', revoke_badge:'Снятие бейджа', ai_block:'ИИ отклонил картинку', ai_approve:'Одобрена после проверки', ai_reject:'Удалена после проверки' };
+const AD_ACTS = { ban:'Бан', unban:'Снятие бана', delete_profile:'Удаление профиля', delete_img:'Удаление картинки', hide_profile:'Скрытие профиля', unhide_profile:'Возврат профиля', grant_badge:'Выдача бейджа', revoke_badge:'Снятие бейджа', ai_block:'ИИ отклонил картинку', ai_approve:'Одобрена после проверки', ai_reject:'Удалена после проверки', case_role:'Роль из кейса', case_fail:'Сбой кейса (деньги возвращены)' };
 const AD_LOG = { cursor:null, loading:false, done:false, n:0 };
 function adLogDetail(l){
   const kindImg = l.k==='banner' ? 'баннер' : l.k==='bg' ? 'фон' : (l.k || '');
@@ -4691,6 +4883,7 @@ function adLogDetail(l){
   if(l.act==='ban'){ p.push(l.k==='site' ? 'вход закрыт' : 'профиль запрещён'); p.push(l.u ? 'до '+adDate(l.u) : 'навсегда'); if(l.r) p.push('причина: '+l.r); }
   else if(l.act==='unban') p.push(l.k==='site' ? 'вход' : l.k==='profile' ? 'профиль' : '');
   else if(l.act==='grant_badge' || l.act==='revoke_badge') p.push(PF_NAMES[l.k] || l.k || '');
+  else if(l.act==='case_role' || l.act==='case_fail'){ p.push('кейс: '+(l.k||'')); if(l.r) p.push(l.r); }
   else if(l.act==='ai_block'){ p.push(kindImg); const c = pfCatText(String(l.r||'').split(',')); if(c) p.push(c); }
   else if(l.k) p.push(kindImg);
   return p.filter(Boolean).join(' · ');
