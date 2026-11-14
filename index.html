@@ -1073,6 +1073,11 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 .pf-tag { font:700 10px 'Space Mono',monospace; padding:2px 7px; border-radius:999px; background:var(--paper); border:1px solid var(--line-strong); }
 .pf-r-rare { color:#4f9dff; } .pf-r-epic { color:#ff8a3d; } .pf-r-legendary { color:#b57cff; }
 .pf-item .btn-outline[disabled] { opacity:.55; cursor:default; }
+/* блок магазина на главной */
+.shop-promo { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin:20px 0 4px; padding:16px 18px; max-width:640px; border:1px solid var(--line-strong); border-left:4px solid var(--yellow); background:var(--paper-2); }
+.shop-promo[hidden] { display:none !important; }
+.shop-promo p { margin:6px 0 0; font-size:13px; line-height:1.5; color:var(--ink-soft); }
+.shop-promo .eyebrow { margin:0; }
 /* вкладки магазина и кейсы */
 .pf-tabs { display:flex; gap:6px; margin:12px 0 4px; border-bottom:2px solid var(--line-strong); padding-bottom:10px; }
 .pf-tabs button { font:700 12px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; padding:8px 16px; background:transparent; color:var(--ink); border:1px solid var(--line-strong); cursor:pointer; }
@@ -1081,6 +1086,10 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
 .cs-card { display:flex; flex-direction:column; align-items:flex-start; gap:6px; text-align:left; padding:16px; border:1px solid var(--line-strong); background:var(--paper-2); color:var(--ink); cursor:pointer; font:inherit; transition:transform .15s, border-color .15s; }
 .cs-card:hover, .cs-card:focus-visible { transform:translateY(-2px); border-color:var(--yellow); }
 .cs-card .cs-em { font-size:38px; line-height:1.1; width:auto; height:auto; }
+.cs-card .cs-pic { width:100%; height:104px; object-fit:contain; display:block; margin:0 0 4px; }
+.cs-title { display:flex; align-items:center; gap:12px; }
+.cs-ticon { height:56px; width:auto; max-width:120px; object-fit:contain; flex:none; }
+.cs-ticon.cs-em { font-size:34px; line-height:1; height:auto; max-width:none; }
 .cs-card .nm { font-weight:700; font-size:15px; }
 .cs-card .pr { font:700 12px 'Space Mono',monospace; }
 .cs-card .ds { font-size:12px; color:var(--ink-soft); }
@@ -1319,6 +1328,13 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
       <div class="discord-live" id="discordLive">
         <span class="live-dot" id="liveDot"></span>
         <span id="discordLiveText">подключение к Discord...</span>
+      </div>
+      <div class="shop-promo" id="homeShop" hidden>
+        <div>
+          <div class="eyebrow"><svg class="ic"><use href="#ic-badge"/></svg> <span>МАГАЗИН ИСР</span></div>
+          <p>Бейджи и кейсы за промкоины: деньги, бейджи и роли на сервере.</p>
+        </div>
+        <button class="btn btn-primary" id="homeShopBtn" type="button">Открыть магазин</button>
       </div>
       <div class="floorbar corner-marks">
         <div><div class="num"><svg class="ic ic-lg"><use href="#ic-document"/></svg> <span class="count-up" data-target="4" data-pad="2">00</span></div><div class="lbl">свода законов</div></div>
@@ -1671,23 +1687,6 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
         </div>
       </article>
 
-      <div class="pf-modal" id="pfShop" hidden role="dialog" aria-modal="true" aria-label="Магазин">
-        <div class="pf-modal-box">
-          <button class="pf-modal-x" id="pfShopX" type="button" aria-label="Закрыть">✕</button>
-          <h3>Магазин</h3>
-          <div class="pf-tabs" role="tablist" aria-label="Разделы магазина">
-            <button type="button" role="tab" id="pfTabBadges" class="on" aria-selected="true" aria-controls="pfPaneBadges">Бейджи</button>
-            <button type="button" role="tab" id="pfTabCases" aria-selected="false" aria-controls="pfPaneCases">Кейсы</button>
-          </div>
-          <div id="pfPaneBadges" role="tabpanel" aria-labelledby="pfTabBadges">
-            <p class="pf-hint">Бейджи покупаются за промкоины. Цена списывается только с «рук», деньги в банке не используются. Купленный бейдж остаётся навсегда.</p>
-            <div id="pfShopBody"></div>
-          </div>
-          <div id="pfPaneCases" role="tabpanel" aria-labelledby="pfTabCases" hidden>
-            <div id="pfCasesBody"></div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1723,6 +1722,25 @@ button.pf-bd { cursor:pointer; } button.pf-bd:hover { border-color:var(--yellow)
   </section>
 
 </main>
+
+<!-- МАГАЗИН: окно поверх любой страницы (открывается с главной и из профиля) -->
+      <div class="pf-modal" id="pfShop" hidden role="dialog" aria-modal="true" aria-label="Магазин">
+        <div class="pf-modal-box">
+          <button class="pf-modal-x" id="pfShopX" type="button" aria-label="Закрыть">✕</button>
+          <h3>Магазин</h3>
+          <div class="pf-tabs" role="tablist" aria-label="Разделы магазина">
+            <button type="button" role="tab" id="pfTabBadges" class="on" aria-selected="true" aria-controls="pfPaneBadges">Бейджи</button>
+            <button type="button" role="tab" id="pfTabCases" aria-selected="false" aria-controls="pfPaneCases">Кейсы</button>
+          </div>
+          <div id="pfPaneBadges" role="tabpanel" aria-labelledby="pfTabBadges">
+            <p class="pf-hint">Бейджи покупаются за промкоины. Цена списывается только с «рук», деньги в банке не используются. Купленный бейдж остаётся навсегда.</p>
+            <div id="pfShopBody"></div>
+          </div>
+          <div id="pfPaneCases" role="tabpanel" aria-labelledby="pfTabCases" hidden>
+            <div id="pfCasesBody"></div>
+          </div>
+        </div>
+      </div>
 
 <canvas id="sparkCanvas"></canvas>
 <div class="toast-stack" id="toastStack"></div>
@@ -4284,8 +4302,8 @@ function pfRender(d){
   mod.textContent = d.modHidden ? 'Вернуть профиль' : 'Скрыть профиль (мод.)';
   pfEl('pfAdm').hidden = !(d.canModerate && !d.own);
   pfEl('pfCols').hidden = PF.editing; pfEl('pfEditor').hidden = !PF.editing;
-  pfEl('pfShop').hidden = !(PF.shop && d.own);
-  if(PF.shop && d.own) pfRenderShop();
+  pfEl('pfShop').hidden = !PF.shop;                    // окно магазина живёт отдельно от профиля (открывается и с главной)
+  if(PF.shop) pfRenderShop();
 }
 
 async function pfOpen(id){
@@ -4391,6 +4409,14 @@ function csTile(d){
   t.appendChild(pfMk('div','cs-lb', d.label));
   return t;
 }
+/* картинка кейса (img/cases/…); нет файла или путь не указан: показываем emoji */
+function csPic(c, cls){
+  const fb = () => pfMk('div', cls==='cs-pic' ? 'cs-em' : 'cs-ticon cs-em', c.emoji||'📦');
+  if(!c.image) return fb();
+  const im = new Image(); im.className = cls; im.alt = ''; im.loading = 'lazy'; im.decoding = 'async'; im.src = c.image;
+  im.addEventListener('error', () => im.replaceWith(fb()), { once:true });
+  return im;
+}
 function csRandDrop(drops){ let x = Math.random()*100, a = 0; for(const d of drops){ a += d.chance; if(x < a) return d; } return drops[0]; }
 
 function pfRenderCases(){
@@ -4409,7 +4435,7 @@ function csRenderList(body, cd){
   const grid = pfMk('div','cs-grid');
   cd.cases.forEach(c => {
     const b = pfMk('button','cs-card'); b.type = 'button';
-    b.appendChild(pfMk('div','cs-em',c.emoji||'📦')); b.appendChild(pfMk('div','nm',c.name));
+    b.appendChild(csPic(c,'cs-pic')); b.appendChild(pfMk('div','nm',c.name));
     b.appendChild(pfMk('div','pr','Цена: '+pfNum(c.price)+' '+pfCoins(c.price)));
     if(c.desc) b.appendChild(pfMk('div','ds',c.desc));
     b.addEventListener('click', () => { PF.caseView = c.id; pfRenderCases(); });
@@ -4429,7 +4455,7 @@ function csRenderCase(body, cs){
   const back = pfMk('button','btn-outline cs-back','← Все кейсы'); back.type = 'button';
   back.addEventListener('click', () => { PF.caseView = null; pfRenderCases(); });
   body.appendChild(back);
-  body.appendChild(pfMk('div','cs-title',(cs.emoji||'📦')+' '+cs.name));
+  const ttl = pfMk('div','cs-title'); ttl.appendChild(csPic(cs,'cs-ticon')); ttl.appendChild(pfMk('span',null,cs.name)); body.appendChild(ttl);
   if(cs.desc) body.appendChild(pfMk('div','pf-hint',cs.desc));
   const drops = cs.drops || [];
   const roll = pfMk('div','cs-roll'), strip = pfMk('div','cs-strip'); roll.appendChild(strip); body.appendChild(roll);
@@ -4507,6 +4533,10 @@ function pfSetShop(on){
   if(!PF.shop && was && PF.lastFocus && PF.lastFocus.focus){ try{ PF.lastFocus.focus(); }catch(e){} PF.lastFocus = null; }
 }
 pfEl('pfShopBtn').addEventListener('click', () => pfSetShop(true));
+/* магазин на главной: виден и открывается только вошедшим в аккаунт (сервер тоже требует вход) */
+const homeShopSync = () => { pfEl('homeShop').hidden = !(window.ISR_USER && window.ISR_USER.id); };
+pfEl('homeShopBtn').addEventListener('click', () => { if(window.ISR_USER && window.ISR_USER.id) pfSetShop(true); });
+document.addEventListener('isr-auth', homeShopSync); homeShopSync();
 pfEl('pfShopX').addEventListener('click', () => pfSetShop(false));
 pfEl('pfShop').addEventListener('click', e => { if(e.target===pfEl('pfShop')) pfSetShop(false); });
 document.addEventListener('keydown', e => {
