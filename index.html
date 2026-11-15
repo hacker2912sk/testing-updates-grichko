@@ -4106,7 +4106,10 @@ const pfContrast = (a, b) => { const x = pfRel(a), y = pfRel(b); return (Math.ma
    Цвета ставятся только внутри страницы профиля и окна магазина, поэтому тема зрителя на профиль не влияет. */
 function pfApplyAccent(d){
   const KEYS = ['--paper','--paper-2','--ink','--ink-soft','--yellow','--yellow-deep','--line-strong','--line','--pf-on'];
-  [pfEl('profile'), pfEl('pfShop')].forEach(el => {
+  /* Личные цвета профиля применяются ТОЛЬКО к странице профиля. Окно магазина всегда берёт цвета текущей темы сайта
+     (светлая, тёмная, midnight, forest и т. д.), поэтому с него инлайновые переменные принудительно снимаются. */
+  const shop = pfEl('pfShop'); if(shop) KEYS.forEach(k => shop.style.removeProperty(k));
+  [pfEl('profile')].forEach(el => {
     if(!d){ KEYS.forEach(k => el.style.removeProperty(k)); return; }
     const ok = v => (v && PF_COLOR_RE.test(v)) ? v : null, pal = PF_PALETTE[d.uiTheme==='light' ? 'light' : 'dark'];
     const accent = ok(d.uiAccent) || PF_DEF_ACCENT, bg = ok(d.uiBg) || pal.paper, text = ok(d.uiText) || pal.ink, border = ok(d.uiBorder) || accent;
@@ -4178,7 +4181,9 @@ function pfRenderBg(d){
     show = true;
     pfImg(d.id,'bg',d.img.bg).then(u => { if(PF.bgt===t){ fill.style.background = 'url("'+u+'") center/cover no-repeat'; } }).catch(() => { if(PF.bgt===t) bg.style.display = 'none'; });
   }
-  bg.style.display = show ? '' : 'none';
+  /* фон лежит на уровне body, поэтому показываем его только на странице профиля: иначе перерисовка профиля
+     (например, после покупки или открытия кейса из магазина на главной) выводила бы фон поверх любой страницы */
+  bg.style.display = (show && pfEl('profile').classList.contains('active')) ? '' : 'none';
 }
 function pfBannerBase(el, d){
   el.textContent = ''; el.style.background = ''; el.className = 'pf-banner';
